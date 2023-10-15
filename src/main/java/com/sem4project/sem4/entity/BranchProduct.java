@@ -1,0 +1,23 @@
+package com.sem4project.sem4.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToOne;
+import lombok.*;
+
+import java.io.Serial;
+
+@EqualsAndHashCode(callSuper = true)
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
+@Setter
+public class BranchProduct extends BaseEntity{
+    @ManyToOne
+    private Product product;
+    @ManyToOne
+    private Branch branch;
+    private int quantity;
+}
