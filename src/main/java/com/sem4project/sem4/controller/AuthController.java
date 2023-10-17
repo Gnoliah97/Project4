@@ -4,6 +4,7 @@ import com.sem4project.sem4.dto.dtomodel.TokenDto;
 import com.sem4project.sem4.dto.request.LoginRequest;
 import com.sem4project.sem4.dto.request.RegisterRequest;
 import com.sem4project.sem4.dto.response.ResponseObject;
+import com.sem4project.sem4.exception.AuthException;
 import com.sem4project.sem4.service.UserService;
 import com.sem4project.sem4.util.JwtUtil;
 import jakarta.annotation.security.PermitAll;
@@ -14,10 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/v1/auth")
@@ -27,6 +25,16 @@ public class AuthController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
+    @ExceptionHandler({ AuthException.class })
+    public ResponseEntity<ResponseObject> handleException(Exception e) {
+        return ResponseEntity.status(400)
+                .body(
+                        ResponseObject.builder()
+                                .message(e.getMessage())
+                                .data(null)
+                                .build()
+                );
+    }
     @RequestMapping("/login")
     public ResponseEntity<ResponseObject> login(@RequestBody LoginRequest loginRequest) {
         try {
