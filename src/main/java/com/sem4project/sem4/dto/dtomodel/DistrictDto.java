@@ -15,5 +15,5 @@ public class DistrictDto{
     private Long id;
     private String name;
     private ProvinceDto province;
-    private List<BranchDto> branches;
+//    private List<BranchDto> branches;
 }
