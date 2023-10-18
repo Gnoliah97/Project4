@@ -27,7 +27,7 @@ public class AuthController {
 
     @ExceptionHandler({ AuthException.class })
     public ResponseEntity<ResponseObject> handleException(Exception e) {
-        return ResponseEntity.status(400)
+        return ResponseEntity.status(401)
                 .body(
                         ResponseObject.builder()
                                 .message(e.getMessage())
@@ -81,17 +81,6 @@ public class AuthController {
                         ResponseObject.builder()
                                 .message("Logout success")
                                 .data(true)
-                                .build()
-                );
-    }
-
-    @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public ResponseEntity<ResponseObject> getInfo() {
-        return ResponseEntity.ok()
-                .body(
-                        ResponseObject.builder()
-                                .message("Get info success")
-                                .data(userService.getUserInfo())
                                 .build()
                 );
     }
