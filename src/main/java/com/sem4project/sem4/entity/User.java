@@ -28,5 +28,4 @@ public class User extends BaseEntity {
     private List<Role> roles;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private UserInfo userInfo;
-
 }
