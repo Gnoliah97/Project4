@@ -5,13 +5,13 @@ import com.sem4project.sem4.entity.UserInfo;
 
 public class UserInfoMapper {
     public static UserInfoDto mapUserInfoToUserInfoDto(UserInfo userInfo){
-        return UserInfoDto.builder()
+        return userInfo != null ? UserInfoDto.builder()
                     .fullName(userInfo.getFullName())
                     .email(userInfo.getEmail())
                     .address(userInfo.getAddress())
                     .phone(userInfo.getPhone())
                     .dob(userInfo.getDob())
-                .build();
+                .build() : null;
     }
     public static UserInfo mapUserInfoDtoToUserInfo(UserInfoDto userInfoDto){
         return UserInfo.builder()
