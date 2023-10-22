@@ -15,16 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class ProvinceController {
     private final ProvinceService provinceService;
 
-    @ExceptionHandler({CRUDException.class})
-    public ResponseEntity<ResponseObject> handleException(Exception exception){
-        return ResponseEntity.status(400)
-                .body(
-                        ResponseObject.builder()
-                                .message(exception.getMessage())
-                                .data(false)
-                                .build()
-                );
-    }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<ResponseObject> createProvince(@RequestBody ProvinceDto provinceDto) {

@@ -8,14 +8,19 @@ import com.sem4project.sem4.exception.AuthException;
 import com.sem4project.sem4.service.UserService;
 import com.sem4project.sem4.util.JwtUtil;
 import jakarta.annotation.security.PermitAll;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/v1/auth")
@@ -24,45 +29,28 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
-
-    @ExceptionHandler({ AuthException.class })
-    public ResponseEntity<ResponseObject> handleException(Exception e) {
-        return ResponseEntity.status(401)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<ResponseObject> login(@RequestBody LoginRequest loginRequest) {
+        userService.login(loginRequest);
+        String token = jwtUtil.generateToken((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        TokenDto tokenDto = TokenDto.builder()
+                .jwtToken(token)
+                .build();
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Authorization",
+                "Bearer " + token);
+        return ResponseEntity.ok()
+                .headers(responseHeaders)
                 .body(
                         ResponseObject.builder()
-                                .message(e.getMessage())
-                                .data(null)
+                                .message("Login success")
+                                .data(tokenDto)
                                 .build()
                 );
     }
-    @RequestMapping("/login")
-    public ResponseEntity<ResponseObject> login(@RequestBody LoginRequest loginRequest) {
-        try {
-            userService.login(loginRequest);
-            String token = jwtUtil.generateToken((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-            TokenDto tokenDto = TokenDto.builder()
-                    .jwtToken(token)
-                    .build();
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.AUTHORIZATION, token)
-                    .body(
-                            ResponseObject.builder()
-                                    .message("Login success")
-                                    .data(tokenDto)
-                                    .build()
-                    );
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(
-                            ResponseObject.builder()
-                                    .message(ex.getMessage())
-                                    .build()
-                    );
-        }
-    }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<ResponseObject> register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<ResponseObject> register(@RequestBody @Valid RegisterRequest registerRequest) {
         userService.register(registerRequest);
         return ResponseEntity.status(201)
                 .body(

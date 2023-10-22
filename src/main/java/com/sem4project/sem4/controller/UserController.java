@@ -15,18 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
-
-    @ExceptionHandler({AuthException.class})
-    public ResponseEntity<ResponseObject> handleException(Exception e) {
-        return ResponseEntity.status(401)
-                .body(
-                        ResponseObject.builder()
-                                .message(e.getMessage())
-                                .data(null)
-                                .build()
-                );
-    }
-
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public ResponseEntity<ResponseObject> getInfo() {
         return ResponseEntity.ok()
