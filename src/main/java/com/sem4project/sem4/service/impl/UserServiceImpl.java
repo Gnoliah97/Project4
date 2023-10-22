@@ -16,8 +16,11 @@ import com.sem4project.sem4.mapper.UserMapper;
 import com.sem4project.sem4.repository.RoleRepository;
 import com.sem4project.sem4.repository.UserInfoRepository;
 import com.sem4project.sem4.repository.UserRepository;
+import com.sem4project.sem4.security.JwtAuthenticationFilter;
 import com.sem4project.sem4.service.UserService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -37,12 +40,12 @@ public class UserServiceImpl implements UserService {
     private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-
+    private final Logger logger = LoggerFactory.getLogger(UserService.class);
     @Override
     public void login(LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityContextHolder.getContext ().setAuthentication(authentication);
         } catch (Exception ex) {
             throw new AuthException("Username or password incorrect");
         }
@@ -80,8 +83,10 @@ public class UserServiceImpl implements UserService {
             User user = userDetails.getUser();
             UserDto userDto = UserMapper.userDtoFromUser(user);
             userDto.setRoles(user.getRoles().stream().map(RoleMapper::roleDtoFromRole).toList());
+            userDto.setUserInfo(UserInfoMapper.mapUserInfoToUserInfoDto(user.getUserInfo()));
             return userDto;
         } catch (Exception ex) {
+            logger.error(ex.getMessage());
             throw new AuthException("Not logged in yet");
         }
     }
