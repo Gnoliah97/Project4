@@ -1,7 +1,6 @@
 package com.sem4project.sem4.dto.response;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,4 +10,5 @@ import lombok.Setter;
 public class ResponseObject {
     private String message;
     private Object data;
+    private Object errors;
 }

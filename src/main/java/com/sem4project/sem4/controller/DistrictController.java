@@ -17,18 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 public class DistrictController {
     private final DistrictService districtService;
-
-    @ExceptionHandler({CRUDException.class})
-    public ResponseEntity<ResponseObject> handleException(Exception exception) {
-        return ResponseEntity.status(400)
-                .body(
-                        ResponseObject.builder()
-                                .message(exception.getMessage())
-                                .data(false)
-                                .build()
-                );
-    }
-
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<ResponseObject> createDistrict(@RequestBody DistrictDto districtDto) {
         districtService.create(districtDto);
@@ -39,6 +27,5 @@ public class DistrictController {
                                 .data(true)
                                 .build()
                 );
-
     }
 }
