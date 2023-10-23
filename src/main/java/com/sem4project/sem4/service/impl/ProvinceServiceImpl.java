@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -42,4 +43,18 @@ public class ProvinceServiceImpl implements ProvinceService {
             throw new CRUDException("Get all fail !!");
         }
     }
+
+    @Override
+    public ProvinceDto getProvince(Long id) {
+        try {
+            Province province = provinceRepository.findById(id).orElseThrow(() -> new CRUDException("Cant find Province with id = "  +  id));
+            ProvinceDto provinceDto = mapper.map(province, ProvinceDto.class);
+            provinceDto.setDistricts(province.getDistricts().stream().map(district -> mapper.map(district, DistrictDto.class)).toList());
+            return provinceDto;
+        } catch (Exception e) {
+            throw new CRUDException("Cant find Province with id = "  +  id);
+        }
+    }
+
+
 }

@@ -51,4 +51,16 @@ public class ProvinceController {
 
     }
 
+    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+    public ResponseEntity<ResponseObject> getProvince(@PathVariable Long id){
+        return ResponseEntity.status(200)
+                .body(
+                        ResponseObject.builder()
+                                .message("Success")
+                                .data(provinceService.getProvince(id))
+                                .build()
+                );
+
+    }
+
 }
