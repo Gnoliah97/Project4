@@ -11,5 +11,9 @@ public interface ProvinceService {
 
     ProvinceDto getProvince(Long id);
 
+    ProvinceDto updateProvince(ProvinceDto provinceDto);
 
+    void deleteProvince(ProvinceDto provinceDto);
+
+    List<ProvinceDto> getAllAvailableProvince();
 }

@@ -15,16 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class ProvinceController {
     private final ProvinceService provinceService;
 
-    @ExceptionHandler({CRUDException.class})
-    public ResponseEntity<ResponseObject> handleException(Exception exception){
-        return ResponseEntity.status(400)
-                .body(
-                        ResponseObject.builder()
-                                .message(exception.getMessage())
-                                .data(false)
-                                .build()
-                );
-    }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<ResponseObject> createProvince(@RequestBody ProvinceDto provinceDto) {
@@ -50,9 +40,20 @@ public class ProvinceController {
                 );
 
     }
+    @RequestMapping(value = "/getAllAvailable", method = RequestMethod.GET)
+    public ResponseEntity<ResponseObject> getAllAvailableProvince() {
+        return ResponseEntity.status(200)
+                .body(
+                        ResponseObject.builder()
+                                .message("Success")
+                                .data(provinceService.getAllAvailableProvince())
+                                .build()
+                );
+
+    }
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
-    public ResponseEntity<ResponseObject> getProvince(@PathVariable Long id){
+    public ResponseEntity<ResponseObject> getProvince(@PathVariable Long id) {
         return ResponseEntity.status(200)
                 .body(
                         ResponseObject.builder()
@@ -61,6 +62,29 @@ public class ProvinceController {
                                 .build()
                 );
 
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.PATCH)
+    public ResponseEntity<ResponseObject> updateProvince(@RequestBody ProvinceDto provinceDto) {
+        return ResponseEntity.status(200)
+                .body(
+                        ResponseObject.builder()
+                                .message("Success")
+                                .data(provinceService.updateProvince(provinceDto))
+                                .build()
+                );
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    public ResponseEntity<ResponseObject> deleteProvince(@RequestBody ProvinceDto provinceDto) {
+        provinceService.deleteProvince(provinceDto);
+        return ResponseEntity.status(200)
+                .body(
+                        ResponseObject.builder()
+                                .message("Success")
+                                .data(true)
+                                .build()
+                );
     }
 
 }
