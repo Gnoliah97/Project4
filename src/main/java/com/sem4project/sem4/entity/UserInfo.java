@@ -2,6 +2,7 @@ package com.sem4project.sem4.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 import java.time.Instant;
@@ -10,13 +11,12 @@ import java.time.Instant;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 public class UserInfo extends BaseEntity{
     private String fullName;
     private String phone;
-    private String email;
     private Instant dob;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "province_id")

@@ -1,6 +1,7 @@
 package com.sem4project.sem4.dto.request;
 
 import com.sem4project.sem4.annotation.validation.PasswordMatchConstraint;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -15,9 +16,9 @@ import org.springframework.validation.annotation.Validated;
         fieldMatch = "reEnterPassword",
         message = "Passwords do not match!")
 public class RegisterRequest {
-    @NotNull(message = "Username is required")
-    @Length(min = 8, message = "Username's must be greater than 8")
-    private String username;
+    @NotNull(message = "Email is required")
+    @Email
+    private String email;
     @NotNull(message = "Password is required")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Password must be contain a UPPERCASE, a lowercase, a number, a special character and at least 8 letter")
     private String password;

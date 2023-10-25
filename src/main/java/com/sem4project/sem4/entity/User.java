@@ -2,6 +2,7 @@ package com.sem4project.sem4.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 import java.time.Instant;
@@ -12,12 +13,12 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 public class User extends BaseEntity {
-    @Column(unique = true, name = "username", length = 30)
-    private String username;
+    @Column(name = "email", length = 50)
+    private String email;
     @Column(name = "password", length = 120)
     private String password;
     @ManyToMany(fetch = FetchType.LAZY)

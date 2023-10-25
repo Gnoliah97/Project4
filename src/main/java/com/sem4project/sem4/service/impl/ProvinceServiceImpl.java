@@ -22,7 +22,7 @@ public class ProvinceServiceImpl implements ProvinceService {
             Province province = ProvinceMapper.provinceFromProvinceDto(provinceDto);
             provinceRepository.save(province);
         } catch (Exception e) {
-            throw new CRUDException("can not create new province");
+            throw new CRUDException("Can not create new province");
         }
     }
 

@@ -4,14 +4,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RateDto extends BaseDto{
-    private int rating;
-    private UserDto user;
+public class BranchProductDto extends BaseDto{
     private ProductDto product;
+    private BranchDto branch;
+    private int quantity;
 }

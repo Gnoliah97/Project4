@@ -2,17 +2,17 @@ package com.sem4project.sem4.dto.dtomodel;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProvinceDto{
-    private Long id;
+public class ProvinceDto extends BaseDto{
     private String name;
     private List<DistrictDto> districts;
-//    private List<BranchDto> branches;
+    private List<BranchDto> branches;
 }

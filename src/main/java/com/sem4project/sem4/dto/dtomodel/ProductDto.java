@@ -2,17 +2,17 @@ package com.sem4project.sem4.dto.dtomodel;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProductDto {
-    private Long id;
+public class ProductDto extends BaseDto{
     private String title;
     private String productCode;
     private String warrantyPeriod;
@@ -27,5 +27,5 @@ public class ProductDto {
     private List<CategoryDto> categories;
     private BrandDto brand;
     private List<RateDto> rates;
-    private List<BranchProduct> branchProducts;
+    private List<BranchProductDto> branchProductDtos;
 }

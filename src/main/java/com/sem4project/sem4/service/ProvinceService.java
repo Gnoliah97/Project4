@@ -13,7 +13,7 @@ public interface ProvinceService {
 
     ProvinceDto updateProvince(ProvinceDto provinceDto);
 
-    void deleteProvince(ProvinceDto provinceDto);
+    void setDisableProvince(ProvinceDto provinceDto, boolean isDisable);
 
     List<ProvinceDto> getAllAvailableProvince();
 }

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class ProvinceController {
     private final ProvinceService provinceService;
 
-
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<ResponseObject> createProvince(@RequestBody ProvinceDto provinceDto) {
         provinceService.create(provinceDto);
@@ -75,9 +74,9 @@ public class ProvinceController {
                 );
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public ResponseEntity<ResponseObject> deleteProvince(@RequestBody ProvinceDto provinceDto) {
-        provinceService.deleteProvince(provinceDto);
+    @RequestMapping(value = "/setIsDisable/{idDisable}", method = RequestMethod.DELETE)
+    public ResponseEntity<ResponseObject> deleteProvince(@RequestBody ProvinceDto provinceDto, @PathVariable boolean idDisable) {
+        provinceService.setDisableProvince(provinceDto, idDisable);
         return ResponseEntity.status(200)
                 .body(
                         ResponseObject.builder()
