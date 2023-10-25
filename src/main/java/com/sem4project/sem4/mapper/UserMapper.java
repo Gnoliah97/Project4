@@ -6,6 +6,7 @@ import com.sem4project.sem4.dto.request.RegisterRequest;
 import com.sem4project.sem4.entity.User;
 
 public class UserMapper {
+
     public static UserDto userDtoFromUser(User user){
         return UserDto.builder()
                 .username(user.getUsername())
@@ -28,4 +29,5 @@ public class UserMapper {
                 .password(registerRequest.getPassword())
                 .build();
     }
+
 }
