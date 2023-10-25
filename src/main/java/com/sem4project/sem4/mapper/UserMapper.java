@@ -4,7 +4,6 @@ import com.sem4project.sem4.dto.dtomodel.UserDto;
 import com.sem4project.sem4.dto.request.LoginRequest;
 import com.sem4project.sem4.dto.request.RegisterRequest;
 import com.sem4project.sem4.entity.User;
-
 public class UserMapper implements BaseMapper<User, UserDto>{
     public User fromLoginRequest(LoginRequest loginRequest){
         return User.builder()
@@ -18,7 +17,6 @@ public class UserMapper implements BaseMapper<User, UserDto>{
                 .password(registerRequest.getPassword())
                 .build();
     }
-
     @Override
     public UserDto toDto(User user) {
         return UserDto.builder()

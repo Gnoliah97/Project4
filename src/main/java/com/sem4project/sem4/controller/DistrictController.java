@@ -21,8 +21,7 @@ public class DistrictController {
     public ResponseEntity<ResponseObject> createDistrict(@RequestBody DistrictDto districtDto) {
         districtService.create(districtDto);
         return ResponseEntity.status(201)
-                .body(
-                        ResponseObject.builder()
+                .body(ResponseObject.builder()
                                 .message("Created")
                                 .data(true)
                                 .build()
