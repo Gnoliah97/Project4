@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseObject {
     private String message;

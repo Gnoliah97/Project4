@@ -2,18 +2,18 @@ package com.sem4project.sem4.dto.dtomodel;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class InvoiceDto {
-    private Long id;
+public class InvoiceDto extends BaseDto{
     private String fullName;
     private String email;
     private String phone;

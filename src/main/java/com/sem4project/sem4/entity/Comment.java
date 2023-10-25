@@ -3,6 +3,7 @@ package com.sem4project.sem4.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 
@@ -10,7 +11,7 @@ import java.io.Serial;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 public class Comment extends BaseEntity{

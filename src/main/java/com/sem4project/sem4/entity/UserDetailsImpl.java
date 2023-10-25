@@ -1,6 +1,7 @@
 package com.sem4project.sem4.entity;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -8,7 +9,7 @@ import java.io.Serial;
 import java.util.Collection;
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
@@ -27,7 +28,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getEmail();
     }
 
     @Override

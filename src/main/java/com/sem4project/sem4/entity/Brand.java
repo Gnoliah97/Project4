@@ -3,6 +3,7 @@ package com.sem4project.sem4.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 public class Brand extends BaseEntity{

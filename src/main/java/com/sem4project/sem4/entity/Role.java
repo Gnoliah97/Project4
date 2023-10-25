@@ -2,6 +2,7 @@ package com.sem4project.sem4.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serial;
@@ -12,7 +13,7 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 public class Role extends BaseEntity implements GrantedAuthority {

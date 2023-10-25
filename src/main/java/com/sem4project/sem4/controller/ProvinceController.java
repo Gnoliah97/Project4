@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class ProvinceController {
     private final ProvinceService provinceService;
 
-
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<ResponseObject> createProvince(@RequestBody ProvinceDto provinceDto) {
         provinceService.create(provinceDto);

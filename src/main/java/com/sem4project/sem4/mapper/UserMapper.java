@@ -5,27 +5,41 @@ import com.sem4project.sem4.dto.request.LoginRequest;
 import com.sem4project.sem4.dto.request.RegisterRequest;
 import com.sem4project.sem4.entity.User;
 
-public class UserMapper {
-    public static UserDto userDtoFromUser(User user){
-        return UserDto.builder()
-                .username(user.getUsername())
-                .build();
-    }
-    public static User userFromUserDto(UserDto userDto){
+public class UserMapper implements BaseMapper<User, UserDto>{
+    public User fromLoginRequest(LoginRequest loginRequest){
         return User.builder()
-                .username(userDto.getUsername())
-                .build();
-    }
-    public static User userFromLoginRequest(LoginRequest loginRequest){
-        return User.builder()
-                .username(loginRequest.getUsername())
+                .email(loginRequest.getEmail())
                 .password(loginRequest.getPassword())
                 .build();
     }
-    public static User userFromRegisterRequest(RegisterRequest registerRequest){
+    public User fromRegisterRequest(RegisterRequest registerRequest){
         return User.builder()
-                .username(registerRequest.getUsername())
+                .email(registerRequest.getEmail())
                 .password(registerRequest.getPassword())
                 .build();
+    }
+
+    @Override
+    public UserDto toDto(User user) {
+        return UserDto.builder()
+                .email(user.getEmail())
+                .build();
+    }
+
+    @Override
+    public User toEntity(UserDto userDto) {
+        return User.builder()
+                .email(userDto.getEmail())
+                .build();
+    }
+
+    @Override
+    public void transferToDto(User user, UserDto userDto) {
+
+    }
+
+    @Override
+    public void transferToEntity(UserDto userDto, User user) {
+
     }
 }

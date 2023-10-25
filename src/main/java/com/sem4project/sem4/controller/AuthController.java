@@ -30,7 +30,7 @@ public class AuthController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<ResponseObject> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<ResponseObject> login(@RequestBody @Valid LoginRequest loginRequest) {
         userService.login(loginRequest);
         String token = jwtUtil.generateToken((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         TokenDto tokenDto = TokenDto.builder()

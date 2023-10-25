@@ -2,15 +2,15 @@ package com.sem4project.sem4.dto.dtomodel;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GiftDto {
-    private Long id;
+public class GiftDto extends BaseDto{
     private String name;
 }
