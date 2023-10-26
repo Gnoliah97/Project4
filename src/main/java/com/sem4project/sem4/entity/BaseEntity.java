@@ -20,7 +20,7 @@ public abstract class BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private boolean isDisable;
+    private boolean disable;
     @Column(nullable = false)
     private Instant createdAt;
     private String createdBy;

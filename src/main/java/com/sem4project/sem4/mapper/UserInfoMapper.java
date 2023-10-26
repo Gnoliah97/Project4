@@ -2,41 +2,55 @@ package com.sem4project.sem4.mapper;
 
 import com.sem4project.sem4.dto.dtomodel.UserInfoDto;
 import com.sem4project.sem4.entity.UserInfo;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Mappings;
+import org.mapstruct.factory.Mappers;
 
-public class UserInfoMapper implements BaseMapper<UserInfo, UserInfoDto>{
-    @Override
-    public UserInfoDto toDto(UserInfo userInfo) {
-        return userInfo != null ? UserInfoDto.builder()
-                .fullName(userInfo.getFullName())
-                .address(userInfo.getAddress())
-                .phone(userInfo.getPhone())
-                .dob(userInfo.getDob())
-                .build() : null;
-    }
+import java.util.List;
+@Mapper
+public interface UserInfoMapper{
 
-    @Override
-    public UserInfo toEntity(UserInfoDto userInfoDto) {
-        return UserInfo.builder()
-                .fullName(userInfoDto.getFullName())
-                .address(userInfoDto.getAddress())
-                .phone(userInfoDto.getPhone())
-                .dob(userInfoDto.getDob())
-                .build();
-    }
-
-    @Override
-    public void transferToDto(UserInfo userInfo, UserInfoDto userInfoDto) {
-        userInfoDto.setAddress(userInfo.getAddress());
-        userInfoDto.setDob(userInfo.getDob());
-        userInfoDto.setPhone(userInfo.getPhone());
-        userInfoDto.setFullName(userInfo.getFullName());
-    }
-
-    @Override
-    public void transferToEntity(UserInfoDto userInfoDto, UserInfo userInfo) {
-        userInfo.setAddress(userInfoDto.getAddress());
-        userInfo.setDob(userInfoDto.getDob());
-        userInfo.setPhone(userInfoDto.getPhone());
-        userInfo.setFullName(userInfoDto.getFullName());
-    }
+    UserInfoMapper INSTANCE = Mappers.getMapper(UserInfoMapper.class);
+    @Mappings({
+            @Mapping(target = "province", ignore = true),
+            @Mapping(target = "district", ignore = true),
+    })
+    UserInfoDto toDto(UserInfo userInfo);
+    @Mappings({
+            @Mapping(target = "province", ignore = true),
+            @Mapping(target = "district", ignore = true),
+    })
+    List<UserInfoDto> toListDto(List<UserInfo> userInfos);
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "createdAt", ignore = true),
+            @Mapping(target = "updatedAt", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+            @Mapping(target = "province", ignore = true),
+            @Mapping(target = "district", ignore = true),
+    })
+    UserInfo toEntity(UserInfoDto userInfoDto);
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "createdAt", ignore = true),
+            @Mapping(target = "updatedAt", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+            @Mapping(target = "province", ignore = true),
+            @Mapping(target = "district", ignore = true),
+    })
+    List<UserInfo> toListEntity(List<UserInfoDto> userInfoDtos);
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "createdAt", ignore = true),
+            @Mapping(target = "updatedAt", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+            @Mapping(target = "province", ignore = true),
+            @Mapping(target = "district", ignore = true),
+    })
+    void transferToEntity(@MappingTarget UserInfo userInfo, UserInfoDto userInfoDto);
 }

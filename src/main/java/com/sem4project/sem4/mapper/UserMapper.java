@@ -4,40 +4,51 @@ import com.sem4project.sem4.dto.dtomodel.UserDto;
 import com.sem4project.sem4.dto.request.LoginRequest;
 import com.sem4project.sem4.dto.request.RegisterRequest;
 import com.sem4project.sem4.entity.User;
-public class UserMapper implements BaseMapper<User, UserDto>{
-    public User fromLoginRequest(LoginRequest loginRequest){
-        return User.builder()
-                .email(loginRequest.getEmail())
-                .password(loginRequest.getPassword())
-                .build();
-    }
-    public User fromRegisterRequest(RegisterRequest registerRequest){
-        return User.builder()
-                .email(registerRequest.getEmail())
-                .password(registerRequest.getPassword())
-                .build();
-    }
-    @Override
-    public UserDto toDto(User user) {
-        return UserDto.builder()
-                .email(user.getEmail())
-                .build();
-    }
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.factory.Mappers;
 
-    @Override
-    public User toEntity(UserDto userDto) {
-        return User.builder()
-                .email(userDto.getEmail())
-                .build();
-    }
+import java.util.List;
 
-    @Override
-    public void transferToDto(User user, UserDto userDto) {
+@Mapper
+public interface UserMapper{
+    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+    @Mappings({})
+    User fromRegisterRequest(RegisterRequest registerRequest);
+    @Mappings({})
+    User fromLoginRequest(LoginRequest loginRequest);
+    @Mappings({
+            @Mapping(target = "roles", ignore = true),
+            @Mapping(target = "userInfo", ignore = true),
+    })
+    UserDto toDto(User user);
 
-    }
+    @Mappings({
+            @Mapping(target = "roles", ignore = true),
+            @Mapping(target = "userInfo", ignore = true),
+    })
+    List<UserDto> toListDto(List<User> users);
 
-    @Override
-    public void transferToEntity(UserDto userDto, User user) {
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "createdAt", ignore = true),
+            @Mapping(target = "updatedAt", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+            @Mapping(target = "roles", ignore = true),
+            @Mapping(target = "userInfo", ignore = true),
+    })
+    User toEntity(UserDto userDto);
 
-    }
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "createdAt", ignore = true),
+            @Mapping(target = "updatedAt", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+            @Mapping(target = "roles", ignore = true),
+            @Mapping(target = "userInfo", ignore = true),
+    })
+    List<User> toListEntity(List<UserDto> userDtos);
 }
