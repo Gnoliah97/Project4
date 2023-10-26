@@ -15,11 +15,12 @@ import java.util.List;
 public class ProvinceServiceImpl implements ProvinceService {
 
     private final ProvinceRepository provinceRepository;
-
+    private final ProvinceMapper provinceMapper = ProvinceMapper.INSTANCE;
+    private final DistrictMapper districtMapper = DistrictMapper.INSTANCE;
     @Override
     public void create(ProvinceDto provinceDto) {
         try {
-            Province province = ProvinceMapper.provinceFromProvinceDto(provinceDto);
+            Province province = provinceMapper.toEntity(provinceDto);
             provinceRepository.save(province);
         } catch (Exception e) {
             throw new CRUDException("Can not create new province");
@@ -31,8 +32,8 @@ public class ProvinceServiceImpl implements ProvinceService {
         try {
             List<Province> provinces = provinceRepository.findAll();
             return provinces.stream().map(province -> {
-                ProvinceDto provinceDto = ProvinceMapper.provinceDtoFromProvince(province);
-                provinceDto.setDistricts(province.getDistricts().stream().map(DistrictMapper::districtDtoFromDistrict).toList());
+                ProvinceDto provinceDto = provinceMapper.toDto(province);
+                provinceDto.setDistricts(districtMapper.toListDto(province.getDistricts()));
                 return provinceDto;
             }).toList();
         } catch (Exception e) {
@@ -44,8 +45,8 @@ public class ProvinceServiceImpl implements ProvinceService {
     public ProvinceDto getProvince(Long id) {
         try {
             Province province = provinceRepository.findById(id).orElseThrow(() -> new CRUDException("Cant find Province with id = "  +  id));
-            ProvinceDto provinceDto = ProvinceMapper.provinceDtoFromProvince(province);
-            provinceDto.setDistricts(province.getDistricts().stream().map(DistrictMapper::districtDtoFromDistrict).toList());
+            ProvinceDto provinceDto = provinceMapper.toDto(province);
+            provinceDto.setDistricts(districtMapper.toListDto(province.getDistricts()));
             return provinceDto;
         } catch (Exception e) {
             throw new CRUDException("Cant find Province with id = "  +  id);
@@ -56,7 +57,7 @@ public class ProvinceServiceImpl implements ProvinceService {
     public ProvinceDto updateProvince(ProvinceDto provinceDto) {
         try {
             Province province = provinceRepository.findById(provinceDto.getId()).orElseThrow(() -> new CRUDException("id = " + provinceDto.getId() + " not found "));
-            ProvinceMapper.transferProvinceDtoToProvince(provinceDto, province);
+            provinceMapper.transferToEntity(province, provinceDto);
             provinceRepository.save(province);
             return provinceDto;
         }
@@ -80,10 +81,10 @@ public class ProvinceServiceImpl implements ProvinceService {
     @Override
     public List<ProvinceDto> getAllAvailableProvince() {
         try {
-            List<Province> provinces = provinceRepository.findAllByIsDisable(false);
+            List<Province> provinces = provinceRepository.findAllByDisable(false);
             return provinces.stream().map(province -> {
-                ProvinceDto provinceDto = ProvinceMapper.provinceDtoFromProvince(province);
-                provinceDto.setDistricts(province.getDistricts().stream().map(DistrictMapper::districtDtoFromDistrict).toList());
+                ProvinceDto provinceDto = provinceMapper.toDto(province);
+                provinceDto.setDistricts(districtMapper.toListDto(province.getDistricts()));
                 return provinceDto;
             }).toList();
         } catch (Exception e) {

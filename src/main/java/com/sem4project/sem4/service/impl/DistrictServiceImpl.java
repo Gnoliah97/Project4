@@ -17,12 +17,12 @@ import java.util.List;
 public class DistrictServiceImpl implements DistrictService {
     private final DistrictRepository districtRepository;
     private final ProvinceRepository provinceRepository;
-
+    private final DistrictMapper districtMapper = DistrictMapper.INSTANCE;
     @Override
     public void create(DistrictDto districtDto) {
         try {
             Province province = provinceRepository.findById(districtDto.getProvince().getId()).orElse(new Province());
-            District district = DistrictMapper.districtFromDistrictDto(districtDto);
+            District district = districtMapper.toEntity(districtDto);
             district.setProvince(province);
             districtRepository.save(district);
         } catch (Exception e) {
@@ -34,7 +34,7 @@ public class DistrictServiceImpl implements DistrictService {
     public List<DistrictDto> getAllDistrict(){
         try {
             List<District> districts = districtRepository.findAll();
-            return districts.stream().map(DistrictMapper::districtDtoFromDistrict).toList();
+            return districts.stream().map(districtMapper::toDto).toList();
         }catch (Exception e){
             throw new CRUDException("Get all fail");
         }
@@ -44,7 +44,7 @@ public class DistrictServiceImpl implements DistrictService {
     public DistrictDto getDistrict(Long id) {
         try {
            District district = districtRepository.findById(id).orElseThrow(() -> new CRUDException("id" +id + "not found"));
-            return DistrictMapper.districtDtoFromDistrict(district);
+            return districtMapper.toDto(district);
         }catch (Exception e){
             throw new CRUDException("Cant find District with id = "  +  id);
         }
@@ -54,7 +54,7 @@ public class DistrictServiceImpl implements DistrictService {
     public DistrictDto updateDistrict(DistrictDto districtDto) {
         try {
             District district = districtRepository.findById(districtDto.getId()).orElseThrow(() -> new CRUDException("id" +districtDto.getId() + "not found"));
-            DistrictMapper.transferDistrictDtoToDistrict(districtDto, district);
+            districtMapper.transferToEntity(district, districtDto);
             districtRepository.save(district);
             return districtDto;
         }catch (Exception e){

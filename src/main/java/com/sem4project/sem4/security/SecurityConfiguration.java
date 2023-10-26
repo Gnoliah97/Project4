@@ -2,6 +2,7 @@ package com.sem4project.sem4.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -29,6 +30,10 @@ public class SecurityConfiguration {
         return new AuthenticationFailureHandlerImpl();
     }
     @Bean
+    public AuthenticationManager authenticationManager(){
+        return new AuthenticationManagerImpl();
+    }
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
@@ -46,7 +51,8 @@ public class SecurityConfiguration {
                                     "/v3/api-docs/**")
                             .permitAll()
                         .anyRequest().authenticated()
-                );
+                )
+                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.failureHandler(authenticationFailureHandler()));
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

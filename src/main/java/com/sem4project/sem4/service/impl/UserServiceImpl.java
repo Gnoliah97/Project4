@@ -17,6 +17,7 @@ import com.sem4project.sem4.repository.RoleRepository;
 import com.sem4project.sem4.repository.UserInfoRepository;
 import com.sem4project.sem4.repository.UserRepository;
 import com.sem4project.sem4.service.UserService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 //@Transactional
 public class UserServiceImpl implements UserService {
     private final AuthenticationManager authenticationManager;
@@ -37,21 +39,10 @@ public class UserServiceImpl implements UserService {
     private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-    private final UserMapper userMapper;
-    private final RoleMapper roleMapper;
-    private final UserInfoMapper userInfoMapper;
+    private final UserMapper userMapper = UserMapper.INSTANCE;
+    private final RoleMapper roleMapper = RoleMapper.INSTANCE;
+    private final UserInfoMapper userInfoMapper = UserInfoMapper.INSTANCE;
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
-
-    public UserServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, UserInfoRepository userInfoRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.userInfoRepository = userInfoRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.roleRepository = roleRepository;
-        this.userMapper = new UserMapper();
-        this.roleMapper = new RoleMapper();
-        this.userInfoMapper = new UserInfoMapper();
-    }
 
     @Override
     public void login(LoginRequest loginRequest) {
@@ -118,7 +109,7 @@ public class UserServiceImpl implements UserService {
                 user.setUserInfo(userInfoMapper.toEntity(userInfoDto));
                 userRepository.save(user);
             } else{
-                userInfoMapper.transferToEntity(userInfoDto, userInfo);
+                userInfoMapper.transferToEntity(userInfo, userInfoDto);
                 userInfoRepository.save(userInfo);
             }
             return userInfoDto;

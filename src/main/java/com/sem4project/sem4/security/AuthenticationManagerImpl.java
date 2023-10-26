@@ -17,13 +17,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Primary
 public class AuthenticationManagerImpl implements AuthenticationManager {
-    private final UserDetailsService userDetailsService;
-    private final PasswordEncoder passwordEncoder;
     @Autowired
-    public AuthenticationManagerImpl(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-        this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

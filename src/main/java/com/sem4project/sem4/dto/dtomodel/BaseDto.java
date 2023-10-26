@@ -13,7 +13,7 @@ import java.time.Instant;
 @Setter
 public class BaseDto {
     private Long id;
-    private boolean isDisable;
+    private boolean disable;
     private Instant createdAt;
     private String createdBy;
     private Instant updatedAt;

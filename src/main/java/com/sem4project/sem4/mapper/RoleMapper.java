@@ -2,29 +2,41 @@ package com.sem4project.sem4.mapper;
 
 import com.sem4project.sem4.dto.dtomodel.RoleDto;
 import com.sem4project.sem4.entity.Role;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.factory.Mappers;
 
-public class RoleMapper implements BaseMapper<Role, RoleDto>{
-    @Override
-    public RoleDto toDto(Role role) {
-        return RoleDto.builder()
-                .name(role.getName())
-                .build();
-    }
+import java.util.List;
 
-    @Override
-    public Role toEntity(RoleDto roleDto) {
-        return Role.builder()
-                .name(roleDto.getName())
-                .build();
-    }
+@Mapper
+public interface RoleMapper{
 
-    @Override
-    public void transferToDto(Role role, RoleDto roleDto) {
-
-    }
-
-    @Override
-    public void transferToEntity(RoleDto roleDto, Role role) {
-
-    }
+    RoleMapper INSTANCE = Mappers.getMapper(RoleMapper.class);
+    @Mappings({
+            @Mapping(target = "users", ignore = true),
+    })
+    RoleDto toDto(Role role);
+    @Mappings({
+            @Mapping(target = "users", ignore = true),
+    })
+    List<RoleDto> toListDto(List<Role> roles);
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "createdAt", ignore = true),
+            @Mapping(target = "updatedAt", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+            @Mapping(target = "users", ignore = true),
+    })
+    Role toEntity(RoleDto roleDto);
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "createdAt", ignore = true),
+            @Mapping(target = "updatedAt", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+            @Mapping(target = "users", ignore = true),
+    })
+    List<Role> toListEntity(List<RoleDto> roleDtos);
 }
