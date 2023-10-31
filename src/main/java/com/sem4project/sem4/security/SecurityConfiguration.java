@@ -1,20 +1,31 @@
 package com.sem4project.sem4.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfiguration {
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfiguration.class);
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -26,34 +37,43 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler(){
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new AuthenticationEntryPointImpl();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
         return new AuthenticationFailureHandlerImpl();
     }
+
     @Bean
-    public AuthenticationManager authenticationManager(){
+    public AuthenticationManager authenticationManager() {
         return new AuthenticationManagerImpl();
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint()))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers(
-                                    "/swagger-ui.html",
-                                    "/webjars/**",
-                                    "/swagger-resources",
-                                    "/swagger-resources/**",
-                                    "/v2/api-docs",
-                                    "/configuration/ui",
-                                    "/configuration/security",
-                                    "/swagger-ui/**",
-                                    "/v3/api-docs/**")
-                            .permitAll()
+                                "/actuator/**",
+                                "/swagger-ui.html",
+                                "/webjars/**",
+                                "/swagger-resources",
+                                "/swagger-resources/**",
+                                "/v2/api-docs",
+                                "/configuration/ui",
+                                "/configuration/security",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**")
+                        .permitAll()
+                        .requestMatchers("/api/v1/province/**").permitAll()
                         .anyRequest().authenticated()
-                )
-                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.failureHandler(authenticationFailureHandler()));
+                ).sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
         return http.build();
     }
 }

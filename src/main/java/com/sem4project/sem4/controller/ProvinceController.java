@@ -7,6 +7,7 @@ import com.sem4project.sem4.repository.ProvinceRepository;
 import com.sem4project.sem4.service.ProvinceService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,6 +30,7 @@ public class ProvinceController {
     }
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('USER') or hasRole('STAFF') or hasRole('ADMIN')")
     public ResponseEntity<ResponseObject> getAllProvince() {
         return ResponseEntity.status(200)
                 .body(
