@@ -4,12 +4,14 @@ import com.sem4project.sem4.dto.dtomodel.UserInfoDto;
 import com.sem4project.sem4.dto.response.ResponseObject;
 import com.sem4project.sem4.exception.AuthException;
 import com.sem4project.sem4.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "User", description = "User API")
 @RestController
 @RequestMapping(value = "/api/v1/user")
 @AllArgsConstructor

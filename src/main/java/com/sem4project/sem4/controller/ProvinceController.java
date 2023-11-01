@@ -5,11 +5,13 @@ import com.sem4project.sem4.dto.response.ResponseObject;
 import com.sem4project.sem4.exception.CRUDException;
 import com.sem4project.sem4.repository.ProvinceRepository;
 import com.sem4project.sem4.service.ProvinceService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Province", description = "Province API")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/province")

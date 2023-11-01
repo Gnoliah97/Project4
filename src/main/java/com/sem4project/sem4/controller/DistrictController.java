@@ -7,12 +7,13 @@ import com.sem4project.sem4.exception.CRUDException;
 import com.sem4project.sem4.repository.DistrictRepository;
 import com.sem4project.sem4.service.DistrictService;
 import com.sem4project.sem4.service.ProvinceService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-@AllArgsConstructor
+@Tag(name = "District", description = "District API")
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/v1/district")
 
 public class DistrictController {
@@ -22,9 +23,10 @@ public class DistrictController {
         districtService.create(districtDto);
         return ResponseEntity.status(201)
                 .body(ResponseObject.builder()
-                                .message("Created")
-                                .data(true)
-                                .build()
+                        .message("Created")
+                        .data(true)
+                        .build()
                 );
     }
 }
+
