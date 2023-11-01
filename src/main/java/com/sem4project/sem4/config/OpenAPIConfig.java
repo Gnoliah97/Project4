@@ -18,7 +18,7 @@ public class OpenAPIConfig {
         devServer.setDescription("Server URL in Development environment");
 
         Server prodServer = new Server();
-        prodServer.setUrl("");
+        prodServer.setUrl("https://tech-lab-project-caef7808b8e6.herokuapp.com");
         prodServer.setDescription("Server URL in Production environment");
 
         Contact contact = new Contact();
