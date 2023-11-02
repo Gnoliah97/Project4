@@ -2,13 +2,10 @@ package com.sem4project.sem4.controller;
 
 import com.sem4project.sem4.dto.dtomodel.ProvinceDto;
 import com.sem4project.sem4.dto.response.ResponseObject;
-import com.sem4project.sem4.exception.CRUDException;
-import com.sem4project.sem4.repository.ProvinceRepository;
 import com.sem4project.sem4.service.ProvinceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Province", description = "Province API")
@@ -20,7 +17,7 @@ public class ProvinceController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<ResponseObject> createProvince(@RequestBody ProvinceDto provinceDto) {
-        provinceService.create(provinceDto);
+        provinceService.createProvince(provinceDto);
         return ResponseEntity.status(201)
                 .body(
                         ResponseObject.builder()
@@ -32,24 +29,12 @@ public class ProvinceController {
     }
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('USER') or hasRole('STAFF') or hasRole('ADMIN')")
-    public ResponseEntity<ResponseObject> getAllProvince() {
+    public ResponseEntity<ResponseObject> getAllProvince(@RequestParam(required = false) Boolean isDisable) {
         return ResponseEntity.status(200)
                 .body(
                         ResponseObject.builder()
                                 .message("Success")
-                                .data(provinceService.getAllProvince())
-                                .build()
-                );
-
-    }
-    @RequestMapping(value = "/getAllAvailable", method = RequestMethod.GET)
-    public ResponseEntity<ResponseObject> getAllAvailableProvince() {
-        return ResponseEntity.status(200)
-                .body(
-                        ResponseObject.builder()
-                                .message("Success")
-                                .data(provinceService.getAllAvailableProvince())
+                                .data(provinceService.getAllProvince(isDisable))
                                 .build()
                 );
 
@@ -61,7 +46,7 @@ public class ProvinceController {
                 .body(
                         ResponseObject.builder()
                                 .message("Success")
-                                .data(provinceService.getProvince(id))
+                                .data(provinceService.getProvinceById(id))
                                 .build()
                 );
 
@@ -74,18 +59,6 @@ public class ProvinceController {
                         ResponseObject.builder()
                                 .message("Success")
                                 .data(provinceService.updateProvince(provinceDto))
-                                .build()
-                );
-    }
-
-    @RequestMapping(value = "/setIsDisable/{idDisable}", method = RequestMethod.DELETE)
-    public ResponseEntity<ResponseObject> deleteProvince(@RequestBody ProvinceDto provinceDto, @PathVariable boolean idDisable) {
-        provinceService.setDisableProvince(provinceDto, idDisable);
-        return ResponseEntity.status(200)
-                .body(
-                        ResponseObject.builder()
-                                .message("Success")
-                                .data(true)
                                 .build()
                 );
     }
