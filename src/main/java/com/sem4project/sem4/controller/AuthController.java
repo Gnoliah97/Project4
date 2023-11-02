@@ -31,6 +31,7 @@ import java.util.Map;
 @RequestMapping(value = "/api/v1/auth")
 @PermitAll
 @AllArgsConstructor
+@CrossOrigin
 public class AuthController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
