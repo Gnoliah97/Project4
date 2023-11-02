@@ -2,10 +2,8 @@ package com.sem4project.sem4.controller;
 
 import com.sem4project.sem4.dto.dtomodel.UserInfoDto;
 import com.sem4project.sem4.dto.response.ResponseObject;
-import com.sem4project.sem4.exception.AuthException;
 import com.sem4project.sem4.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +33,16 @@ public class UserController {
                         ResponseObject.builder()
                                 .message("Update info success")
                                 .data(userService.updateUserInfo(userInfoDto))
+                                .build()
+                );
+    }
+    @RequestMapping(value = "/getAllUser", method = RequestMethod.GET)
+    public ResponseEntity<ResponseObject> getAllUser(@RequestParam(required = false) Boolean isDisable){
+        return ResponseEntity.ok()
+                .body(
+                        ResponseObject.builder()
+                                .message("Get all user success")
+                                .data(userService.getAllUser(isDisable))
                                 .build()
                 );
     }

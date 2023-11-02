@@ -1,6 +1,11 @@
 package com.sem4project.sem4.exception;
 
+import java.io.Serial;
+
 public class CRUDException extends RuntimeException{
+    @Serial
+    private static final long serialVersionUID = 9206987140880520886L;
+
     public CRUDException() {
     }
 

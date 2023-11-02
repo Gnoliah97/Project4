@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-public interface ProvinceRepository extends JpaRepository<Province, Long> {
+public interface ProvinceRepository extends BaseRepository<Province, Long> {
     List<Province> findAllByDisable(boolean isDisable);
 }

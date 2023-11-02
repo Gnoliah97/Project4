@@ -19,7 +19,6 @@ public class GlobalControllerExceptionAdvice {
                 .body(
                         ResponseObject.builder()
                                 .message("Authentication failed")
-                                .data("")
                                 .errors(ex.getMessage())
                                 .build()
                 );

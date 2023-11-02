@@ -10,6 +10,7 @@ import com.sem4project.sem4.entity.User;
 import com.sem4project.sem4.entity.UserDetailsImpl;
 import com.sem4project.sem4.entity.UserInfo;
 import com.sem4project.sem4.exception.AuthException;
+import com.sem4project.sem4.exception.ResourceNotFoundException;
 import com.sem4project.sem4.mapper.RoleMapper;
 import com.sem4project.sem4.mapper.UserInfoMapper;
 import com.sem4project.sem4.mapper.UserMapper;
@@ -48,7 +49,7 @@ public class UserServiceImpl implements UserService {
     public void login(LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-            SecurityContextHolder.getContext ().setAuthentication(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception ex) {
             throw new AuthException("Username or password incorrect");
         }
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(RegisterRequest registerRequest) {
-        try{
+        try {
             if (!userRepository.existsByEmail(registerRequest.getEmail())) {
                 String passwordEncoded = passwordEncoder.encode(registerRequest.getPassword());
                 User userRegister = userMapper.fromRegisterRequest(registerRequest);
@@ -69,8 +70,23 @@ public class UserServiceImpl implements UserService {
             } else {
                 throw new AuthException("Email already exist");
             }
-        } catch (Exception ex){
+        } catch (Exception ex) {
             throw new AuthException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public List<UserDto> getAllUser(Boolean isDisable) {
+        try {
+            List<User> users = new ArrayList<>();
+            if (isDisable == null) {
+                users = userRepository.findAll();
+            } else{
+                users = userRepository.findAllByDisable(isDisable);
+            }
+            return users.stream().map(userMapper::toDto).toList();
+        } catch (Exception ex) {
+            throw new ResourceNotFoundException(ex.getMessage());
         }
     }
 
@@ -90,7 +106,7 @@ public class UserServiceImpl implements UserService {
             UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user = userDetails.getUser();
             UserDto userDto = userMapper.toDto(user);
-            userDto.setRoles(user.getRoles().stream().map(role -> roleMapper.toDto(role)).toList());
+            userDto.setRoles(user.getRoles().stream().map(roleMapper::toDto).toList());
             userDto.setUserInfo(userInfoMapper.toDto(user.getUserInfo()));
             return userDto;
         } catch (Exception ex) {
@@ -105,14 +121,18 @@ public class UserServiceImpl implements UserService {
             UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user = userDetails.getUser();
             UserInfo userInfo = user.getUserInfo();
-            if(userInfo == null){
+            UserInfo updatedUserInfo;
+            if (userInfo == null) {
                 user.setUserInfo(userInfoMapper.toEntity(userInfoDto));
-                userRepository.save(user);
-            } else{
+                User updatedUser = userRepository.save(user);
+                userRepository.refresh(updatedUser);
+                updatedUserInfo = updatedUser.getUserInfo();
+            } else {
                 userInfoMapper.transferToEntity(userInfo, userInfoDto);
-                userInfoRepository.save(userInfo);
+                updatedUserInfo = userInfoRepository.save(userInfo);
+                userInfoRepository.refresh(updatedUserInfo);
             }
-            return userInfoDto;
+            return userInfoMapper.toDto(updatedUserInfo);
         } catch (Exception e) {
             throw new AuthException("Not logged in yet");
         }
