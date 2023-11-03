@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,7 +13,7 @@ import java.time.Instant;
 @Getter
 @Setter
 public class BaseDto {
-    private Long id;
+    private UUID id;
     private boolean disable;
     private Instant createdAt;
     private String createdBy;

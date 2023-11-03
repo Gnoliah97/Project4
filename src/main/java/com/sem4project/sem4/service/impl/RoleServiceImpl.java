@@ -27,7 +27,10 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public long countRole() {
-        return roleRepository.count();
+    public Long countRole(Boolean isDisable) {
+        if(isDisable == null){
+            return roleRepository.count();
+        }
+        return roleRepository.countByDisable(isDisable);
     }
 }

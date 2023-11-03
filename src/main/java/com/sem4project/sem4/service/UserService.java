@@ -7,6 +7,7 @@ import com.sem4project.sem4.dto.request.RegisterRequest;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface UserService {
     void login(LoginRequest loginRequest);
@@ -14,5 +15,6 @@ public interface UserService {
     List<UserDto> getAllUser(Boolean isDisable);
     void logout();
     UserDto getUserInfo();
-    UserInfoDto updateUserInfo(UserInfoDto userInfoDto);
+    UserInfoDto updateUserInfo(UUID id, UserInfoDto userInfoDto);
+    Long countUser(Boolean isDisable);
 }

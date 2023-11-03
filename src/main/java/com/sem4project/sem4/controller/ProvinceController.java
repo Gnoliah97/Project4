@@ -8,10 +8,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @Tag(name = "Province", description = "Province API")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/province")
+@CrossOrigin
 public class ProvinceController {
     private final ProvinceService provinceService;
 
@@ -29,19 +32,22 @@ public class ProvinceController {
     }
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-    public ResponseEntity<ResponseObject> getAllProvince(@RequestParam(required = false) Boolean isDisable) {
+    public ResponseEntity<ResponseObject> getAllProvince(@RequestParam(required = false, defaultValue = "false") Boolean isDisable,
+                                                         @RequestParam(defaultValue = "1") int pageNumber,
+                                                         @RequestParam(defaultValue = "10") int pageSize,
+                                                         @RequestParam(required = false) String sort) {
         return ResponseEntity.status(200)
                 .body(
                         ResponseObject.builder()
                                 .message("Success")
-                                .data(provinceService.getAllProvince(isDisable))
+                                .data(provinceService.getAllProvince(isDisable, pageNumber, pageSize, sort))
                                 .build()
                 );
 
     }
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
-    public ResponseEntity<ResponseObject> getProvince(@PathVariable Long id) {
+    public ResponseEntity<ResponseObject> getProvince(@PathVariable UUID id) {
         return ResponseEntity.status(200)
                 .body(
                         ResponseObject.builder()
@@ -52,13 +58,13 @@ public class ProvinceController {
 
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.PATCH)
-    public ResponseEntity<ResponseObject> updateProvince(@RequestBody ProvinceDto provinceDto) {
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.PATCH)
+    public ResponseEntity<ResponseObject> updateProvince(@PathVariable UUID id, @RequestBody ProvinceDto provinceDto) {
         return ResponseEntity.status(200)
                 .body(
                         ResponseObject.builder()
                                 .message("Success")
-                                .data(provinceService.updateProvince(provinceDto))
+                                .data(provinceService.updateProvince(id, provinceDto))
                                 .build()
                 );
     }

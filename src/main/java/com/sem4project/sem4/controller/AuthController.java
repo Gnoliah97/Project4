@@ -24,6 +24,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 @Tag(name = "Auth", description = "Authentication API")
@@ -43,8 +44,10 @@ public class AuthController {
     public ResponseEntity<ResponseObject> login(@RequestBody @Valid LoginRequest loginRequest) {
         userService.login(loginRequest);
         String token = jwtUtil.generateToken((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        Date expiresIn = jwtUtil.getExpirationDateFromToken(token);
         TokenDto tokenDto = TokenDto.builder()
                 .jwtToken(token)
+                .expiresIn(expiresIn)
                 .build();
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Authorization",
