@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Date;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
@@ -12,4 +14,5 @@ import lombok.experimental.SuperBuilder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TokenDto {
     private String jwtToken;
+    private Date expiresIn;
 }

@@ -8,11 +8,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface UserRepository extends BaseRepository<User, Long> {
+public interface UserRepository extends BaseRepository<User, UUID> {
     @EntityGraph(attributePaths = {"roles"})
     User findByEmail(String email);
     List<User> findAllByDisable(boolean isDisable);
     boolean existsByEmail(String email);
+    Long countByDisable(Boolean isDisable);
 }

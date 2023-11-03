@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/district")
-
+@CrossOrigin
 public class DistrictController {
     private final DistrictService districtService;
     @RequestMapping(value = "/create", method = RequestMethod.POST)

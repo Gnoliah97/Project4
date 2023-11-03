@@ -12,7 +12,7 @@ public class InitDatabaseCommandLineRunner implements CommandLineRunner {
     private RoleService roleService;
     @Override
     public void run(String... args) throws Exception {
-        if(roleService.countRole() < RoleEnum.values().length){
+        if(roleService.countRole(null) < RoleEnum.values().length){
             roleService.init();
         }
     }
