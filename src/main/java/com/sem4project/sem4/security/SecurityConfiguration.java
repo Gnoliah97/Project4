@@ -51,8 +51,8 @@ public class SecurityConfiguration {
                                     "/v3/api-docs/**")
                             .permitAll()
                         .anyRequest().authenticated()
-                )
-                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.failureHandler(authenticationFailureHandler()));
+                );
+//                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.failureHandler(authenticationFailureHandler()));
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

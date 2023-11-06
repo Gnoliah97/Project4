@@ -5,7 +5,6 @@ import jakarta.persistence.OneToMany;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.io.Serial;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -18,7 +17,7 @@ import java.util.List;
 public class Brand extends BaseEntity{
     private String name;
     @OneToMany
-    private List<Photo> photo;
+    private List<Image> image;
     @OneToMany(mappedBy = "brand")
     private List<Product> products;
 }
