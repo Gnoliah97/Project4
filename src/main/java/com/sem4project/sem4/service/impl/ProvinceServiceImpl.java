@@ -1,6 +1,7 @@
 package com.sem4project.sem4.service.impl;
 
 import com.sem4project.sem4.dto.dtomodel.ProvinceDto;
+import com.sem4project.sem4.entity.District;
 import com.sem4project.sem4.entity.Province;
 import com.sem4project.sem4.exception.UpdateResourceException;
 import com.sem4project.sem4.exception.ResourceNotFoundException;
@@ -13,6 +14,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +29,7 @@ public class ProvinceServiceImpl implements ProvinceService {
     private final DistrictMapper districtMapper = DistrictMapper.INSTANCE;
 
     @Override
-    public ProvinceDto createProvince(ProvinceDto provinceDto) {
+    public ProvinceDto create(ProvinceDto provinceDto) {
         try {
             Province province = provinceMapper.toEntity(provinceDto);
             Province createdProvince = provinceRepository.save(province);
@@ -39,10 +41,27 @@ public class ProvinceServiceImpl implements ProvinceService {
     }
 
     @Override
-    public List<ProvinceDto> getAllProvince(Boolean isDisable, int pageNumber, int pageSize, String sortBy) {
+    public List<ProvinceDto> getAll(Boolean isDisable, Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
-            long provinceQuantity = this.countProvince(isDisable);
-            Pageable pageable = PageableUtil.calculatePageable(provinceQuantity, pageNumber, pageSize, sortBy);
+            List<Province> provinces;
+            if(pageSize == null){
+                Sort sort = PageableUtil.createSortFromString(sortBy, sortType);
+                provinces = provinceRepository.findAll(sort);
+            } else{
+                Long quantity = this.count(null);
+                Pageable pageable = PageableUtil.calculatePageable(quantity, pageNumber, pageSize, sortBy, sortType);
+                provinces = provinceRepository.findAll(pageable).stream().toList();
+            }
+            return provinces.stream().map(provinceMapper::toDto).toList();
+        } catch (IllegalArgumentException ex) {
+            throw new ResourceNotFoundException("Get districts failed");
+        }
+    }
+
+    @Override
+    public List<ProvinceDto> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
+        try {
+            Pageable pageable = PageableUtil.calculatePageable(provinceQuantity, pageNumber, pageSize, sortBy, sortType);
 
             List<Province> provinces;
             if (isDisable == null) {
@@ -61,7 +80,7 @@ public class ProvinceServiceImpl implements ProvinceService {
     }
 
     @Override
-    public ProvinceDto getProvinceById(UUID id) {
+    public ProvinceDto getById(UUID id) {
         try {
             Province province = provinceRepository.findById(id).orElseThrow(IllegalArgumentException::new);
             ProvinceDto provinceDto = provinceMapper.toDto(province);
@@ -73,7 +92,7 @@ public class ProvinceServiceImpl implements ProvinceService {
     }
 
     @Override
-    public ProvinceDto updateProvince(UUID id, ProvinceDto provinceDto) {
+    public ProvinceDto update(UUID id, ProvinceDto provinceDto) {
         try {
             Province province = provinceRepository.findById(id).orElseThrow(IllegalArgumentException::new);
             provinceMapper.transferToEntity(province, provinceDto);
@@ -82,23 +101,27 @@ public class ProvinceServiceImpl implements ProvinceService {
             return provinceMapper.toDto(updatedProvince);
         } catch (IllegalArgumentException | EntityNotFoundException e) {
             throw new ResourceNotFoundException("Province with id = " + id + " not found");
+        } catch (OptimisticEntityLockException e) {
+            throw new UpdateResourceException("Can not update province");
         }
     }
 
     @Override
-    public void updateDisableProvince(UUID id, Boolean isDisable) {
+    public void updateDisable(UUID id) {
         try {
             Province province = provinceRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-            province.setDisable(isDisable);
+            province.setDisable(!province.isDisable());
             provinceRepository.save(province);
         } catch (IllegalArgumentException | EntityNotFoundException ex) {
             throw new ResourceNotFoundException("Province with id = " + id + " not found");
+        } catch (OptimisticEntityLockException e) {
+            throw new UpdateResourceException("Can not update province");
         }
     }
 
     @Override
-    public Long countProvince(Boolean isDisable) {
-        if(isDisable == null){
+    public Long count(Boolean isDisable) {
+        if (isDisable == null) {
             return provinceRepository.count();
         }
         return provinceRepository.countByDisable(isDisable);

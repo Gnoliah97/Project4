@@ -80,7 +80,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllUser(Boolean isDisable) {
+    public UserDto getById(UUID id) {
+        return null;
+    }
+
+    @Override
+    public List<UserDto> getAll(Boolean isDisable, Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
             List<User> users;
             if (isDisable == null) {
@@ -93,6 +98,21 @@ public class UserServiceImpl implements UserService {
             logger.error(ex.getMessage());
             throw new ResourceNotFoundException(ex.getMessage());
         }
+    }
+
+    @Override
+    public UserDto create(UserDto brandDto) {
+        return null;
+    }
+
+    @Override
+    public UserDto update(UUID id, UserDto brandDto) {
+        return null;
+    }
+
+    @Override
+    public void updateDisable(UUID id) {
+
     }
 
     @Override
@@ -153,7 +173,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long countUser(Boolean isDisable) {
+    public Long count(Boolean isDisable) {
         if(isDisable == null){
             return userRepository.count();
         }
