@@ -1,7 +1,10 @@
-package com.sem4project.sem4.controller;
+package com.sem4project.sem4.controller.impl;
 
+import com.sem4project.sem4.controller.BaseController;
+import com.sem4project.sem4.dto.dtomodel.UserDto;
 import com.sem4project.sem4.dto.dtomodel.UserInfoDto;
 import com.sem4project.sem4.dto.response.ResponseObject;
+import com.sem4project.sem4.entity.User;
 import com.sem4project.sem4.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -18,8 +21,9 @@ import java.util.UUID;
 @RequestMapping(value = "/api/v1/user")
 @AllArgsConstructor
 @CrossOrigin
-public class UserController {
+public class UserController extends BaseController<User, UserDto> {
     private final UserService userService;
+
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public ResponseEntity<ResponseObject> getInfo() {
         return ResponseEntity.ok()
@@ -42,14 +46,40 @@ public class UserController {
                                 .build()
                 );
     }
+
     @RequestMapping(value = "/getAllUser", method = RequestMethod.GET)
-    public ResponseEntity<ResponseObject> getAllUser(@RequestParam(required = false) Boolean isDisable){
+    public ResponseEntity<ResponseObject> getAll(@RequestParam(required = false, defaultValue = "false") Boolean isDisable,
+                                                     @RequestParam(defaultValue = "1") Integer pageNumber,
+                                                     @RequestParam(required = false) Integer pageSize,
+                                                     @RequestParam(required = false) String sortBy,
+                                                     @RequestParam(required = false) String sortType
+    ) {
         return ResponseEntity.ok()
                 .body(
                         ResponseObject.builder()
                                 .message("Get all user success")
-                                .data(userService.getAllUser(isDisable))
+                                .data(userService.getAll(isDisable, pageNumber, pageSize, sortBy, sortType))
                                 .build()
                 );
+    }
+
+    @Override
+    protected ResponseEntity<ResponseObject> getById(UUID id) {
+        return null;
+    }
+
+    @Override
+    protected ResponseEntity<ResponseObject> create(UserDto userDto) {
+        return null;
+    }
+
+    @Override
+    protected ResponseEntity<ResponseObject> update(UUID id, UserDto userDto) {
+        return null;
+    }
+
+    @Override
+    protected ResponseEntity<ResponseObject> updateDisable(UUID id) {
+        return null;
     }
 }

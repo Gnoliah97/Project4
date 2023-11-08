@@ -16,5 +16,5 @@ public class BranchDto extends BaseDto{
     private String name;
     private ProvinceDto province;
     private DistrictDto district;
-    private List<BranchProductDto> branchProductDtos;
+    private List<BranchProductDto> branchProducts;
 }
