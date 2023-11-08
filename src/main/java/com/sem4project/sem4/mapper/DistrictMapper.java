@@ -12,6 +12,11 @@ import java.util.List;
 @Mapper
 public interface DistrictMapper{
     DistrictMapper INSTANCE = Mappers.getMapper(DistrictMapper.class);
+
+    @Mappings({
+            @Mapping(target = "province", ignore = true),
+            @Mapping(target = "branches", ignore = true),
+    })
     DistrictDto toDto(District district);
     @Mappings({
             @Mapping(target = "province", ignore = true),

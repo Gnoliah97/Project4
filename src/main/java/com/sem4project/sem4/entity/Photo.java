@@ -7,18 +7,17 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "ImageData")
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
 @Getter
 @Setter
-public class Image extends BaseEntity{
-
+public class Photo extends BaseEntity {
     private String name;
-    private String type;
-    @Column(name = "imgdata", length = 1000)
-    private String imgData;
-    private byte[] data;
+    private String format;
+    private String url;
+    private double wight;
+    private double height;
 }

@@ -19,7 +19,7 @@ public class ProductDto extends BaseDto{
     private Double cost;
     private Double promotional;
     private boolean status;
-    private List<ImageDto> photos;
+    private List<PhotoDto> photos;
     private String video;
     private List<GiftDto> gifts;
     private List<SpecificationDto> specifications;

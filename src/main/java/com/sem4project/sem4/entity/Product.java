@@ -22,7 +22,7 @@ public class Product extends BaseEntity{
     private boolean status;
     @OneToMany
     @JoinTable(name = "product_photo", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "photo_id"))
-    private List<Image> images;
+    private List<Photo> photos;
     private String video;
     @OneToMany
     @JoinTable(name = "product_gift", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "gift_id"))

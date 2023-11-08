@@ -17,7 +17,7 @@ import java.util.List;
 public class Brand extends BaseEntity{
     private String name;
     @OneToMany
-    private List<Image> image;
+    private List<Photo> photo;
     @OneToMany(mappedBy = "brand")
     private List<Product> products;
 }

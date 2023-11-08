@@ -1,19 +1,18 @@
 package com.sem4project.sem4.service;
 
 import com.sem4project.sem4.dto.dtomodel.ProvinceDto;
-import com.sem4project.sem4.entity.Province;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ProvinceService {
-    void create(ProvinceDto provinceDto);
-    List<ProvinceDto> getAllProvince();
+    ProvinceDto createProvince(ProvinceDto provinceDto);
 
-    ProvinceDto getProvince(Long id);
+    List<ProvinceDto> getAllProvince(Boolean isDisable, int pageNumber, int pageSize, String sortBy);
 
-    ProvinceDto updateProvince(ProvinceDto provinceDto);
+    ProvinceDto getProvinceById(UUID id);
 
-    void setDisableProvince(ProvinceDto provinceDto, boolean isDisable);
-
-    List<ProvinceDto> getAllAvailableProvince();
+    ProvinceDto updateProvince(UUID id, ProvinceDto provinceDto);
+    void updateDisableProvince(UUID id, Boolean isDisable);
+    Long countProvince(Boolean isDisable);
 }

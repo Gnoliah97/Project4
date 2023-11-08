@@ -7,6 +7,11 @@ import com.sem4project.sem4.dto.response.ResponseObject;
 import com.sem4project.sem4.exception.AuthException;
 import com.sem4project.sem4.service.UserService;
 import com.sem4project.sem4.util.JwtUtil;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,22 +24,30 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
+@Tag(name = "Auth", description = "Authentication API")
 @RestController
 @RequestMapping(value = "/api/v1/auth")
 @PermitAll
 @AllArgsConstructor
+@CrossOrigin
 public class AuthController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    @ApiResponses(
+            @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = ResponseObject.class), mediaType = "application/json")})
+
+            )
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<ResponseObject> login(@RequestBody @Valid LoginRequest loginRequest) {
         userService.login(loginRequest);
         String token = jwtUtil.generateToken((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        Date expiresIn = jwtUtil.getExpirationDateFromToken(token);
         TokenDto tokenDto = TokenDto.builder()
                 .jwtToken(token)
+                .expiresIn(expiresIn)
                 .build();
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Authorization",

@@ -10,7 +10,12 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ImageDto extends BaseDto{
+public class PhotoDto extends BaseDto{
+    private long id;
     private String name;
+    private String format;
+    private String url;
+    private double wight;
+    private double height;
 
 }

@@ -14,6 +14,6 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BrandDto extends BaseDto{
     private String name;
-    private List<ImageDto> photo;
+    private List<PhotoDto> photo;
     private List<ProductDto> products;
 }
