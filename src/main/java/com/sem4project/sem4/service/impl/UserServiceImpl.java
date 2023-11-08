@@ -101,6 +101,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserDto> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
+        return null;
+    }
+
+    @Override
     public UserDto create(UserDto brandDto) {
         return null;
     }
@@ -170,13 +175,5 @@ public class UserServiceImpl implements UserService {
         } catch (OptimisticEntityLockException ex){
             throw new UpdateResourceException("Update user info failed");
         }
-    }
-
-    @Override
-    public Long count(Boolean isDisable) {
-        if(isDisable == null){
-            return userRepository.count();
-        }
-        return userRepository.countByDisable(isDisable);
     }
 }

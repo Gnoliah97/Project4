@@ -8,7 +8,9 @@ import com.sem4project.sem4.exception.ResourceNotFoundException;
 import com.sem4project.sem4.mapper.DistrictMapper;
 import com.sem4project.sem4.repository.DistrictRepository;
 import com.sem4project.sem4.repository.ProvinceRepository;
+import com.sem4project.sem4.service.BaseService;
 import com.sem4project.sem4.service.DistrictService;
+import com.sem4project.sem4.service.utils.ServiceUtil;
 import com.sem4project.sem4.util.PageableUtil;
 import lombok.AllArgsConstructor;
 import org.hibernate.dialect.lock.OptimisticEntityLockException;
@@ -45,19 +47,11 @@ public class DistrictServiceImpl implements DistrictService {
     @Override
     public List<DistrictDto> getAll(Boolean isDisable, Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
-            List<District> districts;
-            if(pageSize == null){
-                Sort sort = PageableUtil.createSortFromString(sortBy, sortType);
-                districts = isDisable == null ?
-                                districtRepository.findAll(sort) :
-                                districtRepository.findAllByDisable(isDisable, sort);
-            } else{
-                Long quantity = this.count(isDisable);
-                Pageable pageable = PageableUtil.calculatePageable(quantity, pageNumber, pageSize, sortBy, sortType);
-                districts = isDisable == null ?
-                                districtRepository.findAll(pageable).stream().toList() :
-                                districtRepository.findAllByDisable(isDisable, pageable);
+            if(isDisable != null && isDisable){
+                return getAllAvailable(pageNumber, pageSize, sortBy, sortType);
             }
+            List<District> districts = ServiceUtil.getAll(districtRepository, isDisable, pageNumber, pageSize, sortBy, sortType);
+
             return districts.stream().map(districtMapper::toDto).toList();
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Get districts failed");
@@ -67,16 +61,8 @@ public class DistrictServiceImpl implements DistrictService {
     @Override
     public List<DistrictDto> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
-            List<District> districts;
-            if(pageSize == null){
-                Sort sort = PageableUtil.createSortFromString(sortBy, sortType);
-                districts = districtRepository.findAll(sort);
-            } else{
-                Long quantity = this.count(null);
-                Pageable pageable = PageableUtil.calculatePageable(quantity, pageNumber, pageSize, sortBy, sortType);
-                districts = districtRepository.findAll(pageable).stream().toList();
-            }
-            return districts.stream().map(districtMapper::toDto).toList();
+            List<District> districts = ServiceUtil.getAllAvailable(districtRepository, pageNumber, pageSize, sortBy, sortType);
+            return districtMapper.toListDto(districts);
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Get districts failed");
         }
@@ -118,12 +104,5 @@ public class DistrictServiceImpl implements DistrictService {
         } catch (OptimisticEntityLockException ex){
             throw new UpdateResourceException("Create district failed");
         }
-    }
-    @Override
-    public Long count(Boolean isDisable) {
-        if(isDisable == null){
-            return districtRepository.count();
-        }
-        return districtRepository.countByDisable(isDisable);
     }
 }

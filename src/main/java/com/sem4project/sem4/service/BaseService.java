@@ -14,5 +14,4 @@ public interface BaseService<T extends BaseEntity, U extends BaseDto> {
     U create(U brandDto);
     U update(UUID id, U brandDto);
     void updateDisable(UUID id);
-    Long count(Boolean isDisable);
 }

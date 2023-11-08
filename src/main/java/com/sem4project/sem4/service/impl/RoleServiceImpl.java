@@ -30,20 +30,17 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Long count(Boolean isDisable) {
-        if(isDisable == null){
-            return roleRepository.count();
-        }
-        return roleRepository.countByDisable(isDisable);
-    }
-
-    @Override
     public RoleDto getById(UUID id) {
         return null;
     }
 
     @Override
     public List<RoleDto> getAll(Boolean isDisable, Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
+        return null;
+    }
+
+    @Override
+    public List<RoleDto> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         return null;
     }
 

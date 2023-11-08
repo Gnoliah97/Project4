@@ -2,11 +2,13 @@ package com.sem4project.sem4.service.impl;
 
 import com.sem4project.sem4.dto.dtomodel.BrandDto;
 import com.sem4project.sem4.entity.Brand;
+import com.sem4project.sem4.entity.District;
 import com.sem4project.sem4.exception.ResourceNotFoundException;
 import com.sem4project.sem4.exception.UpdateResourceException;
 import com.sem4project.sem4.mapper.BrandMapper;
 import com.sem4project.sem4.repository.BrandRepository;
 import com.sem4project.sem4.service.BrandService;
+import com.sem4project.sem4.service.utils.ServiceUtil;
 import com.sem4project.sem4.util.PageableUtil;
 import lombok.AllArgsConstructor;
 import org.hibernate.dialect.lock.OptimisticEntityLockException;
@@ -31,20 +33,28 @@ public class BrandServiceImpl implements BrandService {
             throw new ResourceNotFoundException("Brand with id = " + id + " not found");
         }
     }
+
     @Override
     public List<BrandDto> getAll(Boolean isDisable, Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
-            long brandQuantity = this.count(isDisable);
-            Pageable pageable = PageableUtil.calculatePageable(brandQuantity, pageNumber, pageSize, sortBy, sortType);
-            List<Brand> brands;
-            if (isDisable == null) {
-                brands = brandRepository.findAll(pageable).stream().toList();
-            } else {
-                brands = brandRepository.findAllByDisable(isDisable, pageable).stream().toList();
+            if(isDisable != null && isDisable){
+                return getAllAvailable(pageNumber, pageSize, sortBy, sortType);
             }
+            List<Brand> brands = ServiceUtil.getAll(brandRepository, isDisable, pageNumber, pageSize, sortBy, sortType);
+
+            return brands.stream().map(brandMapper::toDto).toList();
+        } catch (IllegalArgumentException ex) {
+            throw new ResourceNotFoundException("Get districts failed");
+        }
+    }
+
+    @Override
+    public List<BrandDto> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
+        try {
+            List<Brand> brands = ServiceUtil.getAllAvailable(brandRepository, pageNumber, pageSize, sortBy, sortType);
             return brandMapper.toListDto(brands);
         } catch (IllegalArgumentException ex) {
-            throw new ResourceNotFoundException("Get brands failed");
+            throw new ResourceNotFoundException("Get districts failed");
         }
     }
 
@@ -86,13 +96,5 @@ public class BrandServiceImpl implements BrandService {
         } catch (OptimisticEntityLockException ex) {
             throw new UpdateResourceException("Can not update brand");
         }
-    }
-
-    @Override
-    public Long count(Boolean isDisable) {
-        if (isDisable == null) {
-            return brandRepository.count();
-        }
-        return brandRepository.countByDisable(isDisable);
     }
 }
