@@ -7,12 +7,21 @@ import org.springframework.data.domain.Sort;
 import java.util.Objects;
 
 public class PageableUtil {
-    public static Pageable calculatePageable(long count, int pageNumber, int pageSize, String sortBy) {
+    public static Pageable calculatePageable(long count, int pageNumber, int pageSize, String sortBy, String sortType) {
         int maxPage = (int) Math.ceil((double) count / pageSize) - 1;
-        Sort sort = Sort.by(Objects.requireNonNullElse(sortBy, "updatedAt"));
         pageNumber--;
         pageNumber = Math.max(0, pageNumber);
         pageNumber = Math.min(pageNumber, maxPage);
-        return PageRequest.of(Math.max(0, pageNumber), pageSize, sort);
+        Sort sort = createSortFromString(sortBy, sortType);
+        return PageRequest.of(pageNumber, pageSize, sort);
+    }
+    public static Sort createSortFromString(String sortBy, String sortType){
+        Sort sort = Sort.by(Objects.requireNonNullElse(sortBy, "updatedAt"));
+        if(sortType.equalsIgnoreCase("desc")){
+            sort = sort.descending();
+        } else{
+            sort = sort.ascending();
+        }
+        return sort;
     }
 }

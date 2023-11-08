@@ -1,5 +1,6 @@
-package com.sem4project.sem4.controller;
+package com.sem4project.sem4.controller.impl;
 
+import com.sem4project.sem4.controller.BaseController;
 import com.sem4project.sem4.dto.dtomodel.TokenDto;
 import com.sem4project.sem4.dto.request.LoginRequest;
 import com.sem4project.sem4.dto.request.RegisterRequest;
@@ -33,7 +34,7 @@ import java.util.Map;
 @PermitAll
 @AllArgsConstructor
 @CrossOrigin
-public class AuthController {
+public class AuthController{
     private final UserService userService;
     private final JwtUtil jwtUtil;
     @ApiResponses(

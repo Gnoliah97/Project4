@@ -20,7 +20,7 @@ public class RegisterRequest {
     @Email
     private String email;
     @NotNull(message = "Password is required")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Password must be contain a UPPERCASE, a lowercase, a number, a special character and at least 8 letter")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?!.* ).{8,16}$", message = "Password must be contain a UPPERCASE, a lowercase, a number, a special character and at least 8 letter")
     private String password;
     @NotNull(message = "Password is required")
     private String reEnterPassword;

@@ -1,4 +1,4 @@
-package com.sem4project.sem4.controller;
+package com.sem4project.sem4.controller.advice;
 
 import com.sem4project.sem4.dto.response.ResponseObject;
 import com.sem4project.sem4.exception.AuthException;

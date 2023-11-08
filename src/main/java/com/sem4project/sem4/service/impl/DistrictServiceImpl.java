@@ -1,7 +1,6 @@
 package com.sem4project.sem4.service.impl;
 
 import com.sem4project.sem4.dto.dtomodel.DistrictDto;
-import com.sem4project.sem4.dto.dtomodel.ProvinceDto;
 import com.sem4project.sem4.entity.District;
 import com.sem4project.sem4.entity.Province;
 import com.sem4project.sem4.exception.UpdateResourceException;
@@ -9,11 +8,14 @@ import com.sem4project.sem4.exception.ResourceNotFoundException;
 import com.sem4project.sem4.mapper.DistrictMapper;
 import com.sem4project.sem4.repository.DistrictRepository;
 import com.sem4project.sem4.repository.ProvinceRepository;
+import com.sem4project.sem4.service.BaseService;
 import com.sem4project.sem4.service.DistrictService;
+import com.sem4project.sem4.service.utils.ServiceUtil;
 import com.sem4project.sem4.util.PageableUtil;
 import lombok.AllArgsConstructor;
 import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,12 +29,14 @@ public class DistrictServiceImpl implements DistrictService {
     private final DistrictMapper districtMapper = DistrictMapper.INSTANCE;
 
     @Override
-    public void createDistrict(DistrictDto districtDto) {
+    public DistrictDto create(DistrictDto districtDto) {
         try {
             Province province = provinceRepository.findById(districtDto.getProvince().getId()).orElseThrow(IllegalArgumentException::new);
             District district = districtMapper.toEntity(districtDto);
             district.setProvince(province);
-            districtRepository.save(district);
+            District createdDistrict = districtRepository.save(district);
+            districtRepository.refresh(createdDistrict);
+            return districtMapper.toDto(createdDistrict);
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("District with id = " + districtDto.getId() + " not found");
         } catch (OptimisticEntityLockException ex){
@@ -41,25 +45,31 @@ public class DistrictServiceImpl implements DistrictService {
     }
 
     @Override
-    public List<DistrictDto> getAllDistrict(Boolean isDisable, int pageNumber, int pageSize, String sortBy) {
+    public List<DistrictDto> getAll(Boolean isDisable, Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
-            long districtQuantity = this.countDistrict(isDisable);
-            Pageable pageable = PageableUtil.calculatePageable(districtQuantity, pageNumber, pageSize, sortBy);
-
-            List<District> districts;
-            if(isDisable == null){
-                 districts = districtRepository.findAll(pageable).stream().toList();
-            } else{
-                districts = districtRepository.findAllByDisable(isDisable, pageable).stream().toList();
+            if(isDisable != null && isDisable){
+                return getAllAvailable(pageNumber, pageSize, sortBy, sortType);
             }
+            List<District> districts = ServiceUtil.getAll(districtRepository, isDisable, pageNumber, pageSize, sortBy, sortType);
+
             return districts.stream().map(districtMapper::toDto).toList();
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Get districts failed");
         }
     }
 
     @Override
-    public DistrictDto getDistrictById(UUID id) {
+    public List<DistrictDto> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
+        try {
+            List<District> districts = ServiceUtil.getAllAvailable(districtRepository, pageNumber, pageSize, sortBy, sortType);
+            return districtMapper.toListDto(districts);
+        } catch (IllegalArgumentException ex) {
+            throw new ResourceNotFoundException("Get districts failed");
+        }
+    }
+
+    @Override
+    public DistrictDto getById(UUID id) {
         try {
             District district = districtRepository.findById(id).orElseThrow(IllegalArgumentException::new);
             return districtMapper.toDto(district);
@@ -69,12 +79,13 @@ public class DistrictServiceImpl implements DistrictService {
     }
 
     @Override
-    public DistrictDto updateDistrict(UUID id, DistrictDto districtDto) {
+    public DistrictDto update(UUID id, DistrictDto districtDto) {
         try {
             District district = districtRepository.findById(id).orElseThrow(IllegalArgumentException::new);
             districtMapper.transferToEntity(district, districtDto);
-            districtRepository.save(district);
-            return districtDto;
+            District updatedDistrict = districtRepository.save(district);
+            districtRepository.refresh(updatedDistrict);
+            return districtMapper.toDto(updatedDistrict);
         } catch (IllegalArgumentException e) {
             throw new ResourceNotFoundException("District with id = " + id + " not found");
         } catch (OptimisticEntityLockException ex){
@@ -83,31 +94,15 @@ public class DistrictServiceImpl implements DistrictService {
     }
 
     @Override
-    public void updateDisableDistrict(UUID id, Boolean isDisable) {
+    public void updateDisable(UUID id) {
         try {
             District district = districtRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-            district.setDisable(isDisable);
+            district.setDisable(!district.isDisable());
             districtRepository.save(district);
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("District with id = " + id + " not found");
         } catch (OptimisticEntityLockException ex){
             throw new UpdateResourceException("Create district failed");
         }
-    }
-
-    @Override
-    public void transferCommuneToProvince(DistrictDto districtDto, ProvinceDto provinceDto) {
-        District district = districtRepository.findById(districtDto.getId()).orElseThrow(() -> new UpdateResourceException("District with id = " + districtDto.getId() + " not found"));
-        Province province = provinceRepository.findById(provinceDto.getId()).orElseThrow(() -> new UpdateResourceException("Province with id = " + provinceDto.getId() + " not found"));
-        district.setProvince(province);
-        districtRepository.save(district);
-    }
-
-    @Override
-    public Long countDistrict(Boolean isDisable) {
-        if(isDisable == null){
-            return districtRepository.count();
-        }
-        return districtRepository.countByDisable(isDisable);
     }
 }
