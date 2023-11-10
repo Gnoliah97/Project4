@@ -15,4 +15,5 @@ import java.util.Date;
 public class TokenDto {
     private String jwtToken;
     private Date expiresIn;
+    private String role;
 }
