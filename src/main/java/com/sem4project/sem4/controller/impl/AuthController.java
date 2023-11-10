@@ -39,15 +39,18 @@ public class AuthController{
     private final JwtUtil jwtUtil;
     @ApiResponses(
             @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = ResponseObject.class), mediaType = "application/json")})
-
             )
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<ResponseObject> login(@RequestBody @Valid LoginRequest loginRequest) {
         userService.login(loginRequest);
-        String token = jwtUtil.generateToken((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String token = jwtUtil.generateToken(userDetails);
+
         Date expiresIn = jwtUtil.getExpirationDateFromToken(token);
+        String role = userDetails.getAuthorities().stream().toList().get(0).getAuthority();
         TokenDto tokenDto = TokenDto.builder()
                 .jwtToken(token)
+                .role(role)
                 .expiresIn(expiresIn)
                 .build();
         HttpHeaders responseHeaders = new HttpHeaders();
