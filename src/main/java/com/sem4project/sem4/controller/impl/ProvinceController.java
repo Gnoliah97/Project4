@@ -34,10 +34,10 @@ public class ProvinceController extends BaseController<Province, ProvinceDto> {
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     public ResponseEntity<ResponseObject> getAll(@RequestParam(required = false, defaultValue = "false") Boolean isDisable,
-                                                         @RequestParam(defaultValue = "1") Integer pageNumber,
-                                                         @RequestParam(defaultValue = "10") Integer pageSize,
-                                                         @RequestParam(required = false, defaultValue = "updatedAt") String sortBy,
-                                                         @RequestParam(required = false, defaultValue = "ASC") String sortType) {
+                                                 @RequestParam(defaultValue = "1") Integer pageNumber,
+                                                 @RequestParam(defaultValue = "10") Integer pageSize,
+                                                 @RequestParam(required = false, defaultValue = "updatedAt") String sortBy,
+                                                 @RequestParam(required = false, defaultValue = "ASC") String sortType) {
         return ResponseEntity.status(200)
                 .body(
                         ResponseObject.builder()

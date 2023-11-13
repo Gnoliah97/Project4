@@ -40,7 +40,7 @@ public abstract class BaseEntity{
         }
         this.updatedAt = Instant.now();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(!authentication.getPrincipal().equals("anonymousUser")){
+        if(authentication != null && !authentication.getPrincipal().equals("anonymousUser")){
             this.createdBy = ((UserDetailsImpl) authentication.getPrincipal()).getUser().getId().toString();
         }
     }
