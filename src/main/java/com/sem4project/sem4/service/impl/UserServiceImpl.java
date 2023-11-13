@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
                 User userRegister = userMapper.fromRegisterRequest(registerRequest);
                 userRegister.setPassword(passwordEncoded);
                 List<Role> defaultRoles = new ArrayList<>();
-                Role defaultRole = roleRepository.findByName(RoleEnum.ROLE_USER.name()).orElseThrow(IllegalAccessError::new);
+                Role defaultRole = roleRepository.findByName(RoleEnum.ROLE_USER.name()).orElseThrow(IllegalArgumentException::new);
                 defaultRoles.add(defaultRole);
                 userRegister.setRoles(defaultRoles);
                 userRepository.save(userRegister);
