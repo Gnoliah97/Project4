@@ -9,6 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -19,14 +20,15 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
+@Slf4j
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationEntryPoint.class);
+//    private static final Logger logger = LoggerFactory.getLogger(AuthenticationEntryPoint.class);
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, ServletException {
-        logger.error("Unauthorized error: {}", authException.getMessage()); response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        log.error("Unauthorized error: {}", authException.getMessage()); response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         final ResponseObject body = ResponseObject.builder()
@@ -34,7 +36,6 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
                 .errors("Unauthorized")
                 .path(request.getRequestURI())
                 .build();
-
         final ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(response.getOutputStream(), body);
     }

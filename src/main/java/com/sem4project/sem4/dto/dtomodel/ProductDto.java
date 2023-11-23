@@ -28,4 +28,5 @@ public class ProductDto extends BaseDto{
     private BrandDto brand;
     private List<RateDto> rates;
     private List<BranchProductDto> branchProducts;
+    private List<CommentDto> comments;
 }

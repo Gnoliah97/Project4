@@ -17,7 +17,7 @@ public class PageableUtil {
     }
     public static Sort createSortFromString(String sortBy, String sortType){
         Sort sort = Sort.by(Objects.requireNonNullElse(sortBy, "updatedAt"));
-        if(sortType.equalsIgnoreCase("desc")){
+        if(sortType == null || sortType.equalsIgnoreCase("desc")){
             sort = sort.descending();
         } else{
             sort = sort.ascending();

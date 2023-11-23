@@ -17,6 +17,7 @@ import java.time.Instant;
 public class UserInfo extends BaseEntity{
     private String fullName;
     private String phone;
+    private String avatar;
     private Instant dob;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "province_id")

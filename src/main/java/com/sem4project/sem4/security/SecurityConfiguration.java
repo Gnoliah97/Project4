@@ -1,10 +1,16 @@
 package com.sem4project.sem4.security;
 
+import com.sem4project.sem4.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.sem4project.sem4.security.oauth2.OAuth2AuthenticationFailureHandler;
+import com.sem4project.sem4.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.sem4project.sem4.security.oauth2.OAuth2UserServiceImpl;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,9 +37,15 @@ import static java.util.Arrays.asList;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@AllArgsConstructor
 public class SecurityConfiguration {
-    private static final Logger logger = LoggerFactory.getLogger(SecurityConfiguration.class);
+    private final OAuth2UserServiceImpl oAuth2UserService;
+    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
+
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+
+    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -60,11 +72,15 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
+    }
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint()))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/**").permitAll()
                         .requestMatchers(
                                 "/actuator/**",
                                 "/swagger-ui.html",
@@ -77,9 +93,20 @@ public class SecurityConfiguration {
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**")
                         .permitAll()
-                        .requestMatchers("/api/v1/province/**").permitAll()
                         .anyRequest().authenticated()
-                ).sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                )
+                .oauth2Login(httpSecurityOAuth2LoginConfigurer -> {
+                    httpSecurityOAuth2LoginConfigurer.authorizationEndpoint(authorizationEndpointConfig -> {
+                        authorizationEndpointConfig.baseUri("/api/v1/oauth2/authorize")
+                                .authorizationRequestRepository(cookieAuthorizationRequestRepository());
+                    }).redirectionEndpoint(redirectionEndpointConfig -> {
+                        redirectionEndpointConfig.baseUri("/api/v1/oauth2/callback/*");
+                    }).userInfoEndpoint(userInfoEndpointConfig -> {
+                        userInfoEndpointConfig.userService(oAuth2UserService);
+                    }).successHandler(oAuth2AuthenticationSuccessHandler)
+                            .failureHandler(oAuth2AuthenticationFailureHandler);
+                })
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
         return http.build();
