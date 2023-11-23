@@ -1,6 +1,7 @@
 package com.sem4project.sem4.controller.impl;
 
 import com.sem4project.sem4.controller.BaseController;
+import com.sem4project.sem4.dto.dtomodel.RoleDto;
 import com.sem4project.sem4.dto.dtomodel.TokenDto;
 import com.sem4project.sem4.dto.request.LoginRequest;
 import com.sem4project.sem4.dto.request.RegisterRequest;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 @Tag(name = "Auth", description = "Authentication API")
 @RestController
@@ -47,10 +49,11 @@ public class AuthController{
         String token = jwtUtil.generateToken(userDetails);
 
         Date expiresIn = jwtUtil.getExpirationDateFromToken(token);
-        String role = userDetails.getAuthorities().stream().toList().get(0).getAuthority();
+        List<RoleDto> roles = userDetails.getAuthorities()
+                .stream().map(e -> (RoleDto)RoleDto.builder().name(e.getAuthority()).build()).toList();
         TokenDto tokenDto = TokenDto.builder()
                 .jwtToken(token)
-                .role(role)
+                .roles(roles)
                 .expiresIn(expiresIn)
                 .build();
         HttpHeaders responseHeaders = new HttpHeaders();
