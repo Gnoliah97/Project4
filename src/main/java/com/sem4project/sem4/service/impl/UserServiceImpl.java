@@ -161,12 +161,12 @@ public class UserServiceImpl implements UserService {
             if (userInfo == null) {
                 user.setUserInfo(userInfoMapper.toEntity(userInfoDto));
                 User updatedUser = userRepository.save(user);
-                userRepository.refresh(updatedUser);
+//                userRepository.refresh(updatedUser);
                 updatedUserInfo = updatedUser.getUserInfo();
             } else {
                 userInfoMapper.transferToEntity(userInfo, userInfoDto);
                 updatedUserInfo = userInfoRepository.save(userInfo);
-                userInfoRepository.refresh(updatedUserInfo);
+//                userInfoRepository.refresh(updatedUserInfo);
             }
             return userInfoMapper.toDto(updatedUserInfo);
         } catch (IllegalArgumentException | EntityNotFoundException ex) {

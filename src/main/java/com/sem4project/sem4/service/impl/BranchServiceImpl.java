@@ -65,7 +65,7 @@ public class BranchServiceImpl implements BaseService<Branch, BranchDto> {
         try {
             Branch branch = branchMapper.toEntity(branchDto);
             Branch createdBranch = branchRepository.save(branch);
-            branchRepository.refresh(createdBranch);
+//            branchRepository.refresh(createdBranch);
             return branchMapper.toDto(createdBranch);
         } catch (OptimisticEntityLockException e) {
             throw new UpdateResourceException("Can not create new branch");
@@ -78,7 +78,7 @@ public class BranchServiceImpl implements BaseService<Branch, BranchDto> {
             Branch branch = branchRepository.findById(id).orElseThrow(IllegalArgumentException::new);
             branchMapper.transferToEntity(branch, branchDto);
             Branch updatedBranch = branchRepository.save(branch);
-            branchRepository.refresh(updatedBranch);
+//            branchRepository.refresh(updatedBranch);
             return branchMapper.toDto(updatedBranch);
         } catch (IllegalArgumentException e) {
             throw new ResourceNotFoundException("District with id = " + id + " not found");
