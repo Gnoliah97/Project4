@@ -89,4 +89,8 @@ public class AuthController{
                                 .build()
                 );
     }
+//    @RequestMapping(value = "/getRole", method = RequestMethod.POST)
+//    public ResponseEntity<ResponseObject> getRole(){
+//
+//    }
 }
