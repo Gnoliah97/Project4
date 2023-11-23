@@ -7,7 +7,7 @@ import com.sem4project.sem4.dto.request.LoginRequest;
 import com.sem4project.sem4.dto.request.RegisterRequest;
 import com.sem4project.sem4.entity.Role;
 import com.sem4project.sem4.entity.User;
-import com.sem4project.sem4.entity.UserDetailsImpl;
+import com.sem4project.sem4.entity.UserPrincipal;
 import com.sem4project.sem4.entity.UserInfo;
 import com.sem4project.sem4.exception.AuthException;
 import com.sem4project.sem4.exception.ResourceNotFoundException;
@@ -133,7 +133,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserInfo() {
         try {
-            UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if(userDetails == null){
                 throw new AuthException("Not logged in yet");
             }
@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfoDto updateUserInfo(UUID id, UserInfoDto userInfoDto) {
         try {
-            UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if(userDetails == null){
                 throw new AuthException("Not logged in yet");
             }
@@ -174,6 +174,33 @@ public class UserServiceImpl implements UserService {
             throw new AuthException("Not logged in yet");
         } catch (OptimisticEntityLockException ex){
             throw new UpdateResourceException("Update user info failed");
+        }
+    }
+
+    @Override
+    public Long countByRole(RoleEnum role) {
+        return userRepository.countUsersByRoleName(role.name());
+    }
+
+    @Override
+    public void init() {
+        try {
+            String adminEmail = "admin@gmail.com";
+            if (!userRepository.existsByEmail(adminEmail)) {
+                String passwordEncoded = passwordEncoder.encode("admin");
+                User userRegister = new User();
+                userRegister.setEmail(adminEmail);
+                userRegister.setPassword(passwordEncoded);
+                List<Role> defaultRoles = new ArrayList<>();
+                Role defaultRole = roleRepository.findByName(RoleEnum.ROLE_ADMIN.name()).orElseThrow(IllegalArgumentException::new);
+                defaultRoles.add(defaultRole);
+                userRegister.setRoles(defaultRoles);
+                userRepository.save(userRegister);
+            } else {
+                throw new AuthException("Email already exist");
+            }
+        } catch (IllegalArgumentException ex) {
+            throw new ResourceNotFoundException("Default role doesn't exists");
         }
     }
 }

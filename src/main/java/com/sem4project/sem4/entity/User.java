@@ -17,8 +17,10 @@ import java.util.Set;
 @Getter
 @Setter
 public class User extends BaseEntity {
-    @Column(name = "email", length = 50)
+    @Column(name = "email", length = 50, unique = true)
     private String email;
+    @Column(unique = true)
+    private String oauth2Email;
     @Column(name = "password", length = 120)
     private String password;
     @ManyToMany(fetch = FetchType.LAZY)
@@ -29,4 +31,7 @@ public class User extends BaseEntity {
     private List<Role> roles;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private UserInfo userInfo;
+    private Boolean emailVerified;
+    private String provider;
+    private String providerId;
 }
