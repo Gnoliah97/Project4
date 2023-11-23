@@ -61,7 +61,7 @@ public class CategoryServiceImpl implements CategoryService {
         try {
             Category category = categoryMapper.toEntity(categoryDto);
             Category createdCategory = categoryRepository.save(category);
-            categoryRepository.refresh(createdCategory);
+//            categoryRepository.refresh(createdCategory);
             return categoryMapper.toDto(createdCategory);
         } catch (OptimisticEntityLockException e) {
             throw new UpdateResourceException("Can not create new category");
@@ -74,7 +74,7 @@ public class CategoryServiceImpl implements CategoryService {
             Category category = categoryRepository.findById(id).orElseThrow(IllegalArgumentException::new);
             categoryMapper.transferToEntity(category, categoryDto);
             Category updatedCategory = categoryRepository.save(category);
-            categoryRepository.refresh(updatedCategory);
+//            categoryRepository.refresh(updatedCategory);
             return categoryMapper.toDto(updatedCategory);
         } catch (IllegalArgumentException e) {
             throw new ResourceNotFoundException("District with id = " + id + " not found");

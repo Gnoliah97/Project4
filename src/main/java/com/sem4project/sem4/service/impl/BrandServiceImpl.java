@@ -63,7 +63,7 @@ public class BrandServiceImpl implements BrandService {
         try {
             Brand brand = brandMapper.toEntity(brandDto);
             Brand createdBrand = brandRepository.save(brand);
-            brandRepository.refresh(createdBrand);
+//            brandRepository.refresh(createdBrand);
             return brandMapper.toDto(createdBrand);
         } catch (OptimisticEntityLockException e) {
             throw new UpdateResourceException("Can not create new brand");
@@ -76,7 +76,7 @@ public class BrandServiceImpl implements BrandService {
             Brand brand = brandRepository.findById(id).orElseThrow(IllegalArgumentException::new);
             brandMapper.transferToEntity(brand, brandDto);
             Brand updatedBrand = brandRepository.save(brand);
-            brandRepository.refresh(updatedBrand);
+//            brandRepository.refresh(updatedBrand);
             return brandMapper.toDto(updatedBrand);
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Brand with id = " + id + " not found");
