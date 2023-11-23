@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
             if(userDetails == null){
                 throw new AuthException("Not logged in yet");
             }
-            User user = userDetails.getUser();
+            User user = userRepository.findById(userDetails.getId()).orElseThrow(IllegalArgumentException::new);
             UserDto userDto = userMapper.toDto(user);
             userDto.setRoles(user.getRoles().stream().map(roleMapper::toDto).toList());
             userDto.setUserInfo(userInfoMapper.toDto(user.getUserInfo()));
