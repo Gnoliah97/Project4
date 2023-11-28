@@ -33,7 +33,7 @@ public class GlobalControllerExceptionAdvice {
                 .body(
                         ResponseObject.builder()
                                 .message("Not validated yet")
-                                .errors(ex.getMessage())
+                                .errors(ex.getBindingResult().getFieldErrors().get(0).getDefaultMessage())
                                 .build()
                 );
     }

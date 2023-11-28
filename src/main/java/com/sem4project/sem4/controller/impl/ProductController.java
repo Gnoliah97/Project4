@@ -6,6 +6,7 @@ import com.sem4project.sem4.dto.response.ResponseObject;
 import com.sem4project.sem4.entity.Product;
 import com.sem4project.sem4.service.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -52,7 +53,7 @@ public class ProductController extends BaseController<Product, ProductDto> {
     @Override
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @PostAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_STAFF')")
-    protected ResponseEntity<ResponseObject> create(@RequestBody ProductDto productDto) {
+    protected ResponseEntity<ResponseObject> create(@Valid @RequestBody ProductDto productDto) {
         return ResponseEntity.status(201)
                 .body(
                         ResponseObject.builder()
@@ -65,7 +66,7 @@ public class ProductController extends BaseController<Product, ProductDto> {
     @Override
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     @PostAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_STAFF')")
-    protected ResponseEntity<ResponseObject> update(@PathVariable UUID id, @RequestBody ProductDto productDto) {
+    protected ResponseEntity<ResponseObject> update(@PathVariable UUID id, @Valid @RequestBody ProductDto productDto) {
         return ResponseEntity.status(200)
                 .body(
                         ResponseObject.builder()

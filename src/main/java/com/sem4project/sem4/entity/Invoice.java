@@ -18,17 +18,17 @@ public class Invoice extends BaseEntity{
     private String fullName;
     private String email;
     private String phone;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "invoice_product", joinColumns = @JoinColumn(name = "invoice_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Province province;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private District district;
     private String address;
     private String note;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Transactional transactional;
 }

@@ -18,6 +18,6 @@ public class District extends BaseEntity{
     private String name;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Province province;
-    @OneToMany(mappedBy = "district", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "district", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Branch> branches;
 }

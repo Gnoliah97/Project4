@@ -60,6 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto create(CategoryDto categoryDto) {
         try {
             Category category = categoryMapper.toEntity(categoryDto);
+            transferExtendPropertiesToEntity(category, categoryDto);
             Category createdCategory = categoryRepository.save(category);
 //            categoryRepository.refresh(createdCategory);
             return categoryMapper.toDto(createdCategory);
@@ -73,6 +74,7 @@ public class CategoryServiceImpl implements CategoryService {
         try {
             Category category = categoryRepository.findById(id).orElseThrow(IllegalArgumentException::new);
             categoryMapper.transferToEntity(category, categoryDto);
+            transferExtendPropertiesToEntity(category, categoryDto);
             Category updatedCategory = categoryRepository.save(category);
 //            categoryRepository.refresh(updatedCategory);
             return categoryMapper.toDto(updatedCategory);
@@ -93,6 +95,15 @@ public class CategoryServiceImpl implements CategoryService {
             throw new ResourceNotFoundException("Category with id = " + id + " not found");
         } catch (OptimisticEntityLockException ex){
             throw new UpdateResourceException("Create category failed");
+        }
+    }
+    
+    private void transferExtendPropertiesToEntity(Category category, CategoryDto categoryDto){
+        CategoryDto parentCategoryDto = categoryDto.getParentCategory();
+        if(parentCategoryDto != null){
+            Category parentCategory = categoryMapper.toEntity(parentCategoryDto);
+            parentCategory.setId(parentCategoryDto.getId());
+            category.setParentCategory(parentCategory);
         }
     }
 }

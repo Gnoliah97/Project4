@@ -1,5 +1,6 @@
 package com.sem4project.sem4.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
@@ -17,8 +18,8 @@ import java.io.Serial;
 @Setter
 public class FilterProperty extends BaseEntity{
     private String name;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Category category;
-    @OneToOne(mappedBy = "filterProperty")
+    @OneToOne(mappedBy = "filterProperty", cascade = CascadeType.ALL)
     private FilterOption filterOption;
 }

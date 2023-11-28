@@ -1,7 +1,7 @@
 package com.sem4project.sem4.mapper;
 
-import com.sem4project.sem4.dto.dtomodel.RoleDto;
-import com.sem4project.sem4.entity.Role;
+import com.sem4project.sem4.dto.dtomodel.PostDto;
+import com.sem4project.sem4.entity.Post;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -9,52 +9,51 @@ import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
-
 @Mapper
-public interface RoleMapper extends BaseMapper<Role, RoleDto>{
+public interface PostMapper extends BaseMapper<Post, PostDto> {
+    PostMapper INSTANCE = Mappers.getMapper(PostMapper.class);
+    @Mappings({
+            @Mapping(target = "comments", ignore = true),
+    })
+    PostDto toDto(Post post);
 
-    RoleMapper INSTANCE = Mappers.getMapper(RoleMapper.class);
     @Mappings({
-            @Mapping(target = "users", ignore = true),
+            @Mapping(target = "comments", ignore = true),
     })
-    RoleDto toDto(Role role);
-    @Mappings({
-            @Mapping(target = "users", ignore = true),
-    })
-    List<RoleDto> toListDto(List<Role> roles);
+    List<PostDto> toListDto(List<Post> posts);
+
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
             @Mapping(target = "updatedBy", ignore = true),
-            @Mapping(target = "users", ignore = true),
+            @Mapping(target = "comments", ignore = true),
     })
-    Role toEntity(RoleDto roleDto);
+    Post toEntity(PostDto postDto);
+
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
             @Mapping(target = "updatedBy", ignore = true),
-            @Mapping(target = "users", ignore = true),
+            @Mapping(target = "comments", ignore = true),
     })
-    List<Role> toListEntity(List<RoleDto> roleDtos);
+    List<Post> toListEntity(List<PostDto> postDtos);
 
-    @Override
     @Mappings({
-            @Mapping(target = "users", ignore = true),
+            @Mapping(target = "comments", ignore = true),
     })
-    void transferToDto(@MappingTarget RoleDto roleDto, Role role);
+    void transferToDto(@MappingTarget PostDto postDto, Post post);
 
-    @Override
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
             @Mapping(target = "updatedBy", ignore = true),
-            @Mapping(target = "users", ignore = true),
+            @Mapping(target = "comments", ignore = true),
     })
-    void transferToEntity(@MappingTarget Role role, RoleDto roleDto);
+    void transferToEntity(@MappingTarget Post post, PostDto postDto);
 }

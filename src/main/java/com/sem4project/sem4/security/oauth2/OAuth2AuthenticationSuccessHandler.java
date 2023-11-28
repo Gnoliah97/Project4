@@ -2,6 +2,7 @@ package com.sem4project.sem4.security.oauth2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sem4project.sem4.config.AppConfig;
+import com.sem4project.sem4.dto.dtomodel.RoleDto;
 import com.sem4project.sem4.dto.dtomodel.TokenDto;
 import com.sem4project.sem4.exception.AuthException;
 import com.sem4project.sem4.util.CookieUtil;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 @Component
 @AllArgsConstructor
@@ -49,7 +51,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         Date expiresIn = jwtUtil.getExpirationDateFromToken(token);
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String role = userDetails.getAuthorities().stream().toList().get(0).getAuthority();
+        List<RoleDto> roles = userDetails.getAuthorities().stream().map(e -> (RoleDto) RoleDto.builder().name(e.getAuthority()).build()).toList();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
@@ -57,7 +59,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         TokenDto tokenDto = TokenDto.builder()
                 .jwtToken(token)
-                .role(role)
+                .roles(roles)
                 .expiresIn(expiresIn)
                 .build();
         String jsonToken = objectMapper.writeValueAsString(tokenDto);
@@ -93,11 +95,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .anyMatch(authorizedRedirectUri -> {
                     // Only validate host and port. Let the clients use different paths if they want to
                     URI authorizedURI = URI.create(authorizedRedirectUri);
-                    if(authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
-                            && authorizedURI.getPort() == clientRedirectUri.getPort()) {
-                        return true;
-                    }
-                    return false;
+                    return authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
+                            && authorizedURI.getPort() == clientRedirectUri.getPort();
                 });
     }
 }

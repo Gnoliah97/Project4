@@ -1,5 +1,6 @@
 package com.sem4project.sem4.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
@@ -16,9 +17,9 @@ import java.io.Serial;
 @Getter
 @Setter
 public class BranchProduct extends BaseEntity{
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Product product;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Branch branch;
     private int quantity;
 }

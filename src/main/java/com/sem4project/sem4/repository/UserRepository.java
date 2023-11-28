@@ -15,7 +15,7 @@ public interface UserRepository extends BaseRepository<User, UUID> {
     @EntityGraph(attributePaths = {"roles"})
     User findByEmail(String email);
     List<User> findAllByDisable(boolean isDisable);
-    boolean existsByEmail(String email);
+    Boolean existsByEmail(String email);
     Long countByDisable(Boolean isDisable);
     @EntityGraph(attributePaths = {"roles", "userInfo"})
     User findByOauth2Email(String oauth2Email);
