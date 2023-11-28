@@ -14,10 +14,16 @@ import java.util.List;
 public interface SpecificationMapper extends BaseMapper<Specification, SpecificationDto>{
     SpecificationMapper INSTANCE = Mappers.getMapper(SpecificationMapper.class);
 
-    @Mappings({})
+    @Mappings({
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+    })
     SpecificationDto toDto(Specification specification);
 
-    @Mappings({})
+    @Mappings({
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+    })
     List<SpecificationDto> toListDto(List<Specification> specifications);
 
     @Mappings({
@@ -38,7 +44,10 @@ public interface SpecificationMapper extends BaseMapper<Specification, Specifica
     })
     List<Specification> toListEntity(List<SpecificationDto> specificationDtos);
 
-    @Mappings({})
+    @Mappings({
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+    })
     void transferToDto(@MappingTarget SpecificationDto specificationDto, Specification specification);
 
     @Mappings({

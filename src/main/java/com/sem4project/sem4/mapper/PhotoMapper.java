@@ -14,9 +14,17 @@ import java.util.List;
 public interface PhotoMapper extends BaseMapper<Photo, PhotoDto> {
     PhotoMapper INSTANCE = Mappers.getMapper(PhotoMapper.class);
     @Override
+    @Mappings({
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+    })
     PhotoDto toDto(Photo photo);
 
     @Override
+    @Mappings({
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+    })
     List<PhotoDto> toListDto(List<Photo> photos);
 
     @Override
@@ -40,6 +48,10 @@ public interface PhotoMapper extends BaseMapper<Photo, PhotoDto> {
     List<Photo> toListEntity(List<PhotoDto> photoDtos);
 
     @Override
+    @Mappings({
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+    })
     void transferToDto(@MappingTarget PhotoDto photoDto, Photo photo);
 
     @Override

@@ -16,11 +16,15 @@ public interface BrandMapper extends BaseMapper<Brand, BrandDto>{
     @Mappings({
             @Mapping(target = "photo", ignore = true),
             @Mapping(target = "products", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     BrandDto toDto(Brand brand);
     @Mappings({
             @Mapping(target = "photo", ignore = true),
             @Mapping(target = "products", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     List<BrandDto> toListDto(List<Brand> brands);
     @Mappings({
@@ -44,13 +48,10 @@ public interface BrandMapper extends BaseMapper<Brand, BrandDto>{
     })
     List<Brand> toListEntity(List<BrandDto> brandDtos);
     @Mappings({
-            @Mapping(target = "id", ignore = true),
-            @Mapping(target = "createdAt", ignore = true),
-            @Mapping(target = "updatedAt", ignore = true),
-            @Mapping(target = "createdBy", ignore = true),
-            @Mapping(target = "updatedBy", ignore = true),
             @Mapping(target = "photo", ignore = true),
             @Mapping(target = "products", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     void transferToDto(@MappingTarget BrandDto brandDto, Brand brand);
     @Mappings({

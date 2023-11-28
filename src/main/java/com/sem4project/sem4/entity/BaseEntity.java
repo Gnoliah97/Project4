@@ -24,10 +24,10 @@ public abstract class BaseEntity{
     private boolean disable;
     @Column(nullable = false)
     private Instant createdAt;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private User createdBy;
     private Instant updatedAt;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private User updatedBy;
     @PrePersist
     protected void prePersist(){

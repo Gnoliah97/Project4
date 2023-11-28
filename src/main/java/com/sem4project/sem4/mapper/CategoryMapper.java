@@ -18,6 +18,8 @@ public interface CategoryMapper extends BaseMapper<Category, CategoryDto>{
             @Mapping(target = "categories", ignore = true),
             @Mapping(target = "parentCategory", ignore = true),
             @Mapping(target = "products", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     CategoryDto toDto(Category category);
 
@@ -25,6 +27,8 @@ public interface CategoryMapper extends BaseMapper<Category, CategoryDto>{
             @Mapping(target = "categories", ignore = true),
             @Mapping(target = "parentCategory", ignore = true),
             @Mapping(target = "products", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     List<CategoryDto> toListDto(List<Category> categories);
 
@@ -56,6 +60,8 @@ public interface CategoryMapper extends BaseMapper<Category, CategoryDto>{
             @Mapping(target = "categories", ignore = true),
             @Mapping(target = "parentCategory", ignore = true),
             @Mapping(target = "products", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     void transferToDto(@MappingTarget CategoryDto categoryDto, Category category);
 

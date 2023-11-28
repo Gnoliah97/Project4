@@ -16,6 +16,8 @@ public interface ProvinceMapper extends BaseMapper<Province, ProvinceDto>{
     @Mappings({
             @Mapping(target = "districts", ignore = true),
             @Mapping(target = "branches", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     ProvinceDto toDto(Province province);
     @Mappings({
@@ -42,6 +44,8 @@ public interface ProvinceMapper extends BaseMapper<Province, ProvinceDto>{
     @Mappings({
             @Mapping(target = "districts", ignore = true),
             @Mapping(target = "branches", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     List<ProvinceDto> toListDto(List<Province> provinces);
 
@@ -60,6 +64,8 @@ public interface ProvinceMapper extends BaseMapper<Province, ProvinceDto>{
     @Mappings({
             @Mapping(target = "districts", ignore = true),
             @Mapping(target = "branches", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     void transferToDto(@MappingTarget ProvinceDto provinceDto, Province province);
 }
