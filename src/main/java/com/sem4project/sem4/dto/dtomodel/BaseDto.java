@@ -16,7 +16,7 @@ public class BaseDto {
     private UUID id;
     private boolean disable;
     private Instant createdAt;
-    private String createdBy;
+    private UserDto createdBy;
     private Instant updatedAt;
-    private String updatedBy;
+    private UserDto updatedBy;
 }

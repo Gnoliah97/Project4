@@ -1,9 +1,6 @@
 package com.sem4project.sem4.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -22,6 +19,6 @@ public class Branch extends BaseEntity {
     private Province province;
     @ManyToOne
     private District district;
-    @OneToMany(mappedBy = "branch")
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
     private List<BranchProduct> branchProducts;
 }

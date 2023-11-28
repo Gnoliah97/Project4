@@ -11,7 +11,7 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 @Mapper
-public interface ProvinceMapper{
+public interface ProvinceMapper extends BaseMapper<Province, ProvinceDto>{
     ProvinceMapper INSTANCE = Mappers.getMapper(ProvinceMapper.class);
     @Mappings({
             @Mapping(target = "districts", ignore = true),
@@ -55,4 +55,11 @@ public interface ProvinceMapper{
             @Mapping(target = "branches", ignore = true),
     })
     List<Province> toListEntity(List<ProvinceDto> provinceDtos);
+
+    @Override
+    @Mappings({
+            @Mapping(target = "districts", ignore = true),
+            @Mapping(target = "branches", ignore = true),
+    })
+    void transferToDto(@MappingTarget ProvinceDto provinceDto, Province province);
 }

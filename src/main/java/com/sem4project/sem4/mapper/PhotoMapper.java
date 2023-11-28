@@ -1,7 +1,7 @@
 package com.sem4project.sem4.mapper;
 
-import com.sem4project.sem4.dto.dtomodel.RoleDto;
-import com.sem4project.sem4.entity.Role;
+import com.sem4project.sem4.dto.dtomodel.PhotoDto;
+import com.sem4project.sem4.entity.Photo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -11,41 +11,13 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 @Mapper
-public interface RoleMapper extends BaseMapper<Role, RoleDto>{
-
-    RoleMapper INSTANCE = Mappers.getMapper(RoleMapper.class);
-    @Mappings({
-            @Mapping(target = "users", ignore = true),
-    })
-    RoleDto toDto(Role role);
-    @Mappings({
-            @Mapping(target = "users", ignore = true),
-    })
-    List<RoleDto> toListDto(List<Role> roles);
-    @Mappings({
-            @Mapping(target = "id", ignore = true),
-            @Mapping(target = "createdAt", ignore = true),
-            @Mapping(target = "updatedAt", ignore = true),
-            @Mapping(target = "createdBy", ignore = true),
-            @Mapping(target = "updatedBy", ignore = true),
-            @Mapping(target = "users", ignore = true),
-    })
-    Role toEntity(RoleDto roleDto);
-    @Mappings({
-            @Mapping(target = "id", ignore = true),
-            @Mapping(target = "createdAt", ignore = true),
-            @Mapping(target = "updatedAt", ignore = true),
-            @Mapping(target = "createdBy", ignore = true),
-            @Mapping(target = "updatedBy", ignore = true),
-            @Mapping(target = "users", ignore = true),
-    })
-    List<Role> toListEntity(List<RoleDto> roleDtos);
+public interface PhotoMapper extends BaseMapper<Photo, PhotoDto> {
+    PhotoMapper INSTANCE = Mappers.getMapper(PhotoMapper.class);
+    @Override
+    PhotoDto toDto(Photo photo);
 
     @Override
-    @Mappings({
-            @Mapping(target = "users", ignore = true),
-    })
-    void transferToDto(@MappingTarget RoleDto roleDto, Role role);
+    List<PhotoDto> toListDto(List<Photo> photos);
 
     @Override
     @Mappings({
@@ -54,7 +26,29 @@ public interface RoleMapper extends BaseMapper<Role, RoleDto>{
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
             @Mapping(target = "updatedBy", ignore = true),
-            @Mapping(target = "users", ignore = true),
     })
-    void transferToEntity(@MappingTarget Role role, RoleDto roleDto);
+    Photo toEntity(PhotoDto photoDto);
+
+    @Override
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "createdAt", ignore = true),
+            @Mapping(target = "updatedAt", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+    })
+    List<Photo> toListEntity(List<PhotoDto> photoDtos);
+
+    @Override
+    void transferToDto(@MappingTarget PhotoDto photoDto, Photo photo);
+
+    @Override
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "createdAt", ignore = true),
+            @Mapping(target = "updatedAt", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+    })
+    void transferToEntity(@MappingTarget Photo photo, PhotoDto photoDto);
 }

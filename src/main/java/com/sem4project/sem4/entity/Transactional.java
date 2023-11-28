@@ -1,5 +1,6 @@
 package com.sem4project.sem4.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
@@ -23,8 +24,8 @@ public class Transactional extends BaseEntity{
     private String transNo;
     private String amount;
     private String secureHash;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
-    @OneToOne(mappedBy = "transactional")
+    @OneToOne(mappedBy = "transactional", cascade = CascadeType.ALL)
     private Invoice invoice;
 }

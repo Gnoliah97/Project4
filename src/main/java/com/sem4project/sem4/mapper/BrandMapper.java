@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 @Mapper
-public interface BrandMapper {
+public interface BrandMapper extends BaseMapper<Brand, BrandDto>{
     BrandMapper INSTANCE = Mappers.getMapper(BrandMapper.class);
 
     @Mappings({

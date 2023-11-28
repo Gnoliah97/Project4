@@ -1,13 +1,13 @@
 package com.sem4project.sem4.service.impl;
 
-import com.sem4project.sem4.dto.dtomodel.ProductDto;
+import com.sem4project.sem4.dto.dtomodel.*;
 import com.sem4project.sem4.entity.Category;
 import com.sem4project.sem4.entity.District;
 import com.sem4project.sem4.entity.Product;
 import com.sem4project.sem4.entity.Province;
 import com.sem4project.sem4.exception.ResourceNotFoundException;
 import com.sem4project.sem4.exception.UpdateResourceException;
-import com.sem4project.sem4.mapper.ProductMapper;
+import com.sem4project.sem4.mapper.*;
 import com.sem4project.sem4.repository.ProductRepository;
 import com.sem4project.sem4.service.ProductService;
 import com.sem4project.sem4.service.utils.ServiceUtil;
@@ -16,6 +16,8 @@ import lombok.AllArgsConstructor;
 import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,11 +26,21 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper = ProductMapper.INSTANCE;
+    private final PhotoMapper photoMapper = PhotoMapper.INSTANCE;
+    private final GiftMapper giftMapper = GiftMapper.INSTANCE;
+    private final SpecificationMapper specificationMapper = SpecificationMapper.INSTANCE;
+    private final PostMapper postMapper = PostMapper.INSTANCE;
+    private final CategoryMapper categoryMapper = CategoryMapper.INSTANCE;
+    private final BrandMapper brandMapper = BrandMapper.INSTANCE;
+    private final RateMapper rateMapper = RateMapper.INSTANCE;
+    private final BranchProductMapper branchProductMapper = BranchProductMapper.INSTANCE;
+    private final CommentMapper commentMapper = CommentMapper.INSTANCE;
 
     @Override
     public ProductDto getById(UUID id) {
         try {
             Product product = productRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+//            product.getCategories();
             return productMapper.toDto(product);
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Product with id = " + id + " not found");
@@ -38,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getAll(Boolean isDisable, Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
-            if(isDisable != null && isDisable){
+            if (isDisable != null && isDisable) {
                 return getAllAvailable(pageNumber, pageSize, sortBy, sortType);
             }
             List<Product> products = ServiceUtil.getAll(productRepository, isDisable, pageNumber, pageSize, sortBy, sortType);
@@ -63,6 +75,9 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto create(ProductDto productDto) {
         try {
             Product product = productMapper.toEntity(productDto);
+            String productCode = generateProductCode(productDto.getTitle());
+            product.setProductCode(productCode);
+            transferExtendPropertiesToEntity(product, productDto);
             Product createdProduct = productRepository.save(product);
 //            productRepository.refresh(createdProduct);
             return productMapper.toDto(createdProduct);
@@ -76,12 +91,13 @@ public class ProductServiceImpl implements ProductService {
         try {
             Product product = productRepository.findById(id).orElseThrow(IllegalArgumentException::new);
             productMapper.transferToEntity(product, productDto);
+            transferExtendPropertiesToEntity(product, productDto);
             Product updatedProduct = productRepository.save(product);
 //            productRepository.refresh(updatedProduct);
             return productMapper.toDto(updatedProduct);
         } catch (IllegalArgumentException e) {
             throw new ResourceNotFoundException("Product with id = " + id + " not found");
-        } catch (OptimisticEntityLockException ex){
+        } catch (OptimisticEntityLockException ex) {
             throw new UpdateResourceException("Update product failed");
         }
     }
@@ -96,6 +112,40 @@ public class ProductServiceImpl implements ProductService {
             throw new ResourceNotFoundException("Product with id = " + id + " not found");
         } catch (OptimisticEntityLockException e) {
             throw new UpdateResourceException("Can not update product");
+        }
+    }
+
+    private String generateProductCode(String title) {
+        long timestamp = new Date().getTime();
+
+        return Arrays.stream(title.split(" ")).reduce("", (result, word) -> result + word.charAt(0)).toUpperCase() + Long.toString(timestamp).substring(Long.toString(timestamp).length() - 4);
+    }
+
+    private void transferExtendPropertiesToEntity(Product product, ProductDto productDto) {
+
+        BrandDto brandDto = productDto.getBrand();
+        PostDto postDto = productDto.getPost();
+        List<PhotoDto> photoDtoList = productDto.getPhotos();
+        List<GiftDto> giftDtoList = productDto.getGifts();
+        List<SpecificationDto> specificationDtoList = productDto.getSpecifications();
+        List<CategoryDto> categoryDtoList = productDto.getCategories();
+        if (brandDto != null) {
+            product.setBrand(brandMapper.toEntity(brandDto));
+        }
+        if (postDto != null) {
+            product.setPost(postMapper.toEntity(postDto));
+        }
+        if (photoDtoList != null && !photoDtoList.isEmpty()) {
+            product.setPhotos(photoMapper.toListEntity(photoDtoList));
+        }
+        if (giftDtoList != null && !giftDtoList.isEmpty()) {
+            product.setGifts(giftMapper.toListEntity(giftDtoList));
+        }
+        if (specificationDtoList != null && !specificationDtoList.isEmpty()) {
+            product.setSpecifications(specificationMapper.toListEntity(specificationDtoList));
+        }
+        if (categoryDtoList != null && !categoryDtoList.isEmpty()) {
+            product.setCategories(categoryMapper.toListEntity(categoryDtoList));
         }
     }
 }

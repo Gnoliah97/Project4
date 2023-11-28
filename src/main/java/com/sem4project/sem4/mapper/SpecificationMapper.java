@@ -1,7 +1,7 @@
 package com.sem4project.sem4.mapper;
 
-import com.sem4project.sem4.dto.dtomodel.RoleDto;
-import com.sem4project.sem4.entity.Role;
+import com.sem4project.sem4.dto.dtomodel.SpecificationDto;
+import com.sem4project.sem4.entity.Specification;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -11,50 +11,42 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 @Mapper
-public interface RoleMapper extends BaseMapper<Role, RoleDto>{
+public interface SpecificationMapper extends BaseMapper<Specification, SpecificationDto>{
+    SpecificationMapper INSTANCE = Mappers.getMapper(SpecificationMapper.class);
 
-    RoleMapper INSTANCE = Mappers.getMapper(RoleMapper.class);
-    @Mappings({
-            @Mapping(target = "users", ignore = true),
-    })
-    RoleDto toDto(Role role);
-    @Mappings({
-            @Mapping(target = "users", ignore = true),
-    })
-    List<RoleDto> toListDto(List<Role> roles);
+    @Mappings({})
+    SpecificationDto toDto(Specification specification);
+
+    @Mappings({})
+    List<SpecificationDto> toListDto(List<Specification> specifications);
+
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
             @Mapping(target = "updatedBy", ignore = true),
-            @Mapping(target = "users", ignore = true),
     })
-    Role toEntity(RoleDto roleDto);
+    Specification toEntity(SpecificationDto specificationDto);
+
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
             @Mapping(target = "updatedBy", ignore = true),
-            @Mapping(target = "users", ignore = true),
     })
-    List<Role> toListEntity(List<RoleDto> roleDtos);
+    List<Specification> toListEntity(List<SpecificationDto> specificationDtos);
 
-    @Override
-    @Mappings({
-            @Mapping(target = "users", ignore = true),
-    })
-    void transferToDto(@MappingTarget RoleDto roleDto, Role role);
+    @Mappings({})
+    void transferToDto(@MappingTarget SpecificationDto specificationDto, Specification specification);
 
-    @Override
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
             @Mapping(target = "updatedBy", ignore = true),
-            @Mapping(target = "users", ignore = true),
     })
-    void transferToEntity(@MappingTarget Role role, RoleDto roleDto);
+    void transferToEntity(@MappingTarget Specification specification, SpecificationDto specificationDto);
 }

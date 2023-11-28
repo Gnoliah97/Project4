@@ -1,7 +1,7 @@
 package com.sem4project.sem4.mapper;
 
-import com.sem4project.sem4.dto.dtomodel.RoleDto;
-import com.sem4project.sem4.entity.Role;
+import com.sem4project.sem4.dto.dtomodel.RateDto;
+import com.sem4project.sem4.entity.Rate;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -11,50 +11,57 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 @Mapper
-public interface RoleMapper extends BaseMapper<Role, RoleDto>{
+public interface RateMapper extends BaseMapper<Rate, RateDto>{
+    RateMapper INSTANCE = Mappers.getMapper(RateMapper.class);
 
-    RoleMapper INSTANCE = Mappers.getMapper(RoleMapper.class);
     @Mappings({
-            @Mapping(target = "users", ignore = true),
+            @Mapping(target = "product", ignore = true),
+            @Mapping(target = "user", ignore = true),
     })
-    RoleDto toDto(Role role);
+    RateDto toDto(Rate rate);
+
     @Mappings({
-            @Mapping(target = "users", ignore = true),
+            @Mapping(target = "product", ignore = true),
+            @Mapping(target = "user", ignore = true),
     })
-    List<RoleDto> toListDto(List<Role> roles);
+    List<RateDto> toListDto(List<Rate> rates);
+
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
             @Mapping(target = "updatedBy", ignore = true),
-            @Mapping(target = "users", ignore = true),
+            @Mapping(target = "product", ignore = true),
+            @Mapping(target = "user", ignore = true),
     })
-    Role toEntity(RoleDto roleDto);
+    Rate toEntity(RateDto rateDto);
+
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
             @Mapping(target = "updatedBy", ignore = true),
-            @Mapping(target = "users", ignore = true),
+            @Mapping(target = "product", ignore = true),
+            @Mapping(target = "user", ignore = true),
     })
-    List<Role> toListEntity(List<RoleDto> roleDtos);
+    List<Rate> toListEntity(List<RateDto> rateDtos);
 
-    @Override
     @Mappings({
-            @Mapping(target = "users", ignore = true),
+            @Mapping(target = "product", ignore = true),
+            @Mapping(target = "user", ignore = true),
     })
-    void transferToDto(@MappingTarget RoleDto roleDto, Role role);
+    void transferToDto(@MappingTarget RateDto rateDto, Rate rate);
 
-    @Override
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
             @Mapping(target = "updatedBy", ignore = true),
-            @Mapping(target = "users", ignore = true),
+            @Mapping(target = "product", ignore = true),
+            @Mapping(target = "user", ignore = true),
     })
-    void transferToEntity(@MappingTarget Role role, RoleDto roleDto);
+    void transferToEntity(@MappingTarget Rate rate, RateDto rateDto);
 }

@@ -24,9 +24,11 @@ public abstract class BaseEntity{
     private boolean disable;
     @Column(nullable = false)
     private Instant createdAt;
-    private String createdBy;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private User createdBy;
     private Instant updatedAt;
-    private String updatedBy;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private User updatedBy;
     @PrePersist
     protected void prePersist(){
         if(this.createdAt == null) {
@@ -35,13 +37,17 @@ public abstract class BaseEntity{
         if(this.createdBy == null){
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if(authentication != null && !authentication.getPrincipal().equals("anonymousUser")){
-                this.createdBy = ((UserPrincipal) authentication.getPrincipal()).getId().toString();
+                this.createdBy = User.builder()
+                        .id(((UserPrincipal) authentication.getPrincipal()).getId())
+                        .build();
             }
         }
         this.updatedAt = Instant.now();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null && !authentication.getPrincipal().equals("anonymousUser")){
-            this.createdBy = ((UserPrincipal) authentication.getPrincipal()).getId().toString();
+            this.createdBy = User.builder()
+                    .id(((UserPrincipal) authentication.getPrincipal()).getId())
+                    .build();
         }
     }
     @PreUpdate
@@ -49,7 +55,9 @@ public abstract class BaseEntity{
         this.updatedAt = Instant.now();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null &&!authentication.getPrincipal().equals("anonymousUser")){
-            this.createdBy = ((UserPrincipal) authentication.getPrincipal()).getId().toString();
+            this.createdBy = User.builder()
+                    .id(((UserPrincipal) authentication.getPrincipal()).getId())
+                    .build();
         }
     }
 }
