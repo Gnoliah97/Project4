@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper
 public interface DistrictMapper extends BaseMapper<District, DistrictDto>{
     DistrictMapper INSTANCE = Mappers.getMapper(DistrictMapper.class);
+
     @Mappings({
             @Mapping(target = "province", ignore = true),
             @Mapping(target = "branches", ignore = true),

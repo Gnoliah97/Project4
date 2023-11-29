@@ -8,6 +8,7 @@ import com.sem4project.sem4.entity.District;
 import com.sem4project.sem4.exception.ResourceNotFoundException;
 import com.sem4project.sem4.exception.UpdateResourceException;
 import com.sem4project.sem4.mapper.CategoryMapper;
+import com.sem4project.sem4.mapper.UserMapper;
 import com.sem4project.sem4.repository.CategoryRepository;
 import com.sem4project.sem4.service.CategoryService;
 import com.sem4project.sem4.service.utils.ServiceUtil;
@@ -22,6 +23,7 @@ import java.util.UUID;
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper = CategoryMapper.INSTANCE;
+    private final UserMapper userMapper = UserMapper.INSTANCE;
     @Override
     public CategoryDto getById(UUID id) {
         try {
@@ -40,7 +42,12 @@ public class CategoryServiceImpl implements CategoryService {
             }
             List<Category> categories = ServiceUtil.getAll(categoryRepository, isDisable, pageNumber, pageSize, sortBy, sortType);
 
-            return categories.stream().map(categoryMapper::toDto).toList();
+            return categories.stream().map(category -> {
+                CategoryDto categoryDto = categoryMapper.toDto(category);
+                categoryDto.setCreatedBy(userMapper.toDto(category.getCreatedBy()));
+                categoryDto.setUpdatedBy(userMapper.toDto(category.getUpdatedBy()));
+                return categoryDto;
+            }).toList();
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Get categories failed");
         }

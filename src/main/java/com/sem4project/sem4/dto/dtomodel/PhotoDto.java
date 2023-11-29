@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.UUID;
+
+
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
@@ -11,5 +14,11 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PhotoDto extends BaseDto{
+    private UUID id;
+    private String name;
+    private String format;
     private String url;
+    private double wight;
+    private double height;
+
 }
