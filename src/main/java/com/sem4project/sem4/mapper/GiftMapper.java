@@ -13,8 +13,16 @@ import java.util.List;
 public interface GiftMapper extends BaseMapper<Gift, GiftDto> {
     GiftMapper INSTANCE = Mappers.getMapper(GiftMapper.class);
     @Override
+    @Mappings({
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+    })
     GiftDto toDto(Gift gift);
 
+    @Mappings({
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+    })
     @Override
     List<GiftDto> toListDto(List<Gift> gifts);
 
@@ -39,6 +47,10 @@ public interface GiftMapper extends BaseMapper<Gift, GiftDto> {
     List<Gift> toListEntity(List<GiftDto> giftDtos);
 
     @Override
+    @Mappings({
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+    })
     void transferToDto(@MappingTarget GiftDto giftDto, Gift gift);
 
     @Override

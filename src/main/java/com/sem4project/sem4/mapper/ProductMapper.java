@@ -22,6 +22,8 @@ public interface ProductMapper extends BaseMapper<Product, ProductDto> {
             @Mapping(target = "rates", ignore = true),
             @Mapping(target = "branchProducts", ignore = true),
             @Mapping(target = "comments", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     ProductDto toDto(Product product);
 
@@ -35,6 +37,8 @@ public interface ProductMapper extends BaseMapper<Product, ProductDto> {
             @Mapping(target = "rates", ignore = true),
             @Mapping(target = "branchProducts", ignore = true),
             @Mapping(target = "comments", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     List<ProductDto> toListDto(List<Product> products);
 
@@ -84,6 +88,8 @@ public interface ProductMapper extends BaseMapper<Product, ProductDto> {
             @Mapping(target = "rates", ignore = true),
             @Mapping(target = "branchProducts", ignore = true),
             @Mapping(target = "comments", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     void transferToDto(@MappingTarget ProductDto productDto, Product product);
 

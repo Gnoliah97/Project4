@@ -17,12 +17,16 @@ public interface RateMapper extends BaseMapper<Rate, RateDto>{
     @Mappings({
             @Mapping(target = "product", ignore = true),
             @Mapping(target = "user", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     RateDto toDto(Rate rate);
 
     @Mappings({
             @Mapping(target = "product", ignore = true),
             @Mapping(target = "user", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     List<RateDto> toListDto(List<Rate> rates);
 
@@ -51,6 +55,8 @@ public interface RateMapper extends BaseMapper<Rate, RateDto>{
     @Mappings({
             @Mapping(target = "product", ignore = true),
             @Mapping(target = "user", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     void transferToDto(@MappingTarget RateDto rateDto, Rate rate);
 

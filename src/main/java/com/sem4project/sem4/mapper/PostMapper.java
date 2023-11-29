@@ -14,11 +14,15 @@ public interface PostMapper extends BaseMapper<Post, PostDto> {
     PostMapper INSTANCE = Mappers.getMapper(PostMapper.class);
     @Mappings({
             @Mapping(target = "comments", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     PostDto toDto(Post post);
 
     @Mappings({
             @Mapping(target = "comments", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     List<PostDto> toListDto(List<Post> posts);
 
@@ -44,6 +48,8 @@ public interface PostMapper extends BaseMapper<Post, PostDto> {
 
     @Mappings({
             @Mapping(target = "comments", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     void transferToDto(@MappingTarget PostDto postDto, Post post);
 

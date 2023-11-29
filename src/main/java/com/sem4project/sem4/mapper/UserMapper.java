@@ -22,12 +22,16 @@ public interface UserMapper extends BaseMapper<User, UserDto>{
     @Mappings({
             @Mapping(target = "roles", ignore = true),
             @Mapping(target = "userInfo", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     UserDto toDto(User user);
 
     @Mappings({
             @Mapping(target = "roles", ignore = true),
             @Mapping(target = "userInfo", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     List<UserDto> toListDto(List<User> users);
 
@@ -57,6 +61,8 @@ public interface UserMapper extends BaseMapper<User, UserDto>{
     @Mappings({
             @Mapping(target = "roles", ignore = true),
             @Mapping(target = "userInfo", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     void transferToDto(@MappingTarget UserDto userDto, User user);
 
