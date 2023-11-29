@@ -5,4 +5,5 @@ import com.sem4project.sem4.entity.Role;
 
 public interface RoleService extends BaseService<Role, RoleDto>{
     void init();
+    Long count(Boolean isDisable);
 }

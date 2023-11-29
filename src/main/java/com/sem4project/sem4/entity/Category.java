@@ -16,11 +16,11 @@ import java.util.List;
 @Setter
 public class Category extends BaseEntity{
     private String name;
-    @OneToMany(mappedBy = "parentCategory")
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
     private List<Category> categories;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Category parentCategory;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Product> products;
 }

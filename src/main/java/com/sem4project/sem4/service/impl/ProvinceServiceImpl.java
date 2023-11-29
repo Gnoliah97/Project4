@@ -30,7 +30,7 @@ public class ProvinceServiceImpl implements ProvinceService {
         try {
             Province province = provinceMapper.toEntity(provinceDto);
             Province createdProvince = provinceRepository.save(province);
-            provinceRepository.refresh(createdProvince);
+//            provinceRepository.refresh(createdProvince);
             return provinceMapper.toDto(createdProvince);
         } catch (OptimisticEntityLockException e) {
             throw new UpdateResourceException("Can not create new province");
@@ -79,7 +79,7 @@ public class ProvinceServiceImpl implements ProvinceService {
             Province province = provinceRepository.findById(id).orElseThrow(IllegalArgumentException::new);
             provinceMapper.transferToEntity(province, provinceDto);
             Province updatedProvince = provinceRepository.save(province);
-            provinceRepository.refresh(updatedProvince);
+//            provinceRepository.refresh(updatedProvince);
             return provinceMapper.toDto(updatedProvince);
         } catch (IllegalArgumentException | EntityNotFoundException e) {
             throw new ResourceNotFoundException("Province with id = " + id + " not found");

@@ -14,4 +14,5 @@ public interface BaseRepository<T, ID extends Serializable> extends JpaRepositor
     Long countByDisable(Boolean isDisable);
     List<T> findAllByDisable(Boolean isDisable, Sort sort);
     List<T> findAllByDisable(Boolean isDisable, Pageable pageable);
+    void persist(T t);
 }

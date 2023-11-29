@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,4 +16,5 @@ import java.util.Date;
 public class TokenDto {
     private String jwtToken;
     private Date expiresIn;
+    private List<RoleDto> roles;
 }
