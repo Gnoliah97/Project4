@@ -111,6 +111,10 @@ public class CategoryServiceImpl implements CategoryService {
     private void transferExtendPropertiesToEntity(Category category, CategoryDto categoryDto){
         CategoryDto parentCategoryDto = categoryDto.getParentCategory();
         if(parentCategoryDto != null){
+            boolean parentIsExists = categoryRepository.existsById(parentCategoryDto.getId());
+            if (!parentIsExists){
+                throw new ResourceNotFoundException("Parent category is not exists");
+            }
             Category parentCategory = categoryMapper.toEntity(parentCategoryDto);
             parentCategory.setId(parentCategoryDto.getId());
             category.setParentCategory(parentCategory);
