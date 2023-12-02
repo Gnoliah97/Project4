@@ -7,6 +7,7 @@ import org.springframework.lang.NonNullApi;
 import org.springframework.lang.NonNullFields;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,4 +16,5 @@ public interface CategoryRepository extends BaseRepository<Category, UUID> {
     @EntityGraph(attributePaths = {"categories"})
     Optional<Category> findById(UUID id);
     Long countByDisable(Boolean isDisable);
+    Boolean existsAllByIdIn(List<UUID> idList);
 }

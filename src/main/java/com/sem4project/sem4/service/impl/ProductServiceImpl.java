@@ -8,6 +8,7 @@ import com.sem4project.sem4.entity.Province;
 import com.sem4project.sem4.exception.ResourceNotFoundException;
 import com.sem4project.sem4.exception.UpdateResourceException;
 import com.sem4project.sem4.mapper.*;
+import com.sem4project.sem4.repository.CategoryRepository;
 import com.sem4project.sem4.repository.ProductRepository;
 import com.sem4project.sem4.service.ProductService;
 import com.sem4project.sem4.service.utils.ServiceUtil;
@@ -25,6 +26,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper = ProductMapper.INSTANCE;
     private final PhotoMapper photoMapper = PhotoMapper.INSTANCE;
     private final GiftMapper giftMapper = GiftMapper.INSTANCE;
@@ -121,7 +123,7 @@ public class ProductServiceImpl implements ProductService {
         return Arrays.stream(title.split(" ")).reduce("", (result, word) -> result + word.charAt(0)).toUpperCase() + Long.toString(timestamp).substring(Long.toString(timestamp).length() - 4);
     }
 
-    private void transferExtendPropertiesToEntity(Product product, ProductDto productDto) {
+    private void transferExtendPropertiesToEntity(Product product, ProductDto productDto){
 
         BrandDto brandDto = productDto.getBrand();
         PostDto postDto = productDto.getPost();
@@ -145,6 +147,10 @@ public class ProductServiceImpl implements ProductService {
             product.setSpecifications(specificationMapper.toListEntity(specificationDtoList));
         }
         if (categoryDtoList != null && !categoryDtoList.isEmpty()) {
+            Boolean categoriesAreExists = categoryRepository.existsAllByIdIn(categoryDtoList.stream().map(CategoryDto::getId).toList());
+            if (!categoriesAreExists){
+                throw new ResourceNotFoundException("Category is not exists");
+            }
             product.setCategories(categoryMapper.toListEntity(categoryDtoList));
         }
     }

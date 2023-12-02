@@ -28,7 +28,10 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto getById(UUID id) {
         try {
             Category category = categoryRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-            return categoryMapper.toDto(category);
+            List<CategoryDto> categoriesDto = categoryMapper.toListDto(category.getCategories());
+            CategoryDto categoryDto = categoryMapper.toDto(category);
+            categoryDto.setCategories(categoriesDto);
+            return categoryDto;
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Category with id = " + id + " not found");
         }

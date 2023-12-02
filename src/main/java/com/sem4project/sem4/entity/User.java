@@ -16,6 +16,7 @@ import java.util.Set;
 @SuperBuilder
 @Getter
 @Setter
+@Table(name = "users")
 public class User extends BaseEntity {
     @Column(name = "email", length = 50, unique = true)
     private String email;
