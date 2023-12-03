@@ -37,9 +37,7 @@ public class ServiceUtil {
             Integer pageNumber,
             Integer pageSize,
             String sortBy,
-            String sortType,
-            Function<Sort, List<T>> getBySort,
-            Function<Pageable, List<T>> getByPageable
+            String sortType
     ){
         List<T> entities;
         if(pageSize == null){

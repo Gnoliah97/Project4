@@ -38,7 +38,6 @@ public class CategoryController extends BaseController<Category, CategoryDto> {
                                 .build()
                 );
     }
-    @Override
     @RequestMapping(value = "/getAllAvailable", method = RequestMethod.GET)
     protected ResponseEntity<ResponseObject> getAllAvailable(@RequestParam(required = false, defaultValue = "false") Boolean isDisable,
                                                     @RequestParam(defaultValue = "1") Integer pageNumber,
