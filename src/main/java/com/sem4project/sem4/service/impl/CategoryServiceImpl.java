@@ -46,7 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
             List<Category> categories = ServiceUtil.getAll(categoryRepository, isDisable, pageNumber, pageSize, sortBy, sortType);
 
             return categories.stream().map(category -> {
-                CategoryDto categoryDto = categoryMapper.toDto(category);
+                CategoryDto categoryDto = getChildrenCategory(category);
                 categoryDto.setCreatedBy(userMapper.toDto(category.getCreatedBy()));
                 categoryDto.setUpdatedBy(userMapper.toDto(category.getUpdatedBy()));
                 return categoryDto;
@@ -119,5 +119,13 @@ public class CategoryServiceImpl implements CategoryService {
             parentCategory.setId(parentCategoryDto.getId());
             category.setParentCategory(parentCategory);
         }
+    }
+    private CategoryDto getChildrenCategory(Category category){
+        CategoryDto categoryDto = categoryMapper.toDto(category);
+        if(!category.getCategories().isEmpty()){
+            List<CategoryDto> childrenList = category.getCategories().stream().map(this::getChildrenCategory).toList();
+            categoryDto.setCategories(childrenList);
+        }
+        return categoryDto;
     }
 }

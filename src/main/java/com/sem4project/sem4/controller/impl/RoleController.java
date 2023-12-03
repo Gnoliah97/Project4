@@ -15,7 +15,7 @@ import java.util.UUID;
 @Tag(name = "Brand", description = "Brand API")
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/role")
+@RequestMapping("/role")
 @CrossOrigin
 public class RoleController extends BaseController<Role, RoleDto> {
     private final RoleService roleService;

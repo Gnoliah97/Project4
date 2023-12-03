@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 @Tag(name = "Auth", description = "Authentication API")
 @RestController
-@RequestMapping(value = "/api/v1/auth")
+@RequestMapping(value = "/auth")
 @PermitAll
 @AllArgsConstructor
 @CrossOrigin

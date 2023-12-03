@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 
 public class ServiceUtil {
     public static <T extends BaseEntity> List<T> getAllAvailable(

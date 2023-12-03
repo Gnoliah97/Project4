@@ -1,6 +1,8 @@
 package com.sem4project.sem4.repository;
 
 import com.sem4project.sem4.entity.Category;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.lang.NonNullApi;
@@ -17,4 +19,6 @@ public interface CategoryRepository extends BaseRepository<Category, UUID> {
     Optional<Category> findById(UUID id);
     Long countByDisable(Boolean isDisable);
     Boolean existsAllByIdIn(List<UUID> idList);
+    List<Category> findAllByParentCategoryNull(Sort sort);
+    List<Category> findAllByParentCategoryNull(Pageable pageable);
 }
