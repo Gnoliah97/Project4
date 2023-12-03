@@ -15,7 +15,7 @@ import java.util.UUID;
 @Tag(name = "District", description = "District API")
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/district")
+@RequestMapping("/district")
 @CrossOrigin
 public class DistrictController extends BaseController<District, DistrictDto> {
     private final DistrictService districtService;

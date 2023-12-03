@@ -17,7 +17,7 @@ import java.util.UUID;
 @Tag(name = "Category", description = "Category API")
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/category")
+@RequestMapping("/category")
 @CrossOrigin
 public class CategoryController extends BaseController<Category, CategoryDto> {
     private final CategoryService categoryService;
@@ -35,6 +35,22 @@ public class CategoryController extends BaseController<Category, CategoryDto> {
                         ResponseObject.builder()
                                 .message("Success")
                                 .data(categoryService.getAll(isDisable, pageNumber, pageSize, sortBy, sortType))
+                                .build()
+                );
+    }
+    @Override
+    @RequestMapping(value = "/getAllAvailable", method = RequestMethod.GET)
+    protected ResponseEntity<ResponseObject> getAllAvailable(@RequestParam(required = false, defaultValue = "false") Boolean isDisable,
+                                                    @RequestParam(defaultValue = "1") Integer pageNumber,
+                                                    @RequestParam(required = false) Integer pageSize,
+                                                    @RequestParam(required = false) String sortBy,
+                                                    @RequestParam(required = false) String sortType
+    ) {
+        return ResponseEntity.status(200)
+                .body(
+                        ResponseObject.builder()
+                                .message("Success")
+                                .data(categoryService.getAllAvailable(pageNumber, pageSize, sortBy, sortType))
                                 .build()
                 );
     }

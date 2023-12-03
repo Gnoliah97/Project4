@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Tag(name = "User", description = "User API")
 @RestController
-@RequestMapping(value = "/api/v1/user")
+@RequestMapping(value = "/user")
 @AllArgsConstructor
 @CrossOrigin
 public class UserController extends BaseController<User, UserDto> {

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 
 public class ServiceUtil {
     public static <T extends BaseEntity> List<T> getAllAvailable(
@@ -36,7 +37,9 @@ public class ServiceUtil {
             Integer pageNumber,
             Integer pageSize,
             String sortBy,
-            String sortType
+            String sortType,
+            Function<Sort, List<T>> getBySort,
+            Function<Pageable, List<T>> getByPageable
     ){
         List<T> entities;
         if(pageSize == null){
