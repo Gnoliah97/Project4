@@ -121,6 +121,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Long count(Boolean isDisable) {
+        if(isDisable == null){
+            return userRepository.count();
+        }
+        return userRepository.countByDisable(isDisable);
+    }
+
+    @Override
     public void logout() {
         try {
 //            SecurityContextHolder.clearContext();

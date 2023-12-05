@@ -43,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
             if(isDisable != null && isDisable){
                 return getAllAvailable(pageNumber, pageSize, sortBy, sortType);
             }
-            List<Category> categories = ServiceUtil.getAll(categoryRepository, isDisable, pageNumber, pageSize, sortBy, sortType);
+            List<Category> categories = ServiceUtil.getAll(this::count, isDisable, pageNumber, pageSize, sortBy, sortType, categoryRepository::findAllByDisable, categoryRepository::findAllByDisable);
 
             return categories.stream().map(category -> {
                 CategoryDto categoryDto = getChildrenCategory(category);
@@ -59,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDto> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
-            List<Category> categories = ServiceUtil.getAllAvailable(categoryRepository, pageNumber, pageSize, sortBy, sortType);
+            List<Category> categories = ServiceUtil.getAllAvailable(this::count, pageNumber, pageSize, sortBy, sortType, categoryRepository::findAll, categoryRepository::findAll);
             return categoryMapper.toListDto(categories);
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Get districts failed");
@@ -107,7 +107,15 @@ public class CategoryServiceImpl implements CategoryService {
             throw new UpdateResourceException("Create category failed");
         }
     }
-    
+
+    @Override
+    public Long count(Boolean isDisable) {
+        if(isDisable == null){
+            return categoryRepository.count();
+        }
+        return categoryRepository.countByDisable(isDisable);
+    }
+
     private void transferExtendPropertiesToEntity(Category category, CategoryDto categoryDto){
         CategoryDto parentCategoryDto = categoryDto.getParentCategory();
         if(parentCategoryDto != null){

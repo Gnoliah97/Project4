@@ -32,7 +32,10 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Long count(Boolean isDisable) {
-        return ServiceUtil.count(isDisable, roleRepository);
+        if(isDisable == null){
+            return roleRepository.count();
+        }
+        return roleRepository.countByDisable(isDisable);
     }
 
     @Override

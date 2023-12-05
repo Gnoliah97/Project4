@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
             if (isDisable != null && isDisable) {
                 return getAllAvailable(pageNumber, pageSize, sortBy, sortType);
             }
-            List<Product> products = ServiceUtil.getAll(productRepository, isDisable, pageNumber, pageSize, sortBy, sortType);
+            List<Product> products = ServiceUtil.getAll(this::count, isDisable, pageNumber, pageSize, sortBy, sortType, productRepository::findAllByDisable, productRepository::findAllByDisable);
 
             return products.stream().map(productMapper::toDto).toList();
         } catch (IllegalArgumentException ex) {
@@ -66,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
-            List<Product> products = ServiceUtil.getAllAvailable(productRepository, pageNumber, pageSize, sortBy, sortType);
+            List<Product> products = ServiceUtil.getAllAvailable(this::count, pageNumber, pageSize, sortBy, sortType, productRepository::findAll, productRepository::findAll);
             return productMapper.toListDto(products);
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Get products failed");
@@ -115,6 +115,14 @@ public class ProductServiceImpl implements ProductService {
         } catch (OptimisticEntityLockException e) {
             throw new UpdateResourceException("Can not update product");
         }
+    }
+
+    @Override
+    public Long count(Boolean isDisable) {
+        if(isDisable == null){
+            return categoryRepository.count();
+        }
+        return categoryRepository.countByDisable(isDisable);
     }
 
     private String generateProductCode(String title) {

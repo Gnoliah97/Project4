@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class StorageServiceImpl implements StorageService {
     @Override
     public Photo uploadImage(MultipartFile file) {
-
         return null;
     }
 }

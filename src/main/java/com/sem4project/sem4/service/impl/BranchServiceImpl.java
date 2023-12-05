@@ -15,10 +15,12 @@ import com.sem4project.sem4.service.BrandService;
 import com.sem4project.sem4.service.utils.ServiceUtil;
 import lombok.AllArgsConstructor;
 import org.hibernate.dialect.lock.OptimisticEntityLockException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 
 @Service
 @AllArgsConstructor
@@ -39,10 +41,10 @@ public class BranchServiceImpl implements BaseService<Branch, BranchDto> {
     @Override
     public List<BranchDto> getAll(Boolean isDisable, Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
-            if(isDisable != null && isDisable){
+            if (isDisable != null && isDisable) {
                 return getAllAvailable(pageNumber, pageSize, sortBy, sortType);
             }
-            List<Branch> branches = ServiceUtil.getAll(branchRepository, isDisable, pageNumber, pageSize, sortBy, sortType);
+            List<Branch> branches = ServiceUtil.getAll(this::count, isDisable, pageNumber, pageSize, sortBy, sortType, branchRepository::findAllByDisable, branchRepository::findAllByDisable);
 
             return branches.stream().map(branchMapper::toDto).toList();
         } catch (IllegalArgumentException ex) {
@@ -53,7 +55,9 @@ public class BranchServiceImpl implements BaseService<Branch, BranchDto> {
     @Override
     public List<BranchDto> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
-            List<Branch> branches = ServiceUtil.getAllAvailable(branchRepository, pageNumber, pageSize, sortBy, sortType);
+            List<Branch> branches = ServiceUtil.getAllAvailable(this::count,
+                    pageNumber, pageSize, sortBy, sortType,
+                    branchRepository::findAll, branchRepository::findAll);
             return branchMapper.toListDto(branches);
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Get branches failed");
@@ -82,7 +86,7 @@ public class BranchServiceImpl implements BaseService<Branch, BranchDto> {
             return branchMapper.toDto(updatedBranch);
         } catch (IllegalArgumentException e) {
             throw new ResourceNotFoundException("District with id = " + id + " not found");
-        } catch (OptimisticEntityLockException ex){
+        } catch (OptimisticEntityLockException ex) {
             throw new UpdateResourceException("Update branch failed");
         }
     }
@@ -98,5 +102,13 @@ public class BranchServiceImpl implements BaseService<Branch, BranchDto> {
         } catch (OptimisticEntityLockException ex) {
             throw new UpdateResourceException("Can not update branch");
         }
+    }
+
+    @Override
+    public Long count(Boolean isDisable) {
+        if (isDisable == null) {
+            return branchRepository.count();
+        }
+        return branchRepository.countByDisable(isDisable);
     }
 }

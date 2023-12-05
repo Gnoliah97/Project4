@@ -123,9 +123,7 @@ public class SecurityConfiguration {
         configuration.setAllowCredentials(true);
         // setAllowedHeaders is important! Without it, OPTIONS preflight request
         // will fail with 403 Invalid CORS request
-        configuration.setAllowedHeaders(
-                asList("Authorization", "Cache-Control", "Content-Type", "Access-Control-Allow-Origin",
-                        "Access-Control-Expose-Headers", "Access-Control-Allow-Headers"));
+        configuration.setAllowedHeaders(List.of("*"));
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
