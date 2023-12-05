@@ -47,17 +47,22 @@ public class AuthController{
         String token = jwtUtil.generateToken(userDetails);
 
         Date expiresIn = jwtUtil.getExpirationDateFromToken(token);
-        HttpCookie cookie = ResponseCookie.from("jwtToken", "Bearer%20" + token).maxAge(expiresIn.compareTo(new Date())).build();
+        List<RoleDto> roles = userDetails.getAuthorities()
+                .stream().map(e -> (RoleDto)RoleDto.builder().name(e.getAuthority()).build()).toList();
+        TokenDto tokenDto = TokenDto.builder()
+                .jwtToken(token)
+                .roles(roles)
+                .expiresIn(expiresIn)
+                .build();
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Authorization",
                 "Bearer " + token);
-        responseHeaders.set(HttpHeaders.SET_COOKIE, cookie.toString());
         return ResponseEntity.ok()
                 .headers(responseHeaders)
                 .body(
                         ResponseObject.builder()
                                 .message("Login success")
-                                .data(true)
+                                .data(tokenDto)
                                 .build()
                 );
     }
