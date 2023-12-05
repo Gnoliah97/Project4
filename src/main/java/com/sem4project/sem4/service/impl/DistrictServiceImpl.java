@@ -50,7 +50,7 @@ public class DistrictServiceImpl implements DistrictService {
             if(isDisable != null && isDisable){
                 return getAllAvailable(pageNumber, pageSize, sortBy, sortType);
             }
-            List<District> districts = ServiceUtil.getAll(districtRepository, isDisable, pageNumber, pageSize, sortBy, sortType);
+            List<District> districts = ServiceUtil.getAll(this::count, isDisable, pageNumber, pageSize, sortBy, sortType, districtRepository::findAllByDisable, districtRepository::findAllByDisable);
 
             return districts.stream().map(districtMapper::toDto).toList();
         } catch (IllegalArgumentException ex) {
@@ -61,7 +61,7 @@ public class DistrictServiceImpl implements DistrictService {
     @Override
     public List<DistrictDto> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
-            List<District> districts = ServiceUtil.getAllAvailable(districtRepository, pageNumber, pageSize, sortBy, sortType);
+            List<District> districts = ServiceUtil.getAllAvailable(this::count, pageNumber, pageSize, sortBy, sortType, districtRepository::findAll, districtRepository::findAll);
             return districtMapper.toListDto(districts);
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Get districts failed");
@@ -104,5 +104,13 @@ public class DistrictServiceImpl implements DistrictService {
         } catch (OptimisticEntityLockException ex){
             throw new UpdateResourceException("Create district failed");
         }
+    }
+
+    @Override
+    public Long count(Boolean isDisable) {
+        if(isDisable == null){
+            return districtRepository.count();
+        }
+        return districtRepository.countByDisable(isDisable);
     }
 }

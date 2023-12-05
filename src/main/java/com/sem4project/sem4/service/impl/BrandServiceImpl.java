@@ -40,7 +40,7 @@ public class BrandServiceImpl implements BrandService {
             if(isDisable != null && isDisable){
                 return getAllAvailable(pageNumber, pageSize, sortBy, sortType);
             }
-            List<Brand> brands = ServiceUtil.getAll(brandRepository, isDisable, pageNumber, pageSize, sortBy, sortType);
+            List<Brand> brands = ServiceUtil.getAll(this::count, isDisable, pageNumber, pageSize, sortBy, sortType, brandRepository::findAllByDisable, brandRepository::findAllByDisable);
 
             return brands.stream().map(brandMapper::toDto).toList();
         } catch (IllegalArgumentException ex) {
@@ -51,7 +51,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public List<BrandDto> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
-            List<Brand> brands = ServiceUtil.getAllAvailable(brandRepository, pageNumber, pageSize, sortBy, sortType);
+            List<Brand> brands = ServiceUtil.getAllAvailable(this::count, pageNumber, pageSize, sortBy, sortType, brandRepository::findAll, brandRepository::findAll);
             return brandMapper.toListDto(brands);
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Get districts failed");
@@ -96,5 +96,13 @@ public class BrandServiceImpl implements BrandService {
         } catch (OptimisticEntityLockException ex) {
             throw new UpdateResourceException("Can not update brand");
         }
+    }
+
+    @Override
+    public Long count(Boolean isDisable) {
+        if(isDisable == null){
+            return brandRepository.count();
+        }
+        return brandRepository.countByDisable(isDisable);
     }
 }
