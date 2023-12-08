@@ -5,6 +5,7 @@ import com.sem4project.sem4.dto.dtomodel.RoleDto;
 import com.sem4project.sem4.entity.Role;
 import com.sem4project.sem4.repository.RoleRepository;
 import com.sem4project.sem4.service.RoleService;
+import com.sem4project.sem4.service.utils.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,11 @@ public class RoleServiceImpl implements RoleService {
                     .name(r.name())
                     .build());
         });
+    }
+
+    @Override
+    public Long count(Boolean isDisable) {
+        return ServiceUtil.count(isDisable, roleRepository);
     }
 
     @Override

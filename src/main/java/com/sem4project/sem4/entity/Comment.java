@@ -1,5 +1,6 @@
 package com.sem4project.sem4.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
@@ -16,8 +17,10 @@ import java.io.Serial;
 @Setter
 public class Comment extends BaseEntity{
     private String content;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Post post;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Product product;
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 }

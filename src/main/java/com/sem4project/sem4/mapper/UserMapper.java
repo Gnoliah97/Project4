@@ -6,13 +6,14 @@ import com.sem4project.sem4.dto.request.RegisterRequest;
 import com.sem4project.sem4.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
 @Mapper
-public interface UserMapper{
+public interface UserMapper extends BaseMapper<User, UserDto>{
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
     @Mappings({})
     User fromRegisterRequest(RegisterRequest registerRequest);
@@ -51,4 +52,23 @@ public interface UserMapper{
             @Mapping(target = "userInfo", ignore = true),
     })
     List<User> toListEntity(List<UserDto> userDtos);
+
+    @Override
+    @Mappings({
+            @Mapping(target = "roles", ignore = true),
+            @Mapping(target = "userInfo", ignore = true),
+    })
+    void transferToDto(@MappingTarget UserDto userDto, User user);
+
+    @Override
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "createdAt", ignore = true),
+            @Mapping(target = "updatedAt", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
+            @Mapping(target = "roles", ignore = true),
+            @Mapping(target = "userInfo", ignore = true),
+    })
+    void transferToEntity(@MappingTarget User user, UserDto userDto);
 }

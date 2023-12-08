@@ -11,7 +11,7 @@ public interface BaseService<T extends BaseEntity, U extends BaseDto> {
     U getById(UUID id);
     List<U> getAll(Boolean isDisable, Integer pageNumber, Integer pageSize, String sortBy, String sortType);
     List<U> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType);
-    U create(U brandDto);
-    U update(UUID id, U brandDto);
+    U create(U u);
+    U update(UUID id, U u);
     void updateDisable(UUID id);
 }

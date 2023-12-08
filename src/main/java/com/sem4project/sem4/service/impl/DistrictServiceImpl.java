@@ -35,7 +35,7 @@ public class DistrictServiceImpl implements DistrictService {
             District district = districtMapper.toEntity(districtDto);
             district.setProvince(province);
             District createdDistrict = districtRepository.save(district);
-            districtRepository.refresh(createdDistrict);
+//            districtRepository.refresh(createdDistrict);
             return districtMapper.toDto(createdDistrict);
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("District with id = " + districtDto.getId() + " not found");
@@ -84,7 +84,7 @@ public class DistrictServiceImpl implements DistrictService {
             District district = districtRepository.findById(id).orElseThrow(IllegalArgumentException::new);
             districtMapper.transferToEntity(district, districtDto);
             District updatedDistrict = districtRepository.save(district);
-            districtRepository.refresh(updatedDistrict);
+//            districtRepository.refresh(updatedDistrict);
             return districtMapper.toDto(updatedDistrict);
         } catch (IllegalArgumentException e) {
             throw new ResourceNotFoundException("District with id = " + id + " not found");

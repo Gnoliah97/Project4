@@ -72,4 +72,10 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
 
         return new PageImpl<>(query.getResultList(), pageable, count).stream().toList();
     }
+
+    @Override
+    @Transactional
+    public void persist(T t) {
+        this.entityManager.persist(t);
+    }
 }

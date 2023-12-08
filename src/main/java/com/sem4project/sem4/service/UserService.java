@@ -1,5 +1,6 @@
 package com.sem4project.sem4.service;
 
+import com.sem4project.sem4.common.RoleEnum;
 import com.sem4project.sem4.dto.dtomodel.UserDto;
 import com.sem4project.sem4.dto.dtomodel.UserInfoDto;
 import com.sem4project.sem4.dto.request.LoginRequest;
@@ -16,4 +17,6 @@ public interface UserService extends BaseService<User, UserDto>{
     void logout();
     UserDto getUserInfo();
     UserInfoDto updateUserInfo(UUID id, UserInfoDto userInfoDto);
+    Long countByRole(RoleEnum role);
+    void init();
 }

@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 @Mapper
-public interface UserInfoMapper{
+public interface UserInfoMapper extends BaseMapper<UserInfo, UserInfoDto>{
 
     UserInfoMapper INSTANCE = Mappers.getMapper(UserInfoMapper.class);
     @Mappings({
@@ -53,4 +53,11 @@ public interface UserInfoMapper{
             @Mapping(target = "district", ignore = true),
     })
     void transferToEntity(@MappingTarget UserInfo userInfo, UserInfoDto userInfoDto);
+
+    @Override
+    @Mappings({
+            @Mapping(target = "province", ignore = true),
+            @Mapping(target = "district", ignore = true),
+    })
+    void transferToDto(@MappingTarget UserInfoDto userInfoDto, UserInfo userInfo);
 }

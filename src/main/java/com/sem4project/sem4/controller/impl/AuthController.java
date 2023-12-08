@@ -1,6 +1,7 @@
 package com.sem4project.sem4.controller.impl;
 
 import com.sem4project.sem4.controller.BaseController;
+import com.sem4project.sem4.dto.dtomodel.RoleDto;
 import com.sem4project.sem4.dto.dtomodel.TokenDto;
 import com.sem4project.sem4.dto.request.LoginRequest;
 import com.sem4project.sem4.dto.request.RegisterRequest;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 @Tag(name = "Auth", description = "Authentication API")
 @RestController
@@ -39,15 +41,19 @@ public class AuthController{
     private final JwtUtil jwtUtil;
     @ApiResponses(
             @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = ResponseObject.class), mediaType = "application/json")})
-
             )
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<ResponseObject> login(@RequestBody @Valid LoginRequest loginRequest) {
         userService.login(loginRequest);
-        String token = jwtUtil.generateToken((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String token = jwtUtil.generateToken(userDetails);
+
         Date expiresIn = jwtUtil.getExpirationDateFromToken(token);
+        List<RoleDto> roles = userDetails.getAuthorities()
+                .stream().map(e -> (RoleDto)RoleDto.builder().name(e.getAuthority()).build()).toList();
         TokenDto tokenDto = TokenDto.builder()
                 .jwtToken(token)
+                .roles(roles)
                 .expiresIn(expiresIn)
                 .build();
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -86,4 +92,8 @@ public class AuthController{
                                 .build()
                 );
     }
+//    @RequestMapping(value = "/getRole", method = RequestMethod.POST)
+//    public ResponseEntity<ResponseObject> getRole(){
+//
+//    }
 }
