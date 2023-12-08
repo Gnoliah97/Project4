@@ -16,6 +16,8 @@ public interface CommentMapper extends BaseMapper<Comment, CommentDto>{
             @Mapping(target = "post", ignore = true),
             @Mapping(target = "product", ignore = true),
             @Mapping(target = "user", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     CommentDto toDto(Comment comment);
 
@@ -23,6 +25,8 @@ public interface CommentMapper extends BaseMapper<Comment, CommentDto>{
             @Mapping(target = "post", ignore = true),
             @Mapping(target = "product", ignore = true),
             @Mapping(target = "user", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     List<CommentDto> toListDto(List<Comment> comments);
 
@@ -55,6 +59,8 @@ public interface CommentMapper extends BaseMapper<Comment, CommentDto>{
             @Mapping(target = "post", ignore = true),
             @Mapping(target = "product", ignore = true),
             @Mapping(target = "user", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     void transferToDto(@MappingTarget CommentDto commentDto, Comment comment);
 

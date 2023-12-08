@@ -80,7 +80,7 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint()))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/v1/**").permitAll()
+                        .requestMatchers("**").permitAll()
                         .requestMatchers(
                                 "/actuator/**",
                                 "/swagger-ui.html",

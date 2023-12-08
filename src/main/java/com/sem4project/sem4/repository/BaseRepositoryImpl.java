@@ -58,18 +58,13 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
     @Override
     public List<T> findAllByDisable(Boolean isDisable, Pageable pageable) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-
         CriteriaQuery<T> cq = cb.createQuery(getDomainClass());
         Root<T> root = cq.from(getDomainClass());
-
         cq.where(cb.equal(root.get("disable"), isDisable));
-
         TypedQuery<T> query = entityManager.createQuery(cq);
         query.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
         query.setMaxResults(pageable.getPageSize());
-
         Long count = countByDisable(isDisable);
-
         return new PageImpl<>(query.getResultList(), pageable, count).stream().toList();
     }
 

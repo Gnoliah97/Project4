@@ -13,7 +13,9 @@ public class InitDatabaseCommandLineRunner implements CommandLineRunner {
     private RoleService roleService;
     private UserService userService;
     @Override
+
     public void run(String... args) throws Exception {
+
 
         if(roleService.count(null) < RoleEnum.values().length){
             roleService.init();

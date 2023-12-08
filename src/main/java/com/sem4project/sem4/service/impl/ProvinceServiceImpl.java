@@ -43,7 +43,7 @@ public class ProvinceServiceImpl implements ProvinceService {
             if(isDisable != null && isDisable){
                 return getAllAvailable(pageNumber, pageSize, sortBy, sortType);
             }
-            List<Province> provinces = ServiceUtil.getAll(provinceRepository, isDisable, pageNumber, pageSize, sortBy, sortType);
+            List<Province> provinces = ServiceUtil.getAll(this::count, isDisable, pageNumber, pageSize, sortBy, sortType, provinceRepository::findAllByDisable, provinceRepository::findAllByDisable);
 
             return provinces.stream().map(provinceMapper::toDto).toList();
         } catch (IllegalArgumentException ex) {
@@ -54,7 +54,7 @@ public class ProvinceServiceImpl implements ProvinceService {
     @Override
     public List<ProvinceDto> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
-            List<Province> provinces = ServiceUtil.getAllAvailable(provinceRepository, pageNumber, pageSize, sortBy, sortType);
+            List<Province> provinces = ServiceUtil.getAllAvailable(this::count, pageNumber, pageSize, sortBy, sortType, provinceRepository::findAll, provinceRepository::findAll);
             return provinceMapper.toListDto(provinces);
         } catch (IllegalArgumentException e) {
             throw new ResourceNotFoundException("Get provinces failed");
@@ -99,5 +99,13 @@ public class ProvinceServiceImpl implements ProvinceService {
         } catch (OptimisticEntityLockException e) {
             throw new UpdateResourceException("Can not update province");
         }
+    }
+
+    @Override
+    public Long count(Boolean isDisable) {
+        if(isDisable == null){
+            return provinceRepository.count();
+        }
+        return provinceRepository.countByDisable(isDisable);
     }
 }

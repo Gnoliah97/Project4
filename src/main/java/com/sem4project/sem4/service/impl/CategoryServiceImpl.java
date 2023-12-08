@@ -8,6 +8,7 @@ import com.sem4project.sem4.entity.District;
 import com.sem4project.sem4.exception.ResourceNotFoundException;
 import com.sem4project.sem4.exception.UpdateResourceException;
 import com.sem4project.sem4.mapper.CategoryMapper;
+import com.sem4project.sem4.mapper.UserMapper;
 import com.sem4project.sem4.repository.CategoryRepository;
 import com.sem4project.sem4.service.CategoryService;
 import com.sem4project.sem4.service.utils.ServiceUtil;
@@ -22,11 +23,15 @@ import java.util.UUID;
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper = CategoryMapper.INSTANCE;
+    private final UserMapper userMapper = UserMapper.INSTANCE;
     @Override
     public CategoryDto getById(UUID id) {
         try {
             Category category = categoryRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-            return categoryMapper.toDto(category);
+            List<CategoryDto> categoriesDto = categoryMapper.toListDto(category.getCategories());
+            CategoryDto categoryDto = categoryMapper.toDto(category);
+            categoryDto.setCategories(categoriesDto);
+            return categoryDto;
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Category with id = " + id + " not found");
         }
@@ -38,9 +43,14 @@ public class CategoryServiceImpl implements CategoryService {
             if(isDisable != null && isDisable){
                 return getAllAvailable(pageNumber, pageSize, sortBy, sortType);
             }
-            List<Category> categories = ServiceUtil.getAll(categoryRepository, isDisable, pageNumber, pageSize, sortBy, sortType);
+            List<Category> categories = ServiceUtil.getAll(this::count, isDisable, pageNumber, pageSize, sortBy, sortType, categoryRepository::findAllByDisable, categoryRepository::findAllByDisable);
 
-            return categories.stream().map(categoryMapper::toDto).toList();
+            return categories.stream().map(category -> {
+                CategoryDto categoryDto = getChildrenCategory(category);
+                categoryDto.setCreatedBy(userMapper.toDto(category.getCreatedBy()));
+                categoryDto.setUpdatedBy(userMapper.toDto(category.getUpdatedBy()));
+                return categoryDto;
+            }).toList();
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Get categories failed");
         }
@@ -49,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDto> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
-            List<Category> categories = ServiceUtil.getAllAvailable(categoryRepository, pageNumber, pageSize, sortBy, sortType);
+            List<Category> categories = ServiceUtil.getAllAvailable(this::count, pageNumber, pageSize, sortBy, sortType, categoryRepository::findAll, categoryRepository::findAll);
             return categoryMapper.toListDto(categories);
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Get districts failed");
@@ -97,13 +107,33 @@ public class CategoryServiceImpl implements CategoryService {
             throw new UpdateResourceException("Create category failed");
         }
     }
-    
+
+    @Override
+    public Long count(Boolean isDisable) {
+        if(isDisable == null){
+            return categoryRepository.count();
+        }
+        return categoryRepository.countByDisable(isDisable);
+    }
+
     private void transferExtendPropertiesToEntity(Category category, CategoryDto categoryDto){
         CategoryDto parentCategoryDto = categoryDto.getParentCategory();
         if(parentCategoryDto != null){
+            boolean parentIsExists = categoryRepository.existsById(parentCategoryDto.getId());
+            if (!parentIsExists){
+                throw new ResourceNotFoundException("Parent category is not exists");
+            }
             Category parentCategory = categoryMapper.toEntity(parentCategoryDto);
             parentCategory.setId(parentCategoryDto.getId());
             category.setParentCategory(parentCategory);
         }
+    }
+    private CategoryDto getChildrenCategory(Category category){
+        CategoryDto categoryDto = categoryMapper.toDto(category);
+        if(!category.getCategories().isEmpty()){
+            List<CategoryDto> childrenList = category.getCategories().stream().map(this::getChildrenCategory).toList();
+            categoryDto.setCategories(childrenList);
+        }
+        return categoryDto;
     }
 }

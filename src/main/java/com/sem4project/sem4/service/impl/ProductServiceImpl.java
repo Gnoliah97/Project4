@@ -8,6 +8,7 @@ import com.sem4project.sem4.entity.Province;
 import com.sem4project.sem4.exception.ResourceNotFoundException;
 import com.sem4project.sem4.exception.UpdateResourceException;
 import com.sem4project.sem4.mapper.*;
+import com.sem4project.sem4.repository.CategoryRepository;
 import com.sem4project.sem4.repository.ProductRepository;
 import com.sem4project.sem4.service.ProductService;
 import com.sem4project.sem4.service.utils.ServiceUtil;
@@ -25,6 +26,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper = ProductMapper.INSTANCE;
     private final PhotoMapper photoMapper = PhotoMapper.INSTANCE;
     private final GiftMapper giftMapper = GiftMapper.INSTANCE;
@@ -53,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
             if (isDisable != null && isDisable) {
                 return getAllAvailable(pageNumber, pageSize, sortBy, sortType);
             }
-            List<Product> products = ServiceUtil.getAll(productRepository, isDisable, pageNumber, pageSize, sortBy, sortType);
+            List<Product> products = ServiceUtil.getAll(this::count, isDisable, pageNumber, pageSize, sortBy, sortType, productRepository::findAllByDisable, productRepository::findAllByDisable);
 
             return products.stream().map(productMapper::toDto).toList();
         } catch (IllegalArgumentException ex) {
@@ -64,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
-            List<Product> products = ServiceUtil.getAllAvailable(productRepository, pageNumber, pageSize, sortBy, sortType);
+            List<Product> products = ServiceUtil.getAllAvailable(this::count, pageNumber, pageSize, sortBy, sortType, productRepository::findAll, productRepository::findAll);
             return productMapper.toListDto(products);
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Get products failed");
@@ -115,13 +117,21 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public Long count(Boolean isDisable) {
+        if(isDisable == null){
+            return categoryRepository.count();
+        }
+        return categoryRepository.countByDisable(isDisable);
+    }
+
     private String generateProductCode(String title) {
         long timestamp = new Date().getTime();
 
         return Arrays.stream(title.split(" ")).reduce("", (result, word) -> result + word.charAt(0)).toUpperCase() + Long.toString(timestamp).substring(Long.toString(timestamp).length() - 4);
     }
 
-    private void transferExtendPropertiesToEntity(Product product, ProductDto productDto) {
+    private void transferExtendPropertiesToEntity(Product product, ProductDto productDto){
 
         BrandDto brandDto = productDto.getBrand();
         PostDto postDto = productDto.getPost();
@@ -145,6 +155,10 @@ public class ProductServiceImpl implements ProductService {
             product.setSpecifications(specificationMapper.toListEntity(specificationDtoList));
         }
         if (categoryDtoList != null && !categoryDtoList.isEmpty()) {
+            Boolean categoriesAreExists = categoryRepository.existsAllByIdIn(categoryDtoList.stream().map(CategoryDto::getId).toList());
+            if (!categoriesAreExists){
+                throw new ResourceNotFoundException("Category is not exists");
+            }
             product.setCategories(categoryMapper.toListEntity(categoryDtoList));
         }
     }

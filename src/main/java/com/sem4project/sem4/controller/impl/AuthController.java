@@ -17,9 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.FieldError;
@@ -32,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 @Tag(name = "Auth", description = "Authentication API")
 @RestController
-@RequestMapping(value = "/api/v1/auth")
+@RequestMapping(value = "/auth")
 @PermitAll
 @AllArgsConstructor
 @CrossOrigin

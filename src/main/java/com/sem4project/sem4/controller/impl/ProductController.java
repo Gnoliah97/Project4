@@ -17,7 +17,7 @@ import java.util.UUID;
 @Tag(name = "Product", description = "Product API")
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/product")
+@RequestMapping("/product")
 @CrossOrigin
 public class ProductController extends BaseController<Product, ProductDto> {
     private final ProductService productService;

@@ -15,7 +15,7 @@ import java.util.UUID;
 @Tag(name = "Province", description = "Province API")
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/province")
+@RequestMapping("/province")
 @CrossOrigin
 public class ProvinceController extends BaseController<Province, ProvinceDto> {
     private final ProvinceService provinceService;

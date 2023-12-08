@@ -17,12 +17,16 @@ public interface BranchMapper extends BaseMapper<Branch, BranchDto>{
             @Mapping(target = "district", ignore = true),
             @Mapping(target = "province", ignore = true),
             @Mapping(target = "branchProducts", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     BranchDto toDto(Branch branch);
     @Mappings({
             @Mapping(target = "district", ignore = true),
             @Mapping(target = "province", ignore = true),
             @Mapping(target = "branchProducts", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     List<BranchDto> toListDto(List<Branch> branches);
     @Mappings({
@@ -48,14 +52,11 @@ public interface BranchMapper extends BaseMapper<Branch, BranchDto>{
     })
     List<Branch> toListEntity(List<BranchDto> branchDtos);
     @Mappings({
-            @Mapping(target = "id", ignore = true),
-            @Mapping(target = "createdAt", ignore = true),
-            @Mapping(target = "updatedAt", ignore = true),
-            @Mapping(target = "createdBy", ignore = true),
-            @Mapping(target = "updatedBy", ignore = true),
             @Mapping(target = "district", ignore = true),
             @Mapping(target = "province", ignore = true),
             @Mapping(target = "branchProducts", ignore = true),
+            @Mapping(target = "createdBy", ignore = true),
+            @Mapping(target = "updatedBy", ignore = true),
     })
     void transferToDto(@MappingTarget BranchDto branchDto, Branch branch);
     @Mappings({
@@ -69,4 +70,5 @@ public interface BranchMapper extends BaseMapper<Branch, BranchDto>{
             @Mapping(target = "branchProducts", ignore = true),
     })
     void transferToEntity(@MappingTarget Branch branch, BranchDto branchDto);
+
 }

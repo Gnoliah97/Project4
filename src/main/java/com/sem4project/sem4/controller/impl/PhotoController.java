@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/photo")
+@RequestMapping("/photo")
 @CrossOrigin
 public class PhotoController{
     private final PhotoService photoService;
