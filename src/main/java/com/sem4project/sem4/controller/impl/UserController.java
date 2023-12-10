@@ -34,7 +34,6 @@ public class UserController extends BaseController<User, UserDto> {
                                 .build()
                 );
     }
-
     @RequestMapping(value = "/updateUserInfo/{id}", method = RequestMethod.PUT)
     @PostAuthorize("authentication.principal.id == id || hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseObject> updateUserInfo(@PathVariable UUID id, @RequestBody @Valid UserInfoDto userInfoDto) {
