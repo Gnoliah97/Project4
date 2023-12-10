@@ -34,9 +34,11 @@ public class PaymentController {
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
         vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", "VND");
+        vnp_Params.put("vnp_BankCode", "NCB");
 
+t
 //        if (bankCode != null && !bankCode.isEmpty()) {
-            vnp_Params.put("vnp_BankCode", "NCB");
+//            vnp_Params.put("vnp_BankCode", "BankCode");
 //        }
 
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
