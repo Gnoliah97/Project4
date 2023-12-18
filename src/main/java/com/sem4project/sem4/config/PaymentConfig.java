@@ -13,13 +13,13 @@ import java.util.*;
 
 public class PaymentConfig {
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-//    public static String vnp_ReturnUrl = "localhost:8080";
+    public static String vnp_ReturnUrl = "https://facebook.com";
 
     public static String vnp_Version = "2.1.0";
     public static String vnp_Command = "pay";
     public static String orderType = "other";
-    public static String vnp_TmnCode = "E68MFDXK";
-    public static String secretKey = "KCLQNNZMPQAKMGJDEWIWQGYZHWPJAIDA";
+    public static String vnp_TmnCode = "43BS9OUO";
+    public static String vnp_HashSecret = "BUSPGHPBATYENIZZUIOJLWAHWGXZDQRO";
     public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 
 
@@ -75,7 +75,7 @@ public class PaymentConfig {
                 sb.append("&");
             }
         }
-        return hmacSHA512(secretKey,sb.toString());
+        return hmacSHA512(vnp_HashSecret,sb.toString());
     }
 
     public static String hmacSHA512(final String key, final String data) {
