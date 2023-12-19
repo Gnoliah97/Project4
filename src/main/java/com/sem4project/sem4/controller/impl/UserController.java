@@ -24,13 +24,13 @@ import java.util.UUID;
 public class UserController extends BaseController<User, UserDto> {
     private final UserService userService;
 
-    @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
-    public ResponseEntity<ResponseObject> getInfo(@PathVariable UUID id) {
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public ResponseEntity<ResponseObject> getInfo() {
         return ResponseEntity.ok()
                 .body(
                         ResponseObject.builder()
                                 .message("Get info success")
-                                .data(userService.getUserInfo(id))
+                                .data(userService.getUserInfo())
                                 .build()
                 );
     }

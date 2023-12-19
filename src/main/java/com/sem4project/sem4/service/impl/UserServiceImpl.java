@@ -143,9 +143,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserInfo(UUID id) {
+    public UserDto getUserInfo() {
         try {
-            User user = userRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+            UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = userRepository.findById(userDetails.getId()).orElseThrow(IllegalArgumentException::new);
             UserDto userDto = userMapper.toDto(user);
             userDto.setRoles(user.getRoles().stream().map(roleMapper::toDto).toList());
             userDto.setUserInfo(userInfoMapper.toDto(user.getUserInfo()));
