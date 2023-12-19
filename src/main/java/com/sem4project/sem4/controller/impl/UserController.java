@@ -24,18 +24,18 @@ import java.util.UUID;
 public class UserController extends BaseController<User, UserDto> {
     private final UserService userService;
 
-    @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public ResponseEntity<ResponseObject> getInfo() {
+    @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
+    public ResponseEntity<ResponseObject> getInfo(@PathVariable UUID id) {
         return ResponseEntity.ok()
                 .body(
                         ResponseObject.builder()
                                 .message("Get info success")
-                                .data(userService.getUserInfo())
+                                .data(userService.getUserInfo(id))
                                 .build()
                 );
     }
     @RequestMapping(value = "/updateUserInfo/{id}", method = RequestMethod.PUT)
-    @PostAuthorize("authentication.principal.id == id || hasRole('ROLE_ADMIN')")
+    @PreAuthorize("authentication.principal.id == #id or hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseObject> updateUserInfo(@PathVariable UUID id, @RequestBody @Valid UserInfoDto userInfoDto) {
         return ResponseEntity.ok()
                 .body(
