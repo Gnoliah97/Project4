@@ -15,7 +15,7 @@ public interface UserService extends BaseService<User, UserDto>{
     void login(LoginRequest loginRequest);
     void register(RegisterRequest request);
     void logout();
-    UserDto getUserInfo(UUID id);
+    UserDto getUserInfo();
     UserInfoDto updateUserInfo(UUID id, UserInfoDto userInfoDto);
     Long countByRole(RoleEnum role);
     void init();
