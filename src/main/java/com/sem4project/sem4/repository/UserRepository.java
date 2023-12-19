@@ -15,7 +15,10 @@ import java.util.UUID;
 public interface UserRepository extends BaseRepository<User, UUID> {
     @EntityGraph(attributePaths = {"roles"})
     Optional<User> findByEmail(String email);
+    @EntityGraph(attributePaths = {"roles", "userInfo"})
     List<User> findAllByDisable(boolean isDisable);
+    @EntityGraph(attributePaths = {"roles", "userInfo"})
+    List<User> findAll();
     Boolean existsByEmail(String email);
     Long countByDisable(Boolean isDisable);
     @EntityGraph(attributePaths = {"roles", "userInfo"})
