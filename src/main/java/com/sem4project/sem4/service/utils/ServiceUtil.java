@@ -49,7 +49,7 @@ public class ServiceUtil {
         } else {
             Long quantity = count.apply(isDisable);
             Pageable pageable = PageableUtil.calculatePageable(quantity, pageNumber, pageSize, sortBy, sortType);
-            entities = getByPage.apply(isDisable, pageable);
+            entities = getByPage.apply(isDisable, pageable).stream().toList();
         }
         return entities;
     }
