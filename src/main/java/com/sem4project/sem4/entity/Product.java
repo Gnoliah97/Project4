@@ -22,7 +22,7 @@ public class Product extends BaseEntity{
     private boolean status;
     @OneToOne(cascade = CascadeType.ALL)
     private Photo thumbnail;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(name = "product_photo", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "photo_id"))
     private List<Photo> photos;
     private String video;

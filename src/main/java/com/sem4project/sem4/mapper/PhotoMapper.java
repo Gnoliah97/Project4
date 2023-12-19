@@ -30,7 +30,6 @@ public interface PhotoMapper extends BaseMapper<Photo, PhotoDto> {
 
     @Override
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -40,7 +39,6 @@ public interface PhotoMapper extends BaseMapper<Photo, PhotoDto> {
 
     @Override
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -57,7 +55,6 @@ public interface PhotoMapper extends BaseMapper<Photo, PhotoDto> {
 
     @Override
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),

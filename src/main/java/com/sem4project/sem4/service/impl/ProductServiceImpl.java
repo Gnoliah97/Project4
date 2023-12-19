@@ -42,8 +42,13 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto getById(UUID id) {
         try {
             Product product = productRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-//            product.getCategories();
-            return productMapper.toDto(product);
+            ProductDto productDto = productMapper.toDto(product);
+            productDto.setSpecifications(specificationMapper.toListDto(product.getSpecifications()));
+            productDto.setPhotos(photoMapper.toListDto(product.getPhotos()));
+            productDto.setBrand(brandMapper.toDto(product.getBrand()));
+            productDto.setGifts(giftMapper.toListDto(product.getGifts()));
+            productDto.setComments(commentMapper.toListDto(product.getComments()));
+            return productDto;
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Product with id = " + id + " not found");
         }
