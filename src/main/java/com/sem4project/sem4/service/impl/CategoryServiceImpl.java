@@ -43,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
             if(isDisable != null && isDisable){
                 return getAllAvailable(pageNumber, pageSize, sortBy, sortType);
             }
-            List<Category> categories = ServiceUtil.getAll(this::count, isDisable, pageNumber, pageSize, sortBy, sortType, categoryRepository::findAllByDisable, categoryRepository::findAllByDisable);
+            List<Category> categories = ServiceUtil.getAll(this::count, isDisable, pageNumber, pageSize, sortBy, sortType, categoryRepository::findAllByDisableAndParentCategoryNull, categoryRepository::findAllByDisableAndParentCategoryNull);
 
             return categories.stream().map(category -> {
                 CategoryDto categoryDto = getChildrenCategory(category);
@@ -59,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDto> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
         try {
-            List<Category> categories = ServiceUtil.getAllAvailable(this::count, pageNumber, pageSize, sortBy, sortType, categoryRepository::findAll, categoryRepository::findAll);
+            List<Category> categories = ServiceUtil.getAllAvailable(this::count, pageNumber, pageSize, sortBy, sortType, categoryRepository::findAllByParentCategoryNull, categoryRepository::findAllByParentCategoryNull);
             return categoryMapper.toListDto(categories);
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Get districts failed");
