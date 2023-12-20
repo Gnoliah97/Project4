@@ -48,6 +48,7 @@ public class ProductServiceImpl implements ProductService {
             productDto.setBrand(brandMapper.toDto(product.getBrand()));
             productDto.setGifts(giftMapper.toListDto(product.getGifts()));
             productDto.setComments(commentMapper.toListDto(product.getComments()));
+            productDto.setCategories(categoryMapper.toListDto(product.getCategories()));
             return productDto;
         } catch (IllegalArgumentException ex) {
             throw new ResourceNotFoundException("Product with id = " + id + " not found");
