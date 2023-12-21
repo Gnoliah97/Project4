@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 
 
 @RestController
@@ -23,6 +24,18 @@ public class PhotoController{
                         ResponseObject.builder()
                                 .message("Uploaded")
                                 .data(photoService.upload(file))
+                                .build()
+                );
+
+    }
+
+    @RequestMapping(value = "/uploads", method = RequestMethod.POST)
+    public ResponseEntity<ResponseObject> upload(@RequestParam("file") MultipartFile[] files) {
+        return ResponseEntity.status(200)
+                .body(
+                        ResponseObject.builder()
+                                .message("Uploaded")
+                                .data(photoService.upload(files))
                                 .build()
                 );
 

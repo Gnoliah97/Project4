@@ -93,7 +93,11 @@ public class UserServiceImpl implements UserService {
             } else{
                 users = userRepository.findAllByDisable(isDisable);
             }
-            return users.stream().map(userMapper::toDto).toList();
+            return users.stream().map(user -> {
+                UserDto userDto = userMapper.toDto(user);
+                userDto.setUserInfo(userInfoMapper.toDto(user.getUserInfo()));
+                return userDto;
+            }).toList();
         } catch (IllegalArgumentException ex) {
             logger.error(ex.getMessage());
             throw new ResourceNotFoundException(ex.getMessage());
@@ -142,9 +146,6 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserInfo() {
         try {
             UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if(userDetails == null){
-                throw new AuthException("Not logged in yet");
-            }
             User user = userRepository.findById(userDetails.getId()).orElseThrow(IllegalArgumentException::new);
             UserDto userDto = userMapper.toDto(user);
             userDto.setRoles(user.getRoles().stream().map(roleMapper::toDto).toList());
@@ -159,11 +160,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfoDto updateUserInfo(UUID id, UserInfoDto userInfoDto) {
         try {
-            UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if(userDetails == null){
-                throw new AuthException("Not logged in yet");
-            }
-            User user = userDetails.getUser();
+            User user = userRepository.findById(id).orElseThrow(IllegalArgumentException::new);
             UserInfo userInfo = user.getUserInfo();
             UserInfo updatedUserInfo;
             if (userInfo == null) {

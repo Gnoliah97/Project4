@@ -30,7 +30,8 @@ public class UserPrincipal implements UserDetails, OAuth2User {
         this.user = user;
     }
 
-    public UserPrincipal(UUID id, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(User user, UUID id, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.user = user;
         this.id = id;
         this.email = email;
         this.password = password;
@@ -42,6 +43,7 @@ public class UserPrincipal implements UserDetails, OAuth2User {
                 singletonList(new SimpleGrantedAuthority(RoleEnum.ROLE_USER.toString()) ) : user.getRoles().stream().map(role -> (GrantedAuthority) new SimpleGrantedAuthority(role.getName())).toList();
 
         return new UserPrincipal(
+                user,
                 user.getId(),
                 user.getEmail() == null ? user.getOauth2Email() : user.getEmail(),
                 user.getPassword(),
