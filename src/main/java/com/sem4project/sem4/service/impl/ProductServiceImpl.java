@@ -1,10 +1,7 @@
 package com.sem4project.sem4.service.impl;
 
 import com.sem4project.sem4.dto.dtomodel.*;
-import com.sem4project.sem4.entity.Category;
-import com.sem4project.sem4.entity.District;
 import com.sem4project.sem4.entity.Product;
-import com.sem4project.sem4.entity.Province;
 import com.sem4project.sem4.exception.ResourceNotFoundException;
 import com.sem4project.sem4.exception.UpdateResourceException;
 import com.sem4project.sem4.mapper.*;
@@ -17,10 +14,7 @@ import lombok.AllArgsConstructor;
 import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -173,5 +167,22 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> getAllByCost(double min, double max) {
         List<Product> products = productRepository.findAllByCostBetweenAndDisableFalse(min, max);
         return productMapper.toListDto(products);
+    }
+
+    @Override
+    public List<ProductDto> sortedByCost(String sortType) {
+        try{
+            List<Product> products = productRepository.findAllByDisableFalse();
+            if (sortType.equalsIgnoreCase("ASC")){
+                products.sort(Comparator.comparingDouble(Product::getCost));
+            } else if (sortType.equalsIgnoreCase("DESC")){
+                products.sort(Comparator.comparingDouble(Product::getCost));
+            } else {
+                throw new IllegalArgumentException("Invalid sort type:" + sortType);
+            }
+            return productMapper.toListDto(products);
+        } catch (IllegalArgumentException e){
+            throw new IllegalArgumentException("Get products failed");
+        }
     }
 }

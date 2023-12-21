@@ -85,7 +85,7 @@ public class PaymentServiceImpl implements PaymentService {
         String vnp_ExpireDate = formatter.format(cld.getTime());
         //Add Params of 2.1.0 Version
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
-        //Billing
+//        Billing
 //        vnp_Params.put("vnp_Bill_Mobile", req.getParameter("txt_billing_mobile"));
 //        vnp_Params.put("vnp_Bill_Email", req.getParameter("txt_billing_email"));
 //        String fullName = (req.getParameter("txt_billing_fullname")).trim();
@@ -111,7 +111,7 @@ public class PaymentServiceImpl implements PaymentService {
 //        vnp_Params.put("vnp_Inv_Company", req.getParameter("txt_inv_company"));
 //        vnp_Params.put("vnp_Inv_Taxcode", req.getParameter("txt_inv_taxcode"));
 //        vnp_Params.put("vnp_Inv_Type", req.getParameter("cbo_inv_type"));
-        //Build data to hash and querystring
+//        Build data to hash and querystring
         List<String> fieldNames = new ArrayList<>(vnp_Params.keySet());
         Collections.sort(fieldNames);
         StringBuilder hashData = new StringBuilder();

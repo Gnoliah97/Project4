@@ -117,4 +117,20 @@ public class ProductController extends BaseController<Product, ProductDto> {
                                 .build()
                 );
     }
+
+    @RequestMapping(value = "/sortedByCost", method = RequestMethod.GET)
+    protected ResponseEntity<ResponseObject> sortedByCost(@RequestParam(name = "sortType", required = false) String sortType) {
+        if (sortType == null) {
+            sortType = "ASC";
+        }
+        return ResponseEntity.status(200)
+                .body(
+                        ResponseObject.builder()
+                                .message("Success")
+                                .data(productService.sortedByCost(sortType))
+                                .build()
+                );
+    }
+
+
 }

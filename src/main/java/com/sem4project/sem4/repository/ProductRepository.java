@@ -14,4 +14,6 @@ public interface ProductRepository extends BaseRepository<Product, UUID> {
     Long countByDisable(Boolean isDisable);
     List<Product> findAllByCostBetweenAndDisableFalse(Double min, Double max);
 
+    List<Product> findAllByDisableFalse();
+
 }
