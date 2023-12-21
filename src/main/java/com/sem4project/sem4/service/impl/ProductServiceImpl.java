@@ -168,4 +168,10 @@ public class ProductServiceImpl implements ProductService {
             product.setCategories(categoryMapper.toListEntity(categoryDtoList));
         }
     }
+
+    @Override
+    public List<ProductDto> getAllByCost(double min, double max) {
+        List<Product> products = productRepository.findAllByCostBetweenAndDisableFalse(min, max);
+        return productMapper.toListDto(products);
+    }
 }
