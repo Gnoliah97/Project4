@@ -34,7 +34,7 @@ public class Product extends BaseEntity{
     private List<Specification> specifications;
     @OneToOne
     private Post post;
-    @ManyToMany(mappedBy = "products", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "products", cascade = CascadeType.MERGE)
     private List<Category> categories;
     @ManyToOne(cascade = CascadeType.ALL)
     private Brand brand;
