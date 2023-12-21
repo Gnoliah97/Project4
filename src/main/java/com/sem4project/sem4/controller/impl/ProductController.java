@@ -108,12 +108,12 @@ public class ProductController extends BaseController<Product, ProductDto> {
 
     @RequestMapping(value = "/getAllByCost", method = RequestMethod.GET)
     protected ResponseEntity<ResponseObject> getAllByCost(@RequestParam double min, @RequestParam double max) {
-        productService.getAllByCost(min, max);
+
         return ResponseEntity.status(200)
                 .body(
                         ResponseObject.builder()
                                 .message("Success")
-                                .data(true)
+                                .data(productService.getAllByCost(min, max))
                                 .build()
                 );
     }
