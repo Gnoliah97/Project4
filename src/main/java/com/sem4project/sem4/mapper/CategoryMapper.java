@@ -33,7 +33,6 @@ public interface CategoryMapper extends BaseMapper<Category, CategoryDto>{
     List<CategoryDto> toListDto(List<Category> categories);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -45,7 +44,6 @@ public interface CategoryMapper extends BaseMapper<Category, CategoryDto>{
     Category toEntity(CategoryDto categoryDto);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -66,7 +64,6 @@ public interface CategoryMapper extends BaseMapper<Category, CategoryDto>{
     void transferToDto(@MappingTarget CategoryDto categoryDto, Category category);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),

@@ -14,4 +14,5 @@ public abstract class BaseController<T extends BaseEntity, U extends BaseDto> {
     protected abstract ResponseEntity<ResponseObject> create(U u);
     protected abstract ResponseEntity<ResponseObject> update(UUID id, U u);
     protected abstract ResponseEntity<ResponseObject> updateDisable(UUID id);
+    protected abstract ResponseEntity<ResponseObject> getAllAvailable(Integer pageNumber,Integer pageSize,String sortBy, String sortType);
 }

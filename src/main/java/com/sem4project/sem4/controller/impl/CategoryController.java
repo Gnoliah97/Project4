@@ -104,4 +104,9 @@ public class CategoryController extends BaseController<Category, CategoryDto> {
                                 .build()
                 );
     }
+
+    @Override
+    protected ResponseEntity<ResponseObject> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
+        return null;
+    }
 }

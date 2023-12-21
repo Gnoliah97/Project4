@@ -21,7 +21,6 @@ public interface ProvinceMapper extends BaseMapper<Province, ProvinceDto>{
     })
     ProvinceDto toDto(Province province);
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -31,7 +30,6 @@ public interface ProvinceMapper extends BaseMapper<Province, ProvinceDto>{
     })
     Province toEntity(ProvinceDto provinceDto);
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -50,7 +48,6 @@ public interface ProvinceMapper extends BaseMapper<Province, ProvinceDto>{
     List<ProvinceDto> toListDto(List<Province> provinces);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),

@@ -30,7 +30,6 @@ public interface BranchMapper extends BaseMapper<Branch, BranchDto>{
     })
     List<BranchDto> toListDto(List<Branch> branches);
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -41,7 +40,6 @@ public interface BranchMapper extends BaseMapper<Branch, BranchDto>{
     })
     Branch toEntity(BranchDto branchDto);
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -60,7 +58,6 @@ public interface BranchMapper extends BaseMapper<Branch, BranchDto>{
     })
     void transferToDto(@MappingTarget BranchDto branchDto, Branch branch);
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),

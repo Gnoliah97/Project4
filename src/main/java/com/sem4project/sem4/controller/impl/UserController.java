@@ -81,4 +81,9 @@ public class UserController extends BaseController<User, UserDto> {
     protected ResponseEntity<ResponseObject> updateDisable(UUID id) {
         return null;
     }
+
+    @Override
+    protected ResponseEntity<ResponseObject> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
+        return null;
+    }
 }
