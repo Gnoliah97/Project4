@@ -36,7 +36,6 @@ public interface UserMapper extends BaseMapper<User, UserDto>{
     List<UserDto> toListDto(List<User> users);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -47,7 +46,6 @@ public interface UserMapper extends BaseMapper<User, UserDto>{
     User toEntity(UserDto userDto);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -68,7 +66,6 @@ public interface UserMapper extends BaseMapper<User, UserDto>{
 
     @Override
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),

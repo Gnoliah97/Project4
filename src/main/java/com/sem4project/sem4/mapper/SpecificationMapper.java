@@ -27,7 +27,6 @@ public interface SpecificationMapper extends BaseMapper<Specification, Specifica
     List<SpecificationDto> toListDto(List<Specification> specifications);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -36,7 +35,6 @@ public interface SpecificationMapper extends BaseMapper<Specification, Specifica
     Specification toEntity(SpecificationDto specificationDto);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -51,7 +49,6 @@ public interface SpecificationMapper extends BaseMapper<Specification, Specifica
     void transferToDto(@MappingTarget SpecificationDto specificationDto, Specification specification);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),

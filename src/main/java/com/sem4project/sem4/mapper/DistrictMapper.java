@@ -28,7 +28,6 @@ public interface DistrictMapper extends BaseMapper<District, DistrictDto>{
     })
     List<DistrictDto> toListDto(List<District> districts);
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -38,7 +37,6 @@ public interface DistrictMapper extends BaseMapper<District, DistrictDto>{
     })
     District toEntity(DistrictDto districtDto);
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -55,7 +53,6 @@ public interface DistrictMapper extends BaseMapper<District, DistrictDto>{
     })
     void transferToDto(@MappingTarget DistrictDto districtDto, District district);
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),

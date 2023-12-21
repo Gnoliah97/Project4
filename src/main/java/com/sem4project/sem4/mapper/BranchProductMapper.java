@@ -29,7 +29,6 @@ public interface BranchProductMapper extends BaseMapper<BranchProduct, BranchPro
     List<BranchProductDto> toListDto(List<BranchProduct> branchProducts);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -40,7 +39,6 @@ public interface BranchProductMapper extends BaseMapper<BranchProduct, BranchPro
     BranchProduct toEntity(BranchProductDto branchProductDto);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -59,7 +57,6 @@ public interface BranchProductMapper extends BaseMapper<BranchProduct, BranchPro
     void transferToDto(@MappingTarget BranchProductDto branchProductDto, BranchProduct branchProduct);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),

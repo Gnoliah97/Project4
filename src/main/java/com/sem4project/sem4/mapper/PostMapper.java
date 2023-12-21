@@ -27,7 +27,6 @@ public interface PostMapper extends BaseMapper<Post, PostDto> {
     List<PostDto> toListDto(List<Post> posts);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -37,7 +36,6 @@ public interface PostMapper extends BaseMapper<Post, PostDto> {
     Post toEntity(PostDto postDto);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -54,7 +52,6 @@ public interface PostMapper extends BaseMapper<Post, PostDto> {
     void transferToDto(@MappingTarget PostDto postDto, Post post);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),

@@ -83,4 +83,9 @@ public class RoleController extends BaseController<Role, RoleDto> {
                                 .build()
                 );
     }
+
+    @Override
+    protected ResponseEntity<ResponseObject> getAllAvailable(Integer pageNumber, Integer pageSize, String sortBy, String sortType) {
+        return null;
+    }
 }

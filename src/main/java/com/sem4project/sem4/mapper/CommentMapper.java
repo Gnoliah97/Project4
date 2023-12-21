@@ -31,7 +31,6 @@ public interface CommentMapper extends BaseMapper<Comment, CommentDto>{
     List<CommentDto> toListDto(List<Comment> comments);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -43,7 +42,6 @@ public interface CommentMapper extends BaseMapper<Comment, CommentDto>{
     Comment toEntity(CommentDto commentDto);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -66,7 +64,6 @@ public interface CommentMapper extends BaseMapper<Comment, CommentDto>{
 
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
