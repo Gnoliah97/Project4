@@ -21,6 +21,7 @@ import java.util.UUID;
 @CrossOrigin
 public class ProductController extends BaseController<Product, ProductDto> {
     private final ProductService productService;
+
     @Override
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     protected ResponseEntity<ResponseObject> getAll(@RequestParam(required = false, defaultValue = "false") Boolean isDisable,
@@ -34,6 +35,21 @@ public class ProductController extends BaseController<Product, ProductDto> {
                         ResponseObject.builder()
                                 .message("Success")
                                 .data(productService.getAll(isDisable, pageNumber, pageSize, sortBy, sortType))
+                                .build()
+                );
+    }
+
+    @RequestMapping(value = "/getAllAvailable", method = RequestMethod.GET)
+    protected ResponseEntity<ResponseObject> getAllAvailable(@RequestParam(defaultValue = "1") Integer pageNumber,
+                                                             @RequestParam(required = false) Integer pageSize,
+                                                             @RequestParam(required = false) String sortBy,
+                                                             @RequestParam(required = false) String sortType
+    ) {
+        return ResponseEntity.status(200)
+                .body(
+                        ResponseObject.builder()
+                                .message("Success")
+                                .data(productService.getAllAvailable(pageNumber, pageSize, sortBy, sortType))
                                 .build()
                 );
     }

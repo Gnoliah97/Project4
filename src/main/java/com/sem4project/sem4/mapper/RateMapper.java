@@ -31,7 +31,6 @@ public interface RateMapper extends BaseMapper<Rate, RateDto>{
     List<RateDto> toListDto(List<Rate> rates);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -42,7 +41,6 @@ public interface RateMapper extends BaseMapper<Rate, RateDto>{
     Rate toEntity(RateDto rateDto);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -61,7 +59,6 @@ public interface RateMapper extends BaseMapper<Rate, RateDto>{
     void transferToDto(@MappingTarget RateDto rateDto, Rate rate);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),

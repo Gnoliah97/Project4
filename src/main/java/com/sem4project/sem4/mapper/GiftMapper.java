@@ -28,7 +28,6 @@ public interface GiftMapper extends BaseMapper<Gift, GiftDto> {
 
     @Override
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -38,7 +37,6 @@ public interface GiftMapper extends BaseMapper<Gift, GiftDto> {
 
     @Override
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -55,7 +53,6 @@ public interface GiftMapper extends BaseMapper<Gift, GiftDto> {
 
     @Override
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),

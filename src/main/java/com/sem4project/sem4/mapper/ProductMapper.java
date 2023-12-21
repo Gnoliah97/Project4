@@ -43,7 +43,6 @@ public interface ProductMapper extends BaseMapper<Product, ProductDto> {
     List<ProductDto> toListDto(List<Product> products);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -61,7 +60,6 @@ public interface ProductMapper extends BaseMapper<Product, ProductDto> {
     Product toEntity(ProductDto productDto);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -94,7 +92,6 @@ public interface ProductMapper extends BaseMapper<Product, ProductDto> {
     void transferToDto(@MappingTarget ProductDto productDto, Product product);
 
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),

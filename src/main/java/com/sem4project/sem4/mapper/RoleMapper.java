@@ -27,7 +27,6 @@ public interface RoleMapper extends BaseMapper<Role, RoleDto>{
     })
     List<RoleDto> toListDto(List<Role> roles);
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -36,7 +35,6 @@ public interface RoleMapper extends BaseMapper<Role, RoleDto>{
     })
     Role toEntity(RoleDto roleDto);
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
@@ -55,7 +53,6 @@ public interface RoleMapper extends BaseMapper<Role, RoleDto>{
 
     @Override
     @Mappings({
-            @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "createdBy", ignore = true),
