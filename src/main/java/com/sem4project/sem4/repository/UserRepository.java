@@ -22,7 +22,7 @@ public interface UserRepository extends BaseRepository<User, UUID> {
     Boolean existsByEmail(String email);
     Long countByDisable(Boolean isDisable);
     @EntityGraph(attributePaths = {"roles", "userInfo"})
-    User findByOauth2Email(String oauth2Email);
+    Optional<User> findByOauth2Email(String oauth2Email);
     @Query("SELECT COUNT(u) FROM User u JOIN u.roles r WHERE r.name = :roleName")
     long countUsersByRoleName(@Param("roleName") String roleName);
 }

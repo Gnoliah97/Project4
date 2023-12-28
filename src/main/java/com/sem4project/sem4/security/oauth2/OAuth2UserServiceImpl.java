@@ -45,7 +45,7 @@ public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
         if (oAuth2UserInfo.getEmail().isEmpty()){
             throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
         }
-        User user = userRepository.findByOauth2Email(oAuth2UserInfo.getEmail());
+        User user = userRepository.findByOauth2Email(oAuth2UserInfo.getEmail()).orElse(null);
         if(user != null){
             if(!user.getProvider().equals(oAuth2UserRequest.getClientRegistration().getRegistrationId())){
                 throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +

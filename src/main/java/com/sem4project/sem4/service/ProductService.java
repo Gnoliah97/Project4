@@ -11,7 +11,5 @@ import java.util.List;
 public interface ProductService extends BaseService<Product, ProductDto> {
     List<ProductDto> getAllByCost(double min, double max);
 
-
-
     List<ProductDto> sortedByCost(String sortType);
 }

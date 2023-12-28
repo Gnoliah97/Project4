@@ -97,10 +97,10 @@ public class SecurityConfiguration {
                 )
                 .oauth2Login(httpSecurityOAuth2LoginConfigurer -> {
                     httpSecurityOAuth2LoginConfigurer.authorizationEndpoint(authorizationEndpointConfig -> {
-                        authorizationEndpointConfig.baseUri("/api/v1/oauth2/authorize")
+                        authorizationEndpointConfig.baseUri("/oauth2/authorize")
                                 .authorizationRequestRepository(cookieAuthorizationRequestRepository());
                     }).redirectionEndpoint(redirectionEndpointConfig -> {
-                        redirectionEndpointConfig.baseUri("/api/v1/oauth2/callback/*");
+                        redirectionEndpointConfig.baseUri("/oauth2/callback/*");
                     }).userInfoEndpoint(userInfoEndpointConfig -> {
                         userInfoEndpointConfig.userService(oAuth2UserService);
                     }).successHandler(oAuth2AuthenticationSuccessHandler)
